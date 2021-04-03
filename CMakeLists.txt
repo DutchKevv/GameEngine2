@@ -15,7 +15,7 @@ enable_testing()
 # Executable definition and properties
 add_executable(${PROJECT_NAME} ${SOURCES})
 target_include_directories(${PROJECT_NAME} PRIVATE "${SRC_DIR}")
-set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 11)
+set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 17)
 
 # GLFW
 set(GLFW_DIR "${LIB_DIR}/glfw-3.3.3")
@@ -40,3 +40,5 @@ target_link_libraries(${PROJECT_NAME} "glad" "${CMAKE_DL_LIBS}")
 
 # src
 target_include_directories(game2 PRIVATE src)
+
+file(COPY ./src/shaders DESTINATION .)
