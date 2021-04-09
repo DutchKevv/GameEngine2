@@ -17,6 +17,7 @@
 #endif
 #include "../helpers/shader-loader.cpp"
 #include "../helpers/texture.cpp"
+
 class ShapeCube {
     unsigned int VBO;
     unsigned int VAO;
@@ -96,36 +97,23 @@ class ShapeCube {
 
         ShaderLoader shaderLoader;
         texture = new Texture("wall.jpg");
-        shaderProgram = shaderLoader.load("triangle");
+        shaderProgram = shaderLoader.load("cube");
         shaderLoader.use(shaderProgram);
 
         glGenVertexArrays(1, &VAO);
         glGenBuffers(1, &VBO);
-        glGenBuffers(1, &EBO);
-        // bind the Vertex Array Object first, then bind and set vertex buffer(s),
-        // and then configure vertex attributes(s).
+
         glBindVertexArray(VAO);
 
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
         glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices,
-                     GL_STATIC_DRAW);
-
         // position attribute
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)0);
         glEnableVertexAttribArray(0);
-        // color attribute
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)(3 * sizeof(float)));
-        glEnableVertexAttribArray(1);
         // texture coord attribute
-        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)(6 * sizeof(float)));
-        glEnableVertexAttribArray(2);
-        // note that this is allowed, the call to glVertexAttribPointer registered
-        // VBO as the vertex attribute's bound vertex buffer object so afterwards we
-        // can safely unbind
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)(3 * sizeof(float)));
+        glEnableVertexAttribArray(1);
 
         // remember: do NOT unbind the EBO while a VAO is active as the bound
         // element buffer object IS stored in the VAO; keep the EBO bound.
@@ -146,8 +134,26 @@ class ShapeCube {
         glUseProgram(shaderProgram);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture->texture);
+        // create transformations
+        glm::mat4 view = glm::mat4(1.0f);  // make sure to initialize matrix to identity matrix first
+        glm::mat4 projection = glm::mat4(1.0f);
+        projection = glm::perspective(glm::radians(45.0f), (float)800 / (float)600, 0.1f, 100.0f);
+        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+        // pass transformation matrices to the shader
+        // ourShader.setMat4("projection", projection); // note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
+        // ourShader.setMat4("view", view);
+
+        // render boxes
         glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-        // glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        for (unsigned int i = 0; i < 10; i++) {
+            // // calculate the model matrix for each object and pass it to shader before drawing
+            // glm::mat4 model = glm::mat4(1.0f);
+            // model = glm::translate(model, cubePositions[i]);
+            // float angle = 20.0f * i;
+            // model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+            // ourShader.setMat4("model", model);
+
+            glDrawArrays(GL_TRIANGLES, 0, 36);
+        }
     }
 };

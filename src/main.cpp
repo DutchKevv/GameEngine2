@@ -1,3 +1,5 @@
+#pragma once
+
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
 
@@ -46,7 +48,9 @@ int main() {
   }
 
   ShapeTriangle triangle;
+  ShapeCube cube;
   triangle.init();
+  cube.init();
 
   // render loop
   // -----------
@@ -60,7 +64,8 @@ int main() {
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    triangle.draw();
+    // triangle.draw();
+    cube.draw();
 
     // glfw: swap buffers and poll IO events (keys pressed/released, mouse
     // moved etc.)
