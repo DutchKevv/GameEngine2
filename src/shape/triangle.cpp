@@ -1,7 +1,9 @@
+#pragma once
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
 #include <stdio.h> /* defines FILENAME_MAX */
-
+#include "../helpers/texture.cpp"
+#include "../helpers/shader-loader.cpp"
 #include <iostream>
 // #define WINDOWS  /* uncomment this line to use it for windows.*/
 #ifdef WINDOWS
@@ -12,22 +14,6 @@
 #define GetCurrentDir getcwd
 #endif
 
-#include "../helpers/shader-loader.cpp"
-#include "../helpers/texture.cpp"
-
-float vertices[] = {
-    // positions          // colors           // texture coords
-    0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,    // top right
-    0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,   // bottom right
-    -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,  // bottom left
-    -0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f    // top left
-};
-unsigned int indices[] = {
-    // note that we start from 0!
-    0, 1, 3,  // first triangle
-    1, 2, 3   // second triangle
-};
-
 class ShapeTriangle {
     unsigned int VBO;
     unsigned int VAO;
@@ -37,6 +23,18 @@ class ShapeTriangle {
 
    public:
     void init() {
+        float vertices[] = {
+            // positions          // colors           // texture coords
+            0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,    // top right
+            0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,   // bottom right
+            -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,  // bottom left
+            -0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f    // top left
+        };
+        unsigned int indices[] = {
+            // note that we start from 0!
+            0, 1, 3,  // first triangle
+            1, 2, 3   // second triangle
+        };
         ShaderLoader shaderLoader;
         texture = new Texture("wall.jpg");
         shaderProgram = shaderLoader.load("triangle");
@@ -57,13 +55,13 @@ class ShapeTriangle {
                      GL_STATIC_DRAW);
 
         // position attribute
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)0);
         glEnableVertexAttribArray(0);
         // color attribute
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)(3 * sizeof(float)));
         glEnableVertexAttribArray(1);
         // texture coord attribute
-        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)(6 * sizeof(float)));
         glEnableVertexAttribArray(2);
         // note that this is allowed, the call to glVertexAttribPointer registered
         // VBO as the vertex attribute's bound vertex buffer object so afterwards we

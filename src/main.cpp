@@ -2,8 +2,10 @@
 #include <glad/glad.h>
 
 #include <iostream>
-
+#include "./helpers/shader-loader.cpp"
+#include "./helpers/texture.cpp"
 #include "shape/triangle.cpp"
+#include "shape/cube.cpp"
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 void processInput(GLFWwindow *window);
