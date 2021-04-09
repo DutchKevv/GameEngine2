@@ -9,16 +9,20 @@
 #include <streambuf>
 #include <string>
 
+
 using namespace std;
 
 class ShaderLoader {
-    unsigned int shaderProgram;
 
    public:
-    unsigned int load(std::string vertexPath, std::string fragmentPath) {
-        shaderProgram = glCreateProgram();
-        unsigned int vertexShader = this->loadShaderFromFile(vertexPath, GL_VERTEX_SHADER);
-        unsigned int fragmentShader = this->loadShaderFromFile(fragmentPath, GL_FRAGMENT_SHADER);
+    void use(int shaderProgram) {
+        glUseProgram(shaderProgram);
+    }
+
+    unsigned int load(string name) {
+        unsigned int shaderProgram = glCreateProgram();
+        unsigned int vertexShader = this->loadShaderFromFile(name + ".vs", GL_VERTEX_SHADER);
+        unsigned int fragmentShader = this->loadShaderFromFile(name + ".fs", GL_FRAGMENT_SHADER);
 
         glAttachShader(shaderProgram, vertexShader);
         glAttachShader(shaderProgram, fragmentShader);

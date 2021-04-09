@@ -42,3 +42,4 @@ target_link_libraries(${PROJECT_NAME} "glad" "${CMAKE_DL_LIBS}")
 target_include_directories(game2 PRIVATE src)
 
 file(COPY ./src/shaders DESTINATION .)
+file(COPY ./src/textures DESTINATION .)
