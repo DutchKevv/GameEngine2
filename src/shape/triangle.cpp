@@ -13,21 +13,22 @@
 #endif
 
 #include "../helpers/shader-loader.cpp"
-
-float vertices[] = {-0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f, 0.0f, 0.5f, 0.0f};
-
+float vertices[] = {
+    0.5f, 0.5f, 0.0f,    // top right
+    0.5f, -0.5f, 0.0f,   // bottom right
+    -0.5f, -0.5f, 0.0f,  // bottom left
+    -0.5f, 0.5f, 0.0f    // top left
+};
 unsigned int indices[] = {
     // note that we start from 0!
-    0, 1, 2,
-    // 1, 2, 3   // second triangle
+    0, 1, 3,  // first triangle
+    1, 2, 3   // second triangle
 };
 
 class ShapeTriangle {
     unsigned int VBO;
     unsigned int VAO;
     unsigned int EBO;
-    unsigned int vertexShader;
-    unsigned int fragmentShader;
     unsigned int shaderProgram;
 
    public:
@@ -36,23 +37,7 @@ class ShapeTriangle {
 
         shaderProgram = shaderLoader.load("triangle.vs", "triangle.fs");
 
-        // vertexShader = glCreateShader(GL_VERTEX_SHADER);
-        // glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-        // glCompileShader(vertexShader);
-
-        // fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-        // glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-        // glCompileShader(fragmentShader);
-
-        // shaderProgram = glCreateProgram();
-        // glAttachShader(shaderProgram, vertexShader);
-        // glAttachShader(shaderProgram, fragmentShader);
-        // glLinkProgram(shaderProgram);
         glUseProgram(shaderProgram);
-
-        // // not needed after linking
-        // glDeleteShader(vertexShader);
-        // glDeleteShader(fragmentShader);
 
         glGenVertexArrays(1, &VAO);
         glGenBuffers(1, &VBO);
@@ -98,6 +83,8 @@ class ShapeTriangle {
             VAO);  // seeing as we only have a single VAO there's no need to bind it
                    // every time, but we'll do so to keep things a bit more organized
         // glDrawArrays(GL_TRIANGLES, 0, 6);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        // glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     }
 };
