@@ -44,6 +44,10 @@
         "chrono": "cpp",
         "codecvt": "cpp",
         "ctime": "cpp",
-        "ratio": "cpp"
+        "ratio": "cpp",
+        "cstring": "cpp",
+        "functional": "cpp",
+        "iterator": "cpp",
+        "iomanip": "cpp"
     }
 }

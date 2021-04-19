@@ -9,7 +9,7 @@
 #include <sstream>
 #include <streambuf>
 #include <string>
-
+#include "./shader.cpp"
 
 using namespace std;
 
@@ -20,31 +20,34 @@ class ShaderLoader {
         glUseProgram(shaderProgram);
     }
 
-    unsigned int load(string name) {
-        unsigned int shaderProgram = glCreateProgram();
-        unsigned int vertexShader = this->loadShaderFromFile(name + ".vs", GL_VERTEX_SHADER);
-        unsigned int fragmentShader = this->loadShaderFromFile(name + ".fs", GL_FRAGMENT_SHADER);
+    Shader* load(string name) {
+        string vertexSrc = loadFile(name + ".vs");
+        string fragmentSrc = loadFile(name + ".fs");
+        Shader* shader(vertexSrc.c_str(), fragmentSrc.c_str());
+        // unsigned int shaderProgram = glCreateProgram();
+        // unsigned int vertexShader = this->loadShaderFromFile(name + ".vs", GL_VERTEX_SHADER);
+        // unsigned int fragmentShader = this->loadShaderFromFile(name + ".fs", GL_FRAGMENT_SHADER);
 
-        glAttachShader(shaderProgram, vertexShader);
-        glAttachShader(shaderProgram, fragmentShader);
-        glLinkProgram(shaderProgram);
-        glUseProgram(shaderProgram);
+        // glAttachShader(shaderProgram, vertexShader);
+        // glAttachShader(shaderProgram, fragmentShader);
+        // glLinkProgram(shaderProgram);
+        // glUseProgram(shaderProgram);
 
-        int success;
-        char infoLog[512];
+        // int success;
+        // char infoLog[512];
 
-        glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-        if (!success) {
-            glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-            cout << "ERROR::SHADER-PROGRAM::COMPILATION_FAILED\n"
-                 << infoLog << std::endl;
-        }
+        // glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
+        // if (!success) {
+        //     glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
+        //     cout << "ERROR::SHADER-PROGRAM::COMPILATION_FAILED\n"
+        //          << infoLog << std::endl;
+        // }
 
-        // not needed after linking
-        glDeleteShader(vertexShader);
-        glDeleteShader(fragmentShader);
+        // // not needed after linking
+        // glDeleteShader(vertexShader);
+        // glDeleteShader(fragmentShader);
 
-        return shaderProgram;
+        return shader;
     }
 
    private:
@@ -94,5 +97,26 @@ class ShaderLoader {
         }
 
         return shader;
+    }
+
+    string loadFile(string filePath) {
+        filePath = prefix + filePath;
+
+        bool f_exists = fileExists(filePath);
+        int success;
+        int shader;
+        char infoLog[512];
+
+        ifstream v(filePath);  //taking file as inputstream
+        string v_str;
+        if (v) {
+            ostringstream ss;
+            ss << v.rdbuf();  // reading data
+            v_str = ss.str();
+        }
+
+        const char *shaderString = v_str.c_str();
+
+        return shaderString;
     }
 };

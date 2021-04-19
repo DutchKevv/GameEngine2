@@ -41,5 +41,8 @@ target_link_libraries(${PROJECT_NAME} "glad" "${CMAKE_DL_LIBS}")
 # src
 target_include_directories(game2 PRIVATE src)
 
-file(COPY ./src/shaders DESTINATION .)
-file(COPY ./src/textures DESTINATION .)
+add_custom_target(copy-shaders ALL COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/shaders ${CMAKE_BINARY_DIR}/shaders DEPENDS ${MY_TARGET})
+add_custom_target(copy-textures ALL COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/textures ${CMAKE_BINARY_DIR}/textures DEPENDS ${MY_TARGET})
+    
+# file(COPY ./src/shaders DESTINATION .)
+# file(COPY ./src/textures DESTINATION .)

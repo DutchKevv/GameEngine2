@@ -2,9 +2,12 @@
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
 #include <stdio.h> /* defines FILENAME_MAX */
-#include "../helpers/texture.cpp"
-#include "../helpers/shader-loader.cpp"
+
 #include <iostream>
+
+#include "../helpers/shader-loader.cpp"
+#include "../helpers/shader.cpp"
+#include "../helpers/texture.cpp"
 // #define WINDOWS  /* uncomment this line to use it for windows.*/
 #ifdef WINDOWS
 #include <direct.h>
@@ -18,10 +21,10 @@ class ShapeTriangle {
     unsigned int VBO;
     unsigned int VAO;
     unsigned int EBO;
-    unsigned int shaderProgram;
-    Texture *texture;
 
    public:
+    Shader *shaderProgram;
+    Texture *texture;
     void init() {
         float vertices[] = {
             // positions          // colors           // texture coords
@@ -38,7 +41,7 @@ class ShapeTriangle {
         ShaderLoader shaderLoader;
         texture = new Texture("wall.jpg");
         shaderProgram = shaderLoader.load("triangle");
-        shaderLoader.use(shaderProgram);
+        shaderProgram.use();
 
         glGenVertexArrays(1, &VAO);
         glGenBuffers(1, &VBO);
@@ -77,14 +80,14 @@ class ShapeTriangle {
         // call to glBindVertexArray anyways so we generally don't unbind VAOs (nor
         // VBOs) when it's not directly necessary.
         glBindVertexArray(0);
-        glUniform1i(glGetUniformLocation(shaderProgram, "ourTexture"), 0);
+        glUniform1i(glGetUniformLocation(shaderProgram.ID, "ourTexture"), 0);
         // uncomment this call to draw in wireframe polygons.
         // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     }
 
     void draw() {
         // draw our first triangle
-        glUseProgram(shaderProgram);
+        glUseProgram(shaderProgram.ID);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture->texture);
         glBindVertexArray(VAO);
