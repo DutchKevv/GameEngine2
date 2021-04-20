@@ -23,8 +23,8 @@ class ShapeCube {
     unsigned int VBO;
     unsigned int VAO;
     unsigned int EBO;
-    Shader shaderProgram;
-    Texture *texture;
+    Shader* shaderProgram;
+    Texture* texture;
     glm::vec3 cubePositions[];
 
    public:
@@ -100,7 +100,7 @@ class ShapeCube {
         ShaderLoader shaderLoader;
         texture = new Texture("wall.jpg");
         shaderProgram = shaderLoader.load("cube");
-        shaderProgram.use();
+        shaderProgram->use();
 
         glGenVertexArrays(1, &VAO);
         glGenBuffers(1, &VBO);
@@ -126,7 +126,7 @@ class ShapeCube {
         // call to glBindVertexArray anyways so we generally don't unbind VAOs (nor
         // VBOs) when it's not directly necessary.
         glBindVertexArray(0);
-        glUniform1i(glGetUniformLocation(shaderProgram.ID, "ourTexture"), 0);
+        glUniform1i(glGetUniformLocation(shaderProgram->ID, "ourTexture"), 0);
         // uncomment this call to draw in wireframe polygons.
         // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     }
@@ -139,7 +139,7 @@ class ShapeCube {
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture->texture);
-                glUseProgram(shaderProgram.ID);
+                glUseProgram(shaderProgram->ID);
         // create transformations
         glm::mat4 model = glm::mat4(1.0f);  // make sure to initialize matrix to identity matrix first
         glm::mat4 view = glm::mat4(1.0f);
@@ -148,8 +148,8 @@ class ShapeCube {
         view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
         projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
         // retrieve the matrix uniform locations
-        unsigned int modelLoc = glGetUniformLocation(shaderProgram.ID, "model");
-        unsigned int viewLoc = glGetUniformLocation(shaderProgram.ID, "view");
+        unsigned int modelLoc = glGetUniformLocation(shaderProgram->ID, "model");
+        unsigned int viewLoc = glGetUniformLocation(shaderProgram->ID, "view");
         // pass them to the shaders (3 different ways)
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
         glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view[0][0]);

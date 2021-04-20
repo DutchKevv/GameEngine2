@@ -41,7 +41,7 @@ class ShapeTriangle {
         ShaderLoader shaderLoader;
         texture = new Texture("wall.jpg");
         shaderProgram = shaderLoader.load("triangle");
-        shaderProgram.use();
+        shaderProgram->use();
 
         glGenVertexArrays(1, &VAO);
         glGenBuffers(1, &VBO);
@@ -80,14 +80,14 @@ class ShapeTriangle {
         // call to glBindVertexArray anyways so we generally don't unbind VAOs (nor
         // VBOs) when it's not directly necessary.
         glBindVertexArray(0);
-        glUniform1i(glGetUniformLocation(shaderProgram.ID, "ourTexture"), 0);
+        glUniform1i(glGetUniformLocation(shaderProgram->ID, "ourTexture"), 0);
         // uncomment this call to draw in wireframe polygons.
         // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     }
 
     void draw() {
         // draw our first triangle
-        glUseProgram(shaderProgram.ID);
+        glUseProgram(shaderProgram->ID);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture->texture);
         glBindVertexArray(VAO);

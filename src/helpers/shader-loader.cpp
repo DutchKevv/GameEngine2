@@ -23,7 +23,7 @@ class ShaderLoader {
     Shader* load(string name) {
         string vertexSrc = loadFile(name + ".vs");
         string fragmentSrc = loadFile(name + ".fs");
-        Shader* shader(vertexSrc.c_str(), fragmentSrc.c_str());
+        Shader* shader = new Shader(vertexSrc.c_str(), fragmentSrc.c_str());
         // unsigned int shaderProgram = glCreateProgram();
         // unsigned int vertexShader = this->loadShaderFromFile(name + ".vs", GL_VERTEX_SHADER);
         // unsigned int fragmentShader = this->loadShaderFromFile(name + ".fs", GL_FRAGMENT_SHADER);

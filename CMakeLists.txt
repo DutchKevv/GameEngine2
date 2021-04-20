@@ -15,7 +15,7 @@ enable_testing()
 # Executable definition and properties
 add_executable(${PROJECT_NAME} ${SOURCES})
 target_include_directories(${PROJECT_NAME} PRIVATE "${SRC_DIR}")
-set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 17)
+target_compile_features(game2 PRIVATE cxx_std_17)
 
 # GLFW
 set(GLFW_DIR "${LIB_DIR}/glfw-3.3.3")
