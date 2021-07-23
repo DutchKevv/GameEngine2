@@ -18,7 +18,7 @@ public:
 	}
 	void draw()
 	{
-		std::cout << "33333";
+		// std::cout << "33333";
 		cube.draw();
 	}
 };

@@ -7,7 +7,7 @@
 class Scene
 {
 public:
-  void init() {}
+  virtual void init() {}
 
   void addObject() {}
 
