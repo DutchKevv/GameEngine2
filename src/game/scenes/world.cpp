@@ -18,7 +18,8 @@ public:
 	}
 	void draw()
 	{
-		// std::cout << "33333";
+		glEnable(GL_DEPTH_TEST);
 		cube.draw();
+		glDisable(GL_DEPTH_TEST);
 	}
 };

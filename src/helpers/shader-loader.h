@@ -5,17 +5,17 @@
 
 using namespace std;
 
-class ShaderLoader {
+class ShaderLoader
+{
     string prefix = "shaders/";
 
-   private:
+private:
     inline bool fileExists(std::string name);
-    int loadShaderFromFile(string filePath, int type);
     string loadFile(string filePath);
 
-   public:
+public:
     ShaderLoader();
-    Shader* load(string name);
+    Shader *load(string name);
     void use(int shaderProgram);
 };
 

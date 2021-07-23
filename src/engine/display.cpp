@@ -31,7 +31,8 @@ public:
 		// window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", NULL, NULL);
 
 		// fullscreen
-		window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Game Engine", glfwGetPrimaryMonitor(), NULL);
+		const GLFWvidmode *mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+		window = glfwCreateWindow(mode->width, mode->height, "Game Engine", glfwGetPrimaryMonitor(), NULL);
 
 		if (window == NULL)
 		{

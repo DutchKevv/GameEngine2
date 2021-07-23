@@ -14,6 +14,7 @@ void processInput(GLFWwindow *window);
 class Engine
 {
 public:
+  int TARGET_FPS = 60;
   Display *display;
 
   std::vector<Scene *> children;
@@ -36,8 +37,22 @@ public:
   // -----------
   void start()
   {
+    double lasttime = glfwGetTime();
+
     while (!glfwWindowShouldClose(display->window))
     {
+      // per-frame time logic
+      // --------------------
+      float currentFrame = glfwGetTime();
+      deltaTime = currentFrame - lastFrame;
+
+      while (glfwGetTime() < lasttime + 1.0 / TARGET_FPS)
+      {
+        // TODO: Put the thread to sleep, yield, or simply do nothing
+      }
+      lasttime += 1.0 / TARGET_FPS;
+      lastFrame = currentFrame;
+
       tick();
     }
   }
@@ -48,12 +63,6 @@ public:
 
   void tick()
   {
-    // per-frame time logic
-    // --------------------
-    float currentFrame = glfwGetTime();
-    deltaTime = currentFrame - lastFrame;
-    lastFrame = currentFrame;
-
     // input
     // -----
     processInput(display->window);
@@ -61,7 +70,7 @@ public:
     // render
     // ------
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     for (Scene *child : children)
     {
