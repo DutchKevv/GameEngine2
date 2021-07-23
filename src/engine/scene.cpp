@@ -13,6 +13,5 @@ public:
 
   virtual void draw()
   {
-    std::cout << "4444";
   }
 };
