@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include "shader.h"
+#include "../helpers/shader.cpp"
 #include "logger.h"
 #include "resourceManager.h"
 

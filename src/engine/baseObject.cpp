@@ -1,5 +1,5 @@
 #include "baseObject.h"
-#include "shader.h"
+#include "../helpers/shader.cpp"
 
 BaseObject::BaseObject()
 {

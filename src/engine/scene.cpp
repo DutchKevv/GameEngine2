@@ -2,9 +2,9 @@
 #include <iostream>
 #include <string>
 
-// #include "./renderobject.h"
+#include "./renderobject.h"
 
-class Scene
+class Scene : public RenderObject
 {
 public:
   virtual void init() {}

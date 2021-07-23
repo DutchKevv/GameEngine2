@@ -5,7 +5,7 @@
 #include <string>
 
 #include "texture.h"
-#include "shader.h"
+#include "../helpers/shader.cpp"
 
 // A static singleton ResourceManager class that hosts several
 // functions to load Textures and Shaders. Each loaded texture

@@ -1,13 +1,14 @@
 #pragma once
 
 #include <vector>
-#include "shader.h"
-#include "baseObject.h"
-#include "resourceManager.h"
+#include "../helpers/shader.cpp"
+#include "./baseObject.h"
+// #include "resourceManager.h"
 
 class BaseObject;
 
-class RenderObject : public BaseObject
+class RenderObject
+// class RenderObject : public BaseObject
 {
 public:
 	std::vector<RenderObject *> children;
@@ -26,5 +27,5 @@ public:
 	glm::vec3 position = glm::vec3(1.0f);
 	glm::vec3 rotation;
 
-	RenderObject();
+	// RenderObject();
 };
