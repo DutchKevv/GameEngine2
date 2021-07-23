@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.0.0)
 project(game2 VERSION 0.1.0)
 
 # Source files
+set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++ -static")
 set(SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
 set(LIB_DIR "${CMAKE_CURRENT_SOURCE_DIR}/lib")
 set(SOURCES "${SRC_DIR}/main.cpp")
