@@ -40,6 +40,10 @@ public:
     display->createWindow();
 
     glfwSetCursorPosCallback(display->window, mouse_callback);
+    glfwSetScrollCallback(display->window, scroll_callback);
+
+    // tell GLFW to capture our mouse
+    glfwSetInputMode(display->window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
   }
 
   // render loop
@@ -138,5 +142,13 @@ public:
     lastY = ypos;
 
     instance->children[0]->camera->ProcessMouseMovement(xoffset, yoffset);
+  }
+
+  // glfw: whenever the mouse scroll wheel scrolls, this callback is called
+  // ----------------------------------------------------------------------
+  static void scroll_callback(GLFWwindow *window, double xoffset, double yoffset)
+  {
+    std::cout << yoffset;
+    instance->children[0]->camera->ProcessMouseScroll(yoffset);
   }
 };
