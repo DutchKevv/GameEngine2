@@ -1,18 +1,28 @@
-#include "renderObject.h"
-#include "shader.h"
+#pragma once
+#include <iostream>
+#include <string>
+#include <vector>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include "./baseObject.cpp"
 
-RenderObject::RenderObject()
+class RenderObject : public BaseObject
 {
-}
+public:
+	std::vector<RenderObject *> children;
 
-// void RenderObject::init() {
-//     BaseObject::init();
-// }
+	unsigned int id;
+	unsigned int width;
+	unsigned int height;
 
-// void RenderObject::update() {
+	float speed;
+	float xRadius = 0.0f;
+	float yRadius = 0.0f;
+	float yaw = 90;
 
-// }
+	bool focused = false;
 
-// void RenderObject::draw() {
-
-// }
+	glm::vec3 position = glm::vec3(1.0f);
+	glm::vec3 rotation;
+};

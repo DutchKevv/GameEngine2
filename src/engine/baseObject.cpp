@@ -1,46 +1,96 @@
-#include "baseObject.h"
+#include <vector>
+#include <string>
 #include "../helpers/shader.cpp"
 
-BaseObject::BaseObject()
-{
-}
+static unsigned int IDCounter = 0;
 
-void BaseObject::init()
+class BaseObject
 {
-}
+public:
+	std::vector<BaseObject *> children;
 
-void BaseObject::update(float delta)
-{
-	for (BaseObject *child : children)
+	bool isInitialized = false;
+	bool isEnabled = true;
+	bool isVisible = true;
+
+	unsigned int id;
+	std::string name;
+
+	void init()
 	{
-		if (child->isEnabled)
+	}
+
+	void update(float delta)
+	{
+		for (BaseObject *child : children)
 		{
-			child->update(delta);
+			if (child->isEnabled)
+			{
+				child->update(delta);
+			}
 		}
 	}
-}
 
-void BaseObject::draw(float delta)
-{
-	for (BaseObject *child : children)
+	void draw(float delta)
 	{
-		if (child->isEnabled)
+		for (BaseObject *child : children)
 		{
-			child->draw(delta);
+			if (child->isEnabled)
+			{
+				child->draw(delta);
+			}
 		}
 	}
-}
 
-void BaseObject::renderScene(float delta, Shader &shader, bool isShadowRender)
-{
-	for (BaseObject *child : children)
+	void renderScene(float delta, Shader &shader, bool isShadowRender)
 	{
-		shader.Use();
+		for (BaseObject *child : children)
+		{
+			shader.use();
 
-		child->renderScene(delta, shader, isShadowRender);
+			child->renderScene(delta, shader, isShadowRender);
+		}
 	}
-}
 
-void BaseObject::destroy()
-{
-}
+	void destroy()
+	{
+	}
+
+	int addChild(BaseObject *child, std::string name = "")
+	{
+		child->id = IDCounter++;
+		child->name = name;
+
+		this->children.push_back(child);
+
+		if (child->isInitialized == false)
+		{
+			child->init();
+			child->isInitialized = true;
+		}
+
+		return child->id;
+	};
+
+	BaseObject *getChildByName(std::string name)
+	{
+		for (BaseObject *child : children)
+		{
+			if (child->name == name)
+			{
+				return child;
+			}
+		}
+	}
+
+	BaseObject *getChildById(int id)
+	{
+		for (BaseObject *child : children)
+		{
+			if (child->id == id)
+			{
+				return child;
+			}
+		}
+	}
+};

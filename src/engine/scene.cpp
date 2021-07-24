@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 
-#include "./renderobject.h"
+#include "./renderobject.cpp"
 
 class Scene : public RenderObject
 {
