@@ -1,20 +1,13 @@
 #pragma once
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
-#include <stdio.h> /* defines FILENAME_MAX */
+#include <iostream>
+// #include <stdio.h> /* defines FILENAME_MAX */
 
 #include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <iostream>
-// #define WINDOWS  /* uncomment this line to use it for windows.*/
-#ifdef WINDOWS
-#include <direct.h>
-#define GetCurrentDir _getcwd
-#else
-#include <unistd.h>
-#define GetCurrentDir getcwd
-#endif
+// #include <glm/gtc/matrix_transform.hpp>
+// #include <glm/gtc/type_ptr.hpp>
+
 #include "../engine/object.cpp"
 #include "../engine/logger.h"
 #include "../helpers/shader-loader.cpp"
@@ -109,9 +102,7 @@ public:
     glUseProgram(shaderProgram->ID);
 
     // create transformations
-    // view = glm::mat4(1.0f);
-    // view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-    // shaderProgram->setMat4("view", view);
+    shaderProgram->setMat4("view", scene->camera->GetViewMatrix());
 
     // note: currently we set the projection matrix each frame, but since the
     // projection matrix rarely changes it's often best practice to set it

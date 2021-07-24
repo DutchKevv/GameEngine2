@@ -1,12 +1,18 @@
+#pragma once
 #include <vector>
 #include <string>
 #include "../helpers/shader.cpp"
+#include "./scene.cpp"
+
+class Scene;
 
 static unsigned int IDCounter = 0;
 
 class BaseObject
 {
+
 public:
+	Scene *scene;
 	std::vector<BaseObject *> children;
 
 	bool isInitialized = false;
@@ -14,6 +20,7 @@ public:
 	bool isVisible = true;
 
 	unsigned int id;
+
 	std::string name;
 
 	virtual void init()
@@ -58,10 +65,11 @@ public:
 	{
 	}
 
-	int addChild(BaseObject *child, std::string name = "")
+	int addChild(BaseObject *child, Scene *scene, std::string name = "")
 	{
 		child->id = IDCounter++;
 		child->name = name;
+		child->scene = scene;
 
 		this->children.push_back(child);
 

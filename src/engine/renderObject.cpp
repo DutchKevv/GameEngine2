@@ -6,10 +6,14 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "./baseObject.cpp"
+#include "./scene.cpp"
+#include "./camera.h"
+#include "./scene.cpp"
 
 class RenderObject : public BaseObject
 {
 public:
+	// Scene *scene;
 	std::vector<RenderObject *> children;
 
 	unsigned int id;
