@@ -33,7 +33,7 @@ public:
 
 	virtual void draw(float delta = 0.0)
 	{
-		std::cout << "Base draw \n";
+		// std::cout << "Base draw \n";
 		for (BaseObject *child : children)
 		{
 			if (child->isEnabled)

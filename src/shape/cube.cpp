@@ -103,7 +103,7 @@ public:
 
   void draw(float delta = 0.0)
   {
-    std::cout << "draw Cube \n";
+    // std::cout << "draw Cube \n";
     const unsigned int SCR_WIDTH = 800;
     const unsigned int SCR_HEIGHT = 600;
 
