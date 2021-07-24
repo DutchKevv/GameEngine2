@@ -14,15 +14,17 @@ public:
 
 	void init()
 	{
-		std::cout << "init world \n";
+		// std::cout << "init world \n";
 
 		ShapeCube *cube1 = new ShapeCube();
 		ShapeCube *cube2 = new ShapeCube();
 		ShapeCube *cube3 = new ShapeCube();
 		ShapeCube *cube4 = new ShapeCube();
-		// ShapeCube cube2;
-		// ShapeCube cube3;
-		// ShapeCube cube4;
+
+		cube1->position = glm::vec3(0.0f, 0.0f, 0.0f);
+		cube2->position = glm::vec3(2.0f, 5.0f, -15.0f);
+		cube3->position = glm::vec3(-1.5f, -2.2f, -2.5f);
+		cube4->position = glm::vec3(-3.8f, -2.0f, -12.3f);
 
 		addChild(cube1);
 		addChild(cube2);

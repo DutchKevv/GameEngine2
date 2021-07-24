@@ -39,19 +39,16 @@ private:
 
     inline bool fileExists(std::string name)
     {
-        std::cout << ("checking : '" + name + "'\n") << std::endl;
+        std::cout << ("checking : '" + name) << std::endl;
         ifstream ifile;
         ifile.open(name);
-        if (ifile)
+        if (!ifile)
         {
-            cout << "file exists\n";
-            return true;
-        }
-        else
-        {
-            cout << "file doesn't exist\n";
+            cout << ("cannot find : '" + name + "'\n");
             return false;
         }
+
+        return true;
     }
 
     string loadFile(string filePath)

@@ -38,7 +38,7 @@ public:
 		{
 			if (child->isEnabled)
 			{
-				std::cout << "child draw \n";
+				// std::cout << "child draw \n";
 				child->draw();
 			}
 		}
