@@ -16,11 +16,11 @@ public:
 	unsigned int id;
 	std::string name;
 
-	void init()
+	virtual void init()
 	{
 	}
 
-	void update(float delta)
+	virtual void update(float delta)
 	{
 		for (BaseObject *child : children)
 		{
@@ -31,13 +31,15 @@ public:
 		}
 	}
 
-	void draw(float delta)
+	virtual void draw(float delta = 0.0)
 	{
+		std::cout << "Base draw \n";
 		for (BaseObject *child : children)
 		{
 			if (child->isEnabled)
 			{
-				child->draw(delta);
+				std::cout << "child draw \n";
+				child->draw();
 			}
 		}
 	}
@@ -52,7 +54,7 @@ public:
 		}
 	}
 
-	void destroy()
+	virtual void destroy()
 	{
 	}
 

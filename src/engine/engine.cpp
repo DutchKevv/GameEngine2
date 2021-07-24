@@ -90,7 +90,7 @@ public:
 
   void addScene(Scene *scene)
   {
-    std::cout << "adding scene";
+    std::cout << "adding scene \n";
     this->children.push_back(scene);
     scene->init();
   }

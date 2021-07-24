@@ -10,16 +10,19 @@
 class WorldScene : public Scene
 {
 public:
-	ShapeCube cube;
+	// ShapeCube cube;
 
 	void init()
 	{
-		cube.init();
+		std::cout << "init world \n";
+
+		addChild(new ShapeCube);
 	}
 	void draw()
 	{
+		std::cout << "World draw \n";
 		glEnable(GL_DEPTH_TEST);
-		cube.draw();
+		Scene::draw();
 		glDisable(GL_DEPTH_TEST);
 	}
 };

@@ -9,7 +9,7 @@
 
 int main()
 {
-  std::cout << __cplusplus;
+  // std::cout << __cplusplus;
 
   Game game;
   game.init();

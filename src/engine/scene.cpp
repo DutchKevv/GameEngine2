@@ -7,11 +7,8 @@
 class Scene : public RenderObject
 {
 public:
-  virtual void init() {}
-
-  void addObject() {}
-
-  virtual void draw()
-  {
-  }
+  // virtual void draw()
+  // {
+  //   // std::cout << "DRAW SCENE \n";
+  // }
 };

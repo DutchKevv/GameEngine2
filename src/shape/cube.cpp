@@ -54,15 +54,19 @@ glm::vec3 cubePositions[] = {
     glm::vec3(1.3f, -2.0f, -2.5f), glm::vec3(1.5f, 2.0f, -2.5f),
     glm::vec3(1.5f, 0.2f, -1.5f), glm::vec3(-1.3f, 1.0f, -1.5f)};
 
-class ShapeCube : public Object
+class ShapeCube : public RenderObject
 {
   Shader *shaderProgram;
   Texture *texture;
 
 public:
+  unsigned int VBO;
+  unsigned int VAO;
+  unsigned int EBO;
+
   void init()
   {
-
+    std::cout << "init ShapeCube \n";
     ShaderLoader shaderLoader;
     texture = new Texture("wall.jpg");
     shaderProgram = shaderLoader.load("cube");
@@ -97,8 +101,9 @@ public:
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
   }
 
-  void draw()
+  void draw(float delta = 0.0)
   {
+    std::cout << "draw Cube \n";
     const unsigned int SCR_WIDTH = 800;
     const unsigned int SCR_HEIGHT = 600;
 
