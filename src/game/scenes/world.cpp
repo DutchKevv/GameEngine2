@@ -13,10 +13,6 @@
 // int SCR_WIDTH = 800;
 // int SCR_HEIGHT = 600;
 
-float lastX = SCR_WIDTH / 2.0f;
-float lastY = SCR_HEIGHT / 2.0f;
-bool firstMouse = true;
-
 class WorldScene : public Scene
 {
 public:

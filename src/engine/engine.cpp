@@ -9,20 +9,23 @@
 // #include "./renderer.h"
 #include "./scene.cpp"
 
-// void processInput(GLFWwindow *window);
+class Engine;
+Engine *instance;
 
 // timing
 float deltaTime = 0.0f; // time between current frame and last frame
+bool firstMouse = true;
+float lastX = SCR_WIDTH / 2.0f;
+float lastY = SCR_HEIGHT / 2.0f;
 
 class Engine
 {
+
 public:
   int TARGET_FPS = 60;
   Display *display;
 
   std::vector<Scene *> children;
-
-  // Renderer *renderer;
 
   // timing
   float deltaTime = 0.0f; // time between current frame and last frame
@@ -30,10 +33,13 @@ public:
 
   void init()
   {
+    instance = this;
     // renderer = new Renderer();
     display = new Display();
     display->init();
     display->createWindow();
+
+    glfwSetCursorPosCallback(display->window, mouse_callback);
   }
 
   // render loop
@@ -114,24 +120,23 @@ public:
       children[0]->camera->ProcessKeyboard(RIGHT, deltaTime);
   }
 
-private:
+  // glfw: whenever the mouse moves, this callback is called
+  // -------------------------------------------------------
+  static void mouse_callback(GLFWwindow *window, double xpos, double ypos)
+  {
+    if (firstMouse)
+    {
+      lastX = xpos;
+      lastY = ypos;
+      firstMouse = false;
+    }
+
+    float xoffset = xpos - lastX;
+    float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
+
+    lastX = xpos;
+    lastY = ypos;
+
+    instance->children[0]->camera->ProcessMouseMovement(xoffset, yoffset);
+  }
 };
-
-// process all input: query GLFW whether relevant keys are pressed/released
-// this
-// frame and react accordingly
-// ---------------------------------------------------------------------------------------------------------
-// void processInput(GLFWwindow *window)
-// {
-//   if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-//     glfwSetWindowShouldClose(window, true);
-
-//   if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-//     camera.ProcessKeyboard(FORWARD, deltaTime);
-//   if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-//     camera.ProcessKeyboard(BACKWARD, deltaTime);
-//   if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-//     camera.ProcessKeyboard(LEFT, deltaTime);
-//   if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-//     camera.ProcessKeyboard(RIGHT, deltaTime);
-// }
