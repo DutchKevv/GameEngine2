@@ -53,7 +53,10 @@
                 "${workspaceFolder}/lib/glfw-3.3.3/include",
                 "${workspaceFolder}/lib/glad/include",
                 "${workspaceFolder}/include",
-                "${workspaceFolder}/src/engine"
+                "${workspaceFolder}/src/engine",
+                "${workspaceFolder}/src/game",
+                "${workspaceFolder}/src/helpers",
+                "${workspaceFolder}/src/shape"
             ],
             "defines": [
                 "_DEBUG",
