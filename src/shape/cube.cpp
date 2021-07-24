@@ -119,6 +119,9 @@ public:
     shaderProgram->setVec3("lightColor", 1.0f, 1.0f, 1.0f);
     shaderProgram->setVec3("lightPos", lightPos);
     shaderProgram->setVec3("viewPos", scene->camera->Position);
+    glUniform1i(glGetUniformLocation(shaderProgram->ID, "texture1"), 0);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, texture->texture);
 
     // view/projection transformations
     glm::mat4 projection = glm::perspective(glm::radians(scene->camera->Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
@@ -128,7 +131,7 @@ public:
 
     // world transformation
     glm::mat4 model = glm::mat4(1.0f);
-    shaderProgram->setMat4("model", model);
+    shaderProgram->setMat4("model", glm::translate(model, position));
 
     // render the cube
     glBindVertexArray(cubeVAO);
