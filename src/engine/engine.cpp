@@ -1,4 +1,5 @@
 #pragma once
+
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
 
@@ -6,11 +7,10 @@
 #include <vector>
 
 #include "./display.cpp"
+#include "./resourceManager.cpp"
 // #include "./renderer.h"
 #include "./scene.cpp"
-
-class Engine;
-Engine *instance;
+#include "./context.cpp"
 
 // timing
 float deltaTime = 0.0f; // time between current frame and last frame
@@ -22,7 +22,7 @@ class Engine
 {
 
 public:
-  int TARGET_FPS = 60;
+  int TARGET_FPS = 120;
   Display *display;
 
   std::vector<Scene *> children;
@@ -33,7 +33,9 @@ public:
 
   void init()
   {
-    instance = this;
+    context->engine = this;
+    // context->resourceManager = new ResourceManager();
+
     // renderer = new Renderer();
     display = new Display();
     display->init();
@@ -82,7 +84,8 @@ public:
 
     // render
     // ------
-    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    // glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     for (Scene *child : children)
@@ -141,14 +144,13 @@ public:
     lastX = xpos;
     lastY = ypos;
 
-    instance->children[0]->camera->ProcessMouseMovement(xoffset, yoffset);
+    context->engine->children[0]->camera->ProcessMouseMovement(xoffset, yoffset);
   }
 
   // glfw: whenever the mouse scroll wheel scrolls, this callback is called
   // ----------------------------------------------------------------------
   static void scroll_callback(GLFWwindow *window, double xoffset, double yoffset)
   {
-    std::cout << yoffset;
-    instance->children[0]->camera->ProcessMouseScroll(yoffset);
+    context->engine->children[0]->camera->ProcessMouseScroll(yoffset);
   }
 };

@@ -56,7 +56,8 @@
                 "${workspaceFolder}/src/engine",
                 "${workspaceFolder}/src/game",
                 "${workspaceFolder}/src/helpers",
-                "${workspaceFolder}/src/shape"
+                "${workspaceFolder}/src/shape",
+                "${workspaceFolder}/src/lights"
             ],
             "defines": [
                 "_DEBUG",

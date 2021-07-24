@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
-#include "../helpers/shader.cpp"
+#include "./shader.cpp"
 #include "./scene.cpp"
 
 class Scene;

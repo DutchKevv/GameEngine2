@@ -9,6 +9,7 @@
 #include "../../engine/scene.cpp"
 #include "../../engine/camera.h"
 #include "../../shape/cube.cpp"
+#include "../../lights/spotlight.cpp"
 
 // int SCR_WIDTH = 800;
 // int SCR_HEIGHT = 600;
@@ -21,6 +22,7 @@ public:
 	ShapeCube *cube3;
 	ShapeCube *cube4;
 	ShapeCube *cube5;
+	Spotlight *spotlight;
 
 	void init()
 	{
@@ -31,6 +33,7 @@ public:
 		cube3 = new ShapeCube();
 		cube4 = new ShapeCube();
 		cube5 = new ShapeCube();
+		spotlight = new Spotlight();
 
 		camera = new Camera(glm::vec3(0.0f, 0.0f, 3.0f));
 
@@ -45,6 +48,7 @@ public:
 		addChild(cube3, this);
 		addChild(cube4, this);
 		addChild(cube5, this);
+		// addChild(spotlight, this);
 	}
 
 	void draw()

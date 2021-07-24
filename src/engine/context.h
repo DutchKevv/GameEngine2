@@ -1,6 +1,10 @@
-// #pragma once
+#pragma once
 #include "./engine.cpp"
-#include "./renderer.cpp"
+#include "./resourceManager.cpp"
+// #include "./renderer.cpp"
+
+class Engine;
+class ResourceManager;
 
 struct CursorBehavior
 {
@@ -35,7 +39,8 @@ struct Context
 	Context();
 
 	Engine *engine;
-	Renderer *renderer;
+	ResourceManager *resourceManager;
+	// Renderer *renderer;
 	GLFWwindow *window;
 	// Camera *camera;
 	struct GLFWOpenGLWindowInternalData *m_data;
