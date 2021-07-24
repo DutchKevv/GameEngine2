@@ -9,7 +9,10 @@
 // #include "./renderer.h"
 #include "./scene.cpp"
 
-void processInput(GLFWwindow *window);
+// void processInput(GLFWwindow *window);
+
+// timing
+float deltaTime = 0.0f; // time between current frame and last frame
 
 class Engine
 {
@@ -96,6 +99,21 @@ public:
     scene->init();
   }
 
+  void processInput(GLFWwindow *window)
+  {
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+      glfwSetWindowShouldClose(window, true);
+
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+      children[0]->camera->ProcessKeyboard(FORWARD, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+      children[0]->camera->ProcessKeyboard(BACKWARD, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+      children[0]->camera->ProcessKeyboard(LEFT, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+      children[0]->camera->ProcessKeyboard(RIGHT, deltaTime);
+  }
+
 private:
 };
 
@@ -103,8 +121,17 @@ private:
 // this
 // frame and react accordingly
 // ---------------------------------------------------------------------------------------------------------
-void processInput(GLFWwindow *window)
-{
-  if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-    glfwSetWindowShouldClose(window, true);
-}
+// void processInput(GLFWwindow *window)
+// {
+//   if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+//     glfwSetWindowShouldClose(window, true);
+
+//   if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+//     camera.ProcessKeyboard(FORWARD, deltaTime);
+//   if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+//     camera.ProcessKeyboard(BACKWARD, deltaTime);
+//   if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+//     camera.ProcessKeyboard(LEFT, deltaTime);
+//   if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+//     camera.ProcessKeyboard(RIGHT, deltaTime);
+// }

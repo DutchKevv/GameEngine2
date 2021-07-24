@@ -48,13 +48,15 @@ float vertices[] = {
 
 class ShapeCube : public RenderObject
 {
-  Shader *shaderProgram;
-  Texture *texture;
 
 public:
   unsigned int VBO;
   unsigned int VAO;
   unsigned int EBO;
+
+  glm::mat4 view;
+  Shader *shaderProgram;
+  Texture *texture;
 
   void init()
   {
@@ -107,14 +109,14 @@ public:
     glUseProgram(shaderProgram->ID);
 
     // create transformations
-    glm::mat4 view = glm::mat4(1.0f);
-    view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-    glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+    // view = glm::mat4(1.0f);
+    // view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+    // shaderProgram->setMat4("view", view);
 
     // note: currently we set the projection matrix each frame, but since the
     // projection matrix rarely changes it's often best practice to set it
     // outside the main loop only once.
-    shaderProgram->setMat4("view", view);
+    glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
     shaderProgram->setMat4("projection", projection);
 
     // render box
