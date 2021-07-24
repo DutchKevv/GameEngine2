@@ -27,13 +27,14 @@ public:
 
 	void init()
 	{
+		// std::cout << "init world \n";
+
 		cube1 = new ShapeCube();
 		cube2 = new ShapeCube();
 		cube3 = new ShapeCube();
 		cube4 = new ShapeCube();
 
 		camera = new Camera(glm::vec3(0.0f, 0.0f, 3.0f));
-		// std::cout << "init world \n";
 
 		cube1->position = glm::vec3(0.0f, 0.0f, 0.0f);
 		cube2->position = glm::vec3(2.0f, 5.0f, -15.0f);
@@ -45,6 +46,7 @@ public:
 		addChild(cube3, this);
 		addChild(cube4, this);
 	}
+
 	void draw()
 	{
 		glEnable(GL_DEPTH_TEST);
