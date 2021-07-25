@@ -1,3 +1,4 @@
+#pragma once
 #include "texture.h"
 #include "logger.h"
 
