@@ -107,21 +107,5 @@
 	"[applescript]": {
 		"files.encoding": "utf8"
 	},
-	"peacock.color": "#8ac242",
-	// "workbench.colorCustomizations": {
-	// 	"activityBar.activeBackground": "#a2ce69",
-	// 	"activityBar.activeBorder": "#3f88c0",
-	// 	"activityBar.background": "#a2ce69",
-	// 	"activityBar.foreground": "#15202b",
-	// 	"activityBar.inactiveForeground": "#15202b99",
-	// 	"activityBarBadge.background": "#3f88c0",
-	// 	"activityBarBadge.foreground": "#e7e7e7",
-	// 	"statusBar.background": "#8ac242",
-	// 	"statusBar.foreground": "#15202b",
-	// 	"statusBarItem.hoverBackground": "#6f9e33",
-	// 	"titleBar.activeBackground": "#8ac242",
-	// 	"titleBar.activeForeground": "#15202b",
-	// 	"titleBar.inactiveBackground": "#8ac24299",
-	// 	"titleBar.inactiveForeground": "#15202b99"
-	// }
+	"peacock.color": "#8ac242"
 }

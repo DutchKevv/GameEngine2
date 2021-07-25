@@ -1,10 +1,12 @@
 #pragma once
 #include "./engine.cpp"
 #include "./resourceManager.cpp"
+#include "./display.cpp"
 // #include "./renderer.cpp"
 
 class Engine;
 class ResourceManager;
+class Display;
 
 struct CursorBehavior
 {
@@ -40,6 +42,7 @@ struct Context
 
 	Engine *engine;
 	ResourceManager *resourceManager;
+	Display *display;
 	// Renderer *renderer;
 	GLFWwindow *window;
 	// Camera *camera;

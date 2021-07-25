@@ -131,7 +131,7 @@ public:
     // shaderProgram->setVec3("objectColor", 1.0f, 0.5f, 0.31f);
     shaderProgram->setVec3("material.ambient", 1.0f, 0.5f, 0.31f);
     shaderProgram->setVec3("material.diffuse", 1.0f, 0.5f, 0.31f);
-    shaderProgram->setVec3("material.specular", 0.5f, 0.5f, 0.5f);
+    shaderProgram->setVec3("material.specular", 0.0f, 0.0f, 0.0f);
     shaderProgram->setFloat("material.shininess", 32.0f);
 
     shaderProgram->setVec3("viewPos", scene->camera->Position);

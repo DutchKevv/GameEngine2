@@ -23,7 +23,6 @@ class Engine
 
 public:
   int TARGET_FPS = 120;
-  Display *display;
 
   std::vector<Scene *> children;
 
@@ -34,18 +33,18 @@ public:
   void init()
   {
     context->engine = this;
+    context->display = new Display();
     // context->resourceManager = new ResourceManager();
 
     // renderer = new Renderer();
-    display = new Display();
-    display->init();
-    display->createWindow();
+    context->display->init();
+    context->display->createWindow();
 
-    glfwSetCursorPosCallback(display->window, mouse_callback);
-    glfwSetScrollCallback(display->window, scroll_callback);
+    glfwSetCursorPosCallback(context->display->window, mouse_callback);
+    glfwSetScrollCallback(context->display->window, scroll_callback);
 
     // tell GLFW to capture our mouse
-    glfwSetInputMode(display->window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    glfwSetInputMode(context->display->window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
   }
 
   // render loop
@@ -54,7 +53,7 @@ public:
   {
     double lasttime = glfwGetTime();
 
-    while (!glfwWindowShouldClose(display->window))
+    while (!glfwWindowShouldClose(context->display->window))
     {
       // per-frame time logic
       // --------------------
@@ -80,7 +79,7 @@ public:
   {
     // input
     // -----
-    processInput(display->window);
+    processInput(context->display->window);
 
     // render
     // ------
@@ -96,7 +95,7 @@ public:
     // glfw: swap buffers and poll IO events (keys pressed/released, mouse
     // moved etc.)
     // -------------------------------------------------------------------------------
-    glfwSwapBuffers(display->window);
+    glfwSwapBuffers(context->display->window);
     glfwPollEvents();
 
     // this->renderer->handleInput();

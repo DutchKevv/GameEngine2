@@ -26,23 +26,41 @@ set(GLFW_BUILD_EXAMPLES OFF CACHE INTERNAL "Build the GLFW example programs")
 set(GLFW_BUILD_TESTS OFF CACHE INTERNAL "Build the GLFW test programs")
 set(GLFW_BUILD_DOCS OFF CACHE INTERNAL "Build the GLFW documentation")
 set(GLFW_INSTALL OFF CACHE INTERNAL "Generate installation target")
+find_library(GLFW glfw3 PATHS "${LIB_DIR}/glfw-3.3.3")
 add_subdirectory("${GLFW_DIR}")
+include_directories("${LIB_DIR}/glfw-3.3.3/include")
 target_link_libraries(${PROJECT_NAME} "glfw" "${GLFW_LIBRARIES}")
 target_include_directories(${PROJECT_NAME} PRIVATE "${GLFW_DIR}/include")
 target_compile_definitions(${PROJECT_NAME} PRIVATE "GLFW_INCLUDE_NONE")
 
-target_include_directories(game2 PRIVATE include)
-target_link_libraries(game2 glfw glad)
-
 # glad
 set(GLAD_DIR "${LIB_DIR}/glad")
 add_library("glad" "${GLAD_DIR}/src/glad.c")
-target_include_directories("glad" PRIVATE "${GLAD_DIR}/include")
-target_include_directories(${PROJECT_NAME} PRIVATE "${GLAD_DIR}/include")
-target_link_libraries(${PROJECT_NAME} "glad" "${CMAKE_DL_LIBS}")
+include_directories("${GLAD_DIR}/include")
+target_link_libraries(${CMAKE_PROJECT_NAME} "glad")
+
+# imgui
+# Set where the ImGui files are stored
+set(IMGUI_PATH  "${LIB_DIR}/imgui")
+
+# STB Image
+set(STB_PATH  "${LIB_DIR}/stb")
+target_include_directories(${CMAKE_PROJECT_NAME} PUBLIC ${STB_PATH})
+
+# GLM
+set(GLM_PATH  "${LIB_DIR}/glm")
+target_include_directories(${CMAKE_PROJECT_NAME} PUBLIC ${GLM_PATH})
+
+# Compile as static library
+file(GLOB IMGUI_SOURCES ${IMGUI_PATH}/*.cpp)
+set(IMGUI_SOURCES ${IMGUI_SOURCES} "${LIB_DIR}/imgui/backends/imgui_impl_opengl3.h" "${LIB_DIR}/imgui/backends/imgui_impl_opengl3.cpp" "${LIB_DIR}/imgui/backends/imgui_impl_glfw.h"
+"${LIB_DIR}/imgui/backends/imgui_impl_glfw.cpp")
+add_library("ImGui" STATIC ${IMGUI_SOURCES})
+target_include_directories("ImGui" PUBLIC ${IMGUI_PATH})
+target_link_libraries(${PROJECT_NAME} ImGui)
 
 # src
-target_include_directories(game2 PUBLIC src)
+target_include_directories(game2 PRIVATE src)
 
 add_custom_target(copy-shaders ALL COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/shaders ${CMAKE_BINARY_DIR}/shaders DEPENDS ${MY_TARGET})
 add_custom_target(copy-textures ALL COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/textures ${CMAKE_BINARY_DIR}/textures DEPENDS ${MY_TARGET})
