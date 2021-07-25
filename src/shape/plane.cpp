@@ -113,6 +113,6 @@ public:
 
     // render the cube
     glBindVertexArray(cubeVAO);
-    glDrawArrays(GL_TRIANGLES, 0, 36);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
   }
 };

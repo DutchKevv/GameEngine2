@@ -12,6 +12,10 @@
 #include "./scene.cpp"
 #include "./context.cpp"
 
+#include "imgui.h"
+#include "backends/imgui_impl_glfw.h"
+#include "backends/imgui_impl_opengl3.h"
+
 // timing
 float deltaTime = 0.0f; // time between current frame and last frame
 bool firstMouse = true;
@@ -23,6 +27,9 @@ class Engine
 
 public:
   int TARGET_FPS = 120;
+  unsigned int fbo;
+  GLuint frameTexture;
+  GLuint depthrenderbuffer;
 
   std::vector<Scene *> children;
 
@@ -34,17 +41,41 @@ public:
   {
     context->engine = this;
     context->display = new Display();
+
     // context->resourceManager = new ResourceManager();
 
     // renderer = new Renderer();
     context->display->init();
     context->display->createWindow();
 
+    glGenFramebuffers(1, &fbo);
+    glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+    //Set up the texture to which we're going to render glGenTextures(1, &frameTexture);
+    glBindTexture(GL_TEXTURE_2D, frameTexture);
+
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, frameTexture, depthrenderbuffer);
+
+    glGenRenderbuffers(1, &depthrenderbuffer);
+    glBindRenderbuffer(GL_RENDERBUFFER, depthrenderbuffer);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, 512, 512);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthrenderbuffer);
+
     glfwSetCursorPosCallback(context->display->window, mouse_callback);
     glfwSetScrollCallback(context->display->window, scroll_callback);
 
     // tell GLFW to capture our mouse
-    glfwSetInputMode(context->display->window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    // glfwSetInputMode(context->display->window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+    // Setup Dear ImGui context
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO &io = ImGui::GetIO();
+    ImGui_ImplGlfw_InitForOpenGL(context->display->window, true);
+    ImGui_ImplOpenGL3_Init("#version 130");
+    ImGui::StyleColorsDark();
+
+    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
   }
 
   // render loop
@@ -84,13 +115,41 @@ public:
     // render
     // ------
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    // glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+
+    // glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+
+    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    // std::cout << __cplusplus;
+    // Start the Dear ImGui frame
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
 
     for (Scene *child : children)
     {
       child->draw();
     }
+
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+    //create our ImGui window
+    ImGui::Begin("Scene22 Window");
+
+    //get the mouse position
+    ImVec2 pos = ImGui::GetCursorScreenPos();
+
+    // ImGui::Begin("Game Window");
+    ImDrawList *drawList = ImGui::GetWindowDrawList();
+    GLuint f_tex = context->engine->frameTexture;
+    drawList->AddImage((void *)f_tex, pos, ImVec2(pos.x + 512, pos.y + 512), ImVec2(0, 1), ImVec2(1, 0));
+    ImGui::End();
+
+    // Rendering
+    ImGui::Render();
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
     // glfw: swap buffers and poll IO events (keys pressed/released, mouse
     // moved etc.)

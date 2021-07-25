@@ -1,8 +1,8 @@
 #pragma once
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
-
 #include <iostream>
+#include "imgui.h"
 
 // settings
 int SCR_WIDTH = 800;
@@ -14,6 +14,7 @@ class Display
 {
 public:
 	GLFWwindow *window;
+	// Window window("Advent3D", 800, 600, false);
 
 	void init() {}
 
