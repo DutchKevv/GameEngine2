@@ -70,7 +70,7 @@ public:
 
   void init()
   {
-    texture = context->resourceManager->LoadTexture("wall.jpg", true, "wall", 0, 0);
+    texture = context->resourceManager->loadTexture("wall.jpg", true, "wall", 0, 0);
     shaderProgram = context->resourceManager->loadShader("light");
     shaderProgram->use();
 
@@ -108,9 +108,16 @@ public:
 
     // be sure to activate shader when setting uniforms/drawing objects
     shaderProgram->use();
-    shaderProgram->setVec3("objectColor", 1.0f, 0.5f, 0.31f);
+
+    // glUniform1i(glGetUniformLocation(shaderProgram->ID, "texture1"), 0);
+
+    // shaderProgram->setVec3("objectColor", 1.0f, 0.5f, 0.31f);
+    shaderProgram->setVec3("material.ambient", 1.0f, 0.5f, 0.31f);
+    shaderProgram->setVec3("material.diffuse", 1.0f, 0.5f, 0.31f);
+    shaderProgram->setVec3("material.specular", 0.5f, 0.5f, 0.5f);
+    shaderProgram->setFloat("material.shininess", 32.0f);
+
     shaderProgram->setVec3("viewPos", scene->camera->Position);
-    glUniform1i(glGetUniformLocation(shaderProgram->ID, "texture1"), 0);
 
     // view/projection transformations
     glm::mat4 projection = glm::perspective(glm::radians(scene->camera->Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);

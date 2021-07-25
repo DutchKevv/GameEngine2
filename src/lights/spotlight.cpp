@@ -63,12 +63,6 @@ public:
 	glm::vec3 lightColor = glm::vec3(0.2f, 0.3f, 0.6f);
 	glm::vec3 lightPos = glm::vec3(1.2f, 1.0f, 2.0f);
 
-	unsigned int VBO;
-	unsigned int VAO;
-	unsigned int EBO;
-	unsigned int lightCubeVAO;
-
-	glm::mat4 view;
 	Shader *shaderProgram;
 	float translationX;
 	float translationY;
@@ -77,13 +71,13 @@ public:
 
 	void init()
 	{
+		shaderProgram = context->resourceManager->loadShader("light");
+
 		if (showCube)
 		{
 			cube = ShapeCube();
 			addChild(&cube, scene);
 		}
-
-		shaderProgram = context->resourceManager->loadShader("light");
 	}
 
 	void draw(float delta = 0.0)
@@ -99,11 +93,21 @@ public:
 			cube.draw();
 		}
 
-		// be sure to activate shader when setting uniforms/drawing objects
-		shaderProgram->use();
-		shaderProgram->setVec3("lightColor", lightColor);
-		shaderProgram->setVec3("lightPos", translation);
+		glm::vec3 lightColor;
+		lightColor.x = sin(glfwGetTime() * 2.0f);
+		lightColor.y = sin(glfwGetTime() * 0.7f);
+		lightColor.z = sin(glfwGetTime() * 1.3f);
 
-		glBindVertexArray(lightCubeVAO);
+		glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f);
+		glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
+
+		shaderProgram->use();
+		// shaderProgram->setVec3("light.color", lightColor);
+		shaderProgram->setVec3("light.position", translation);
+		// shaderProgram->setVec3("light.ambient", ambientColor);
+		shaderProgram->setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
+		// shaderProgram->setVec3("light.diffuse", diffuseColor); // darken diffuse light a bit
+		shaderProgram->setVec3("light.diffuse", 0.5f, 0.5f, 0.5f); // darken diffuse light a bit
+		shaderProgram->setVec3("light.specular", 1.0f, 1.0f, 1.0f);
 	}
 };

@@ -64,7 +64,7 @@ public:
 		return Shaders[name];
 	}
 
-	Texture2D LoadTexture(std::string filePath, GLboolean alpha, std::string name, GLuint WRAP_S, GLuint WRAP_T)
+	Texture2D loadTexture(std::string filePath, GLboolean alpha, std::string name, GLuint WRAP_S, GLuint WRAP_T)
 	{
 		filePath = prefixTextures + filePath;
 		Textures[name] = loadTextureFromFile(filePath, alpha, WRAP_S, WRAP_T);
