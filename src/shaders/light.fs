@@ -23,7 +23,9 @@ in vec2 TexCoord;
 uniform Light light;
 uniform Material material;
 uniform vec3 viewPos;
+uniform vec3 objectColor;
 uniform sampler2D texture1;
+uniform int useTextures = 1;
 
 void main()
 {
@@ -42,9 +44,10 @@ void main()
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
     vec3 specular = light.specular * (spec * material.specular);
 
-    vec3 result = ambient + diffuse + specular;
-    // FragColor = vec4(result, 1.0);
-
-    vec4 texture = mix(texture(texture1, TexCoord), vec4(result, 0.1), 0.4);
-    FragColor = texture;
+    if (useTextures == 1) {
+        vec3 result = (ambient + diffuse + specular);
+       FragColor = mix(texture(texture1, TexCoord), vec4(result, 0.1), 0.4);
+    } else {
+        FragColor = vec4(objectColor, 1.0f);
+    }
 }

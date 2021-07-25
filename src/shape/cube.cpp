@@ -60,6 +60,9 @@ class ShapeCube : public RenderObject
 {
 
 public:
+  glm::vec3 color = glm::vec3(1.0f);
+  bool loadTexture = true;
+
   unsigned int VBO;
   unsigned int cubeVAO;
   unsigned int EBO;
@@ -70,7 +73,11 @@ public:
 
   void init()
   {
-    texture = context->resourceManager->loadTexture("wall.jpg", true, "wall", 0, 0);
+    if (loadTexture)
+    {
+      texture = context->resourceManager->loadTexture("wall.jpg", true, "wall", 0, 0);
+    }
+
     shaderProgram = context->resourceManager->loadShader("light");
     shaderProgram->use();
 
@@ -103,8 +110,18 @@ public:
     const unsigned int SCR_WIDTH = 800;
     const unsigned int SCR_HEIGHT = 600;
 
-    glActiveTexture(GL_TEXTURE0);
-    texture.Bind();
+    if (loadTexture)
+    {
+      glActiveTexture(GL_TEXTURE0);
+      texture.Bind();
+      shaderProgram->setInt("useTextures", 1);
+    }
+    else
+    {
+      glBindTexture(GL_TEXTURE_2D, 0);
+      shaderProgram->setVec3("objectColor", color);
+      shaderProgram->setInt("useTextures", 0);
+    }
 
     // be sure to activate shader when setting uniforms/drawing objects
     shaderProgram->use();

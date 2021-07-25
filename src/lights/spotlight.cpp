@@ -11,50 +11,6 @@
 #include "../engine/shader.cpp"
 #include "../shape/cube.cpp"
 
-float lightCubeVertices[] = {
-	// positions          // normals           // texture coords
-	-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f,
-	0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f,
-	0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f,
-	0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f,
-	-0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f,
-	-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f,
-
-	-0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-	0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f,
-	0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
-	0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
-	-0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
-	-0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-
-	-0.5f, 0.5f, 0.5f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-	-0.5f, 0.5f, -0.5f, -1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
-	-0.5f, -0.5f, -0.5f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
-	-0.5f, -0.5f, -0.5f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
-	-0.5f, -0.5f, 0.5f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-	-0.5f, 0.5f, 0.5f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-
-	0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-	0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
-	0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
-	0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
-	0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-	0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-
-	-0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f,
-	0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f, 1.0f, 1.0f,
-	0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f,
-	0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f,
-	-0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f,
-	-0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f,
-
-	-0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
-	0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f,
-	0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,
-	0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,
-	-0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
-	-0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f};
-
 class Spotlight : public RenderObject
 {
 
@@ -76,22 +32,18 @@ public:
 		if (showCube)
 		{
 			cube = ShapeCube();
-			addChild(&cube, scene);
+			cube.loadTexture = false;
+			cube.addChild(&cube, scene);
 		}
 	}
 
 	void draw(float delta = 0.0)
 	{
-		translationX = 12.0f * cos(0.0f + 3.0f * (float)glfwGetTime());
-		translationY = 2.0f * sin(0.0f + 3.0f * (float)glfwGetTime());
-		translationZ = 14.0f * sin(0.0f + 3.0f * (float)glfwGetTime());
+		translationX = 12.0f * cos(0.0f + 1.0f * (float)glfwGetTime());
+		translationY = 2.0f * sin(0.0f + 1.0f * (float)glfwGetTime());
+		translationZ = 14.0f * sin(0.0f + 1.0f * (float)glfwGetTime());
+		// glm::vec3 translation = glm::vec3(2.0f);
 		glm::vec3 translation = glm::vec3(translationX, translationY, translationZ);
-
-		if (showCube)
-		{
-			cube.position = translation;
-			cube.draw();
-		}
 
 		glm::vec3 lightColor;
 		lightColor.x = sin(glfwGetTime() * 2.0f);
@@ -101,13 +53,20 @@ public:
 		glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f);
 		glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
 
+		if (showCube)
+		{
+			cube.position = translation;
+			cube.color = diffuseColor;
+			cube.draw();
+		}
+
 		shaderProgram->use();
 		// shaderProgram->setVec3("light.color", lightColor);
 		shaderProgram->setVec3("light.position", translation);
-		// shaderProgram->setVec3("light.ambient", ambientColor);
-		shaderProgram->setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
-		// shaderProgram->setVec3("light.diffuse", diffuseColor); // darken diffuse light a bit
-		shaderProgram->setVec3("light.diffuse", 0.5f, 0.5f, 0.5f); // darken diffuse light a bit
+		shaderProgram->setVec3("light.ambient", ambientColor);
+		// shaderProgram->setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
+		shaderProgram->setVec3("light.diffuse", diffuseColor); // darken diffuse light a bit
+		// shaderProgram->setVec3("light.diffuse", 0.5f, 0.5f, 0.5f); // darken diffuse light a bit
 		shaderProgram->setVec3("light.specular", 1.0f, 1.0f, 1.0f);
 	}
 };
