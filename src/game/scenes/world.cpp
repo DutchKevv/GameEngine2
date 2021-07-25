@@ -48,7 +48,7 @@ public:
 		addChild(cube3, this);
 		addChild(cube4, this);
 		addChild(cube5, this);
-		// addChild(spotlight, this);
+		addChild(spotlight, this);
 	}
 
 	void draw()

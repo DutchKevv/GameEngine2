@@ -4,13 +4,12 @@
 #include <iostream>
 
 #include <glm/glm.hpp>
-// #include <glm/gtc/matrix_transform.hpp>
-// #include <glm/gtc/type_ptr.hpp>
 
 #include "../engine/logger.h"
 #include "../engine/context.h"
 #include "../engine/renderObject.cpp"
 #include "../engine/shader.cpp"
+#include "../shape/cube.cpp"
 
 float lightCubeVertices[] = {
 	// positions          // normals           // texture coords
@@ -60,6 +59,10 @@ class Spotlight : public RenderObject
 {
 
 public:
+	bool showCube = true;
+	glm::vec3 lightColor = glm::vec3(0.2f, 0.3f, 0.6f);
+	glm::vec3 lightPos = glm::vec3(1.2f, 1.0f, 2.0f);
+
 	unsigned int VBO;
 	unsigned int VAO;
 	unsigned int EBO;
@@ -70,39 +73,17 @@ public:
 	float translationX;
 	float translationY;
 	float translationZ;
-
-	// lighting
-	glm::vec3 lightPos;
+	ShapeCube cube;
 
 	void init()
 	{
-		lightPos = glm::vec3(1.2f, 1.0f, 2.0f);
+		if (showCube)
+		{
+			cube = ShapeCube();
+			addChild(&cube, scene);
+		}
 
 		shaderProgram = context->resourceManager->loadShader("light");
-		shaderProgram->use();
-
-		glGenBuffers(1, &VBO);
-
-		glBindBuffer(GL_ARRAY_BUFFER, VBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(lightCubeVertices), lightCubeVertices, GL_STATIC_DRAW);
-
-		// position attribute
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)0);
-		glEnableVertexAttribArray(0);
-
-		// normal attribute
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)(3 * sizeof(float)));
-		glEnableVertexAttribArray(1);
-
-		// second, configure the light's VAO (VBO stays the same; the vertices are the same for the light object which is also a 3D cube)
-		glGenVertexArrays(1, &lightCubeVAO);
-		glBindVertexArray(lightCubeVAO);
-
-		// glBindBuffer(GL_ARRAY_BUFFER, VBO);
-
-		// note that we update the lamp's position attribute's stride to reflect the updated buffer data
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)0);
-		glEnableVertexAttribArray(0);
 	}
 
 	void draw(float delta = 0.0)
@@ -110,12 +91,18 @@ public:
 		translationX = 12.0f * cos(0.0f + 3.0f * (float)glfwGetTime());
 		translationY = 2.0f * sin(0.0f + 3.0f * (float)glfwGetTime());
 		translationZ = 14.0f * sin(0.0f + 3.0f * (float)glfwGetTime());
+		glm::vec3 translation = glm::vec3(translationX, translationY, translationZ);
+
+		if (showCube)
+		{
+			cube.position = translation;
+			cube.draw();
+		}
 
 		// be sure to activate shader when setting uniforms/drawing objects
 		shaderProgram->use();
-		// shaderProgram->setVec3("objectColor", 1.0f, 0.5f, 0.31f);
-		shaderProgram->setVec3("lightColor", 1.0f, 1.0f, 1.0f);
-		shaderProgram->setVec3("lightPos", glm::vec3(translationX, translationY, translationZ));
+		shaderProgram->setVec3("lightColor", lightColor);
+		shaderProgram->setVec3("lightPos", translation);
 
 		glBindVertexArray(lightCubeVAO);
 	}
