@@ -15,6 +15,7 @@ class RenderObject : public BaseObject
 public:
 	// Scene *scene;
 	std::vector<RenderObject *> children;
+	// Camera *camera;
 
 	unsigned int id;
 	unsigned int width;

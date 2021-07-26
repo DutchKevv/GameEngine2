@@ -16,6 +16,7 @@ public:
 	GLFWwindow *window;
 	int width;
 	int height;
+	bool fullscreen = true;
 
 	void init() {}
 
@@ -30,12 +31,17 @@ public:
 
 		// glfw window creation
 		// --------------------
-		// window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", NULL, NULL);
 
 		// fullscreen
-		const GLFWvidmode *mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-		// window = glfwCreateWindow(800, 600, "Game Engine", glfwGetPrimaryMonitor(), NULL);
-		window = glfwCreateWindow(mode->width, mode->height, "Game Engine", glfwGetPrimaryMonitor(), NULL);
+		if (fullscreen)
+		{
+			const GLFWvidmode *mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+			window = glfwCreateWindow(mode->width, mode->height, "Game Engine", glfwGetPrimaryMonitor(), NULL);
+		}
+		else
+		{
+			window = glfwCreateWindow(1920, 1080, "Game Engine", NULL, NULL);
+		}
 
 		if (window == NULL)
 		{
@@ -68,6 +74,7 @@ public:
 // ---------------------------------------------------------------------------------------------
 void framebuffer_size_callback(GLFWwindow *window, int width, int height)
 {
+	std::cout << "Resizing window / framebuffer" << std::endl;
 	// make sure the viewport matches the new window dimensions; note that width
 	// and height will be significantly larger than specified on retina
 	// displays.

@@ -10,8 +10,6 @@
 #include "stb_image.h"
 #include "./texture.h"
 #include "./shader.cpp"
-
-// #include "resourceManager.h"
 #include "logger.cpp"
 
 using namespace std;

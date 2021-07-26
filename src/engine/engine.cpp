@@ -60,7 +60,7 @@ public:
     glGenTextures(1, &frameTexture);
     glBindTexture(GL_TEXTURE_2D, frameTexture);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 800, 600, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, context->display->width / 2, context->display->height / 2, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -71,7 +71,7 @@ public:
     glGenTextures(1, &depth_Texture);
     glBindTexture(GL_TEXTURE_2D, depth_Texture);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32, 800, 600, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, NULL);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32, context->display->width / 2, context->display->height / 2, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, NULL);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -82,41 +82,17 @@ public:
     glGenRenderbuffers(1, &depthBuffer);
     glBindRenderbuffer(GL_RENDERBUFFER, depthBuffer);
 
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, 800, 600);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, context->display->width / 2, context->display->height / 2);
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBuffer);
 
-    // glBindFramebuffer(GL_FRAMEBUFFER, 0); //return to rendering to the normal fbo
-
-    // glEnable(GL_DEPTH_TEST);
-    // // glDepthMask(GL_FALSE);
-
-    // glGenFramebuffers(1, &fbo);
-    // glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-    // glClear(GL_DEPTH_BUFFER_BIT);
-    // //Set up the texture to which we're going to render
-    // glGenTextures(1, &frameTexture);
-    // glBindTexture(GL_TEXTURE_2D, frameTexture);
-
-    // // Give an empty image to OpenGL ( the last "0" )
-    // glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, context->display->width, context->display->height, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
-    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-
-    // // glGenRenderbuffers(1, &depthrenderbuffer);
-    // // glBindRenderbuffer(GL_RENDERBUFFER, depthrenderbuffer);
-    // // glRenderbufferStorage(GL_RENDERBUFFER, 4, 512, 512);
-
-    // glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, frameTexture, 0);
-    // // glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, frameTexture, 0);
-    // // glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthrenderbuffer); //if remove this, mirror works but without depth test
-    // // glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, frameTexture, depthrenderbuffer);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0); //return to rendering to the normal fbo
 
     glfwSetCursorPosCallback(context->display->window, mouse_callback);
     glfwSetScrollCallback(context->display->window, scroll_callback);
 
-    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE)
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
     {
-      std::cout << "FRAME COMPLETE \n";
+      std::cout << "FRAMEBUFFER INCOMPLETE! \n";
     }
 
     // tell GLFW to capture our mouse
@@ -126,13 +102,12 @@ public:
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO &io = ImGui::GetIO();
-    // io.DisplaySize = ImVec2(context->display->height / 2, context->display->width / 2);
+    io.DisplaySize = ImVec2(context->display->height / 2, context->display->width / 2);
     ImGui_ImplGlfw_InitForOpenGL(context->display->window, true);
     ImGui_ImplOpenGL3_Init("#version 130");
     ImGui::StyleColorsDark();
 
-    ImGui::SetNextWindowSize(ImVec2(context->display->width / 2, context->display->height / 2), 0);
-
+    ImGui::SetNextWindowSize(ImVec2(context->display->width / 2, context->display->height / 2), ImGuiCond_FirstUseEver);
     //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
     //io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
   }
@@ -176,24 +151,13 @@ public:
   {
     glfwPollEvents();
 
-    // glEnable(GL_DEPTH_TEST);
-
     // input
     // -----
     processInput(context->display->window);
 
-    // render
-    // ------
-    glEnable(GL_DEPTH_TEST);
-    glClearColor(1.0f, 0.0f, 0.3f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
     glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-    glClearColor(1.0f, 0.0f, 0.3f, 1.0f);
+    glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glEnable(GL_DEPTH_TEST);
-
-    // glDepthRange(0.2f);
 
     // Start the Dear ImGui frame
     ImGui_ImplOpenGL3_NewFrame();
@@ -206,26 +170,31 @@ public:
     }
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     //create our ImGui window
-    ImGui::Begin("Scene22 Window");
+    ImGui::Begin("Game");
+    // ImGui::Begin("Game", NULL, ImGuiWindowFlags_NoFocusOnAppearing);
 
     //get the mouse position
-    ImGui::SetCursorPos(ImVec2(0, 0));
+    // ImGui::SetCursorPos(ImVec2(0, 0));
     ImVec2 pos = ImGui::GetCursorScreenPos();
 
-    // ImGui::Begin("Game Window");
     ImDrawList *drawList = ImGui::GetWindowDrawList();
-    // ImGui::Image((void *)(intptr_t)frameTexture, ImVec2(ImGui::GetWindowSize().x, ImGui::GetWindowSize().y));
-    // drawList->AddImage((void *)frameTexture, pos, ImGui::GetWindowSize().x, ImGui::GetWindowSize().y, ImVec2(1, 0));
     drawList->AddImage((void *)frameTexture, pos, ImVec2(pos.x + ImGui::GetWindowSize().x, pos.y + ImGui::GetWindowSize().y), ImVec2(0, 1), ImVec2(1, 0));
-    // drawList->AddImage((void *)frameTexture, pos, ImVec2(pos.x + ImGui::GetWindowSize().x, pos.y + ImGui::GetWindowSize().y), ImVec2(0, 1), ImVec2(1, 0));
+
+    // close window
     ImGui::End();
 
     // Rendering
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+    // bool test = ImGui::IsWindowFocused(ImGuiFocusedFlags_ChildWindows);
+    // std::cout << test;
+
+    ImGui::SetWindowFocus(NULL);
 
     glfwSwapBuffers(context->display->window);
 

@@ -52,12 +52,14 @@
                 "${workspaceFolder}/lib",
                 "${workspaceFolder}/lib/glfw-3.3.3/include",
                 "${workspaceFolder}/lib/glad/include",
-                "${workspaceFolder}/include",
                 "${workspaceFolder}/src/engine",
                 "${workspaceFolder}/src/game",
                 "${workspaceFolder}/src/helpers",
                 "${workspaceFolder}/src/shape",
-                "${workspaceFolder}/src/lights"
+                "${workspaceFolder}/src/lights",
+                "${workspaceFolder}/lib/stb",
+                "${workspaceFolder}/lib/imgui",
+                "${workspaceFolder}/lib/glm"
             ],
             "defines": [
                 "_DEBUG",
