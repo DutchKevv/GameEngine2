@@ -11,6 +11,7 @@
 // #include "./renderer.h"
 #include "./scene.cpp"
 #include "./context.cpp"
+// #include "./texture.cpp"
 
 #include "imgui.h"
 #include "backends/imgui_impl_glfw.h"
@@ -29,7 +30,9 @@ public:
   int TARGET_FPS = 120;
   unsigned int fbo;
   GLuint frameTexture;
-  GLuint depthrenderbuffer;
+  GLuint depthBuffer;
+  GLuint depth_Texture;
+  // Texture2D texture;
 
   std::vector<Scene *> children;
 
@@ -48,20 +51,73 @@ public:
     context->display->init();
     context->display->createWindow();
 
+    //create the FBO
     glGenFramebuffers(1, &fbo);
     glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-    //Set up the texture to which we're going to render glGenTextures(1, &frameTexture);
+    glDrawBuffer(GL_COLOR_ATTACHMENT0);
+
+    //create the texture and attach it to the fbo
+    glGenTextures(1, &frameTexture);
     glBindTexture(GL_TEXTURE_2D, frameTexture);
 
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, frameTexture, depthrenderbuffer);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 800, 600, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 
-    glGenRenderbuffers(1, &depthrenderbuffer);
-    glBindRenderbuffer(GL_RENDERBUFFER, depthrenderbuffer);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, 512, 512);
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthrenderbuffer);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, frameTexture, 0);
+
+    //DEPTH buffer
+    glGenTextures(1, &depth_Texture);
+    glBindTexture(GL_TEXTURE_2D, depth_Texture);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32, 800, 600, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, NULL);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depth_Texture, 0);
+
+    //create the depth buffer attachment
+    glGenRenderbuffers(1, &depthBuffer);
+    glBindRenderbuffer(GL_RENDERBUFFER, depthBuffer);
+
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, 800, 600);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBuffer);
+
+    // glBindFramebuffer(GL_FRAMEBUFFER, 0); //return to rendering to the normal fbo
+
+    // glEnable(GL_DEPTH_TEST);
+    // // glDepthMask(GL_FALSE);
+
+    // glGenFramebuffers(1, &fbo);
+    // glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+    // glClear(GL_DEPTH_BUFFER_BIT);
+    // //Set up the texture to which we're going to render
+    // glGenTextures(1, &frameTexture);
+    // glBindTexture(GL_TEXTURE_2D, frameTexture);
+
+    // // Give an empty image to OpenGL ( the last "0" )
+    // glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, context->display->width, context->display->height, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
+    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+    // // glGenRenderbuffers(1, &depthrenderbuffer);
+    // // glBindRenderbuffer(GL_RENDERBUFFER, depthrenderbuffer);
+    // // glRenderbufferStorage(GL_RENDERBUFFER, 4, 512, 512);
+
+    // glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, frameTexture, 0);
+    // // glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, frameTexture, 0);
+    // // glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthrenderbuffer); //if remove this, mirror works but without depth test
+    // // glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, frameTexture, depthrenderbuffer);
 
     glfwSetCursorPosCallback(context->display->window, mouse_callback);
     glfwSetScrollCallback(context->display->window, scroll_callback);
+
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE)
+    {
+      std::cout << "FRAME COMPLETE \n";
+    }
 
     // tell GLFW to capture our mouse
     // glfwSetInputMode(context->display->window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -70,9 +126,12 @@ public:
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO &io = ImGui::GetIO();
+    // io.DisplaySize = ImVec2(context->display->height / 2, context->display->width / 2);
     ImGui_ImplGlfw_InitForOpenGL(context->display->window, true);
     ImGui_ImplOpenGL3_Init("#version 130");
     ImGui::StyleColorsDark();
+
+    ImGui::SetNextWindowSize(ImVec2(context->display->width / 2, context->display->height / 2), 0);
 
     //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
     //io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
@@ -104,25 +163,38 @@ public:
 
   // glfw: terminate, clearing all previously allocated GLFW resources.
   // ------------------------------------------------------------------
-  void stop() { glfwTerminate(); }
+  void stop()
+  {
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+
+    glfwTerminate();
+  }
 
   void tick()
   {
+    glfwPollEvents();
+
+    // glEnable(GL_DEPTH_TEST);
+
     // input
     // -----
     processInput(context->display->window);
 
     // render
     // ------
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-
-    // glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-
-    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-
+    glEnable(GL_DEPTH_TEST);
+    glClearColor(1.0f, 0.0f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // std::cout << __cplusplus;
+    glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+    glClearColor(1.0f, 0.0f, 0.3f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glEnable(GL_DEPTH_TEST);
+
+    // glDepthRange(0.2f);
+
     // Start the Dear ImGui frame
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
@@ -134,28 +206,28 @@ public:
     }
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     //create our ImGui window
     ImGui::Begin("Scene22 Window");
 
     //get the mouse position
+    ImGui::SetCursorPos(ImVec2(0, 0));
     ImVec2 pos = ImGui::GetCursorScreenPos();
 
     // ImGui::Begin("Game Window");
     ImDrawList *drawList = ImGui::GetWindowDrawList();
-    GLuint f_tex = context->engine->frameTexture;
-    drawList->AddImage((void *)f_tex, pos, ImVec2(pos.x + 512, pos.y + 512), ImVec2(0, 1), ImVec2(1, 0));
+    // ImGui::Image((void *)(intptr_t)frameTexture, ImVec2(ImGui::GetWindowSize().x, ImGui::GetWindowSize().y));
+    // drawList->AddImage((void *)frameTexture, pos, ImGui::GetWindowSize().x, ImGui::GetWindowSize().y, ImVec2(1, 0));
+    drawList->AddImage((void *)frameTexture, pos, ImVec2(pos.x + ImGui::GetWindowSize().x, pos.y + ImGui::GetWindowSize().y), ImVec2(0, 1), ImVec2(1, 0));
+    // drawList->AddImage((void *)frameTexture, pos, ImVec2(pos.x + ImGui::GetWindowSize().x, pos.y + ImGui::GetWindowSize().y), ImVec2(0, 1), ImVec2(1, 0));
     ImGui::End();
 
     // Rendering
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-    // glfw: swap buffers and poll IO events (keys pressed/released, mouse
-    // moved etc.)
-    // -------------------------------------------------------------------------------
     glfwSwapBuffers(context->display->window);
-    glfwPollEvents();
 
     // this->renderer->handleInput();
     // this->renderer->update(deltaTime);

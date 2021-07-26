@@ -14,7 +14,8 @@ class Display
 {
 public:
 	GLFWwindow *window;
-	// Window window("Advent3D", 800, 600, false);
+	int width;
+	int height;
 
 	void init() {}
 
@@ -33,6 +34,7 @@ public:
 
 		// fullscreen
 		const GLFWvidmode *mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+		// window = glfwCreateWindow(800, 600, "Game Engine", glfwGetPrimaryMonitor(), NULL);
 		window = glfwCreateWindow(mode->width, mode->height, "Game Engine", glfwGetPrimaryMonitor(), NULL);
 
 		if (window == NULL)
@@ -54,6 +56,8 @@ public:
 			std::cout << "Failed to initialize GLAD" << std::endl;
 			return -1;
 		}
+
+		glfwGetWindowSize(window, &width, &height);
 
 		return 0;
 	}
