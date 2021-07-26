@@ -38,14 +38,13 @@ struct Paths
 struct Context
 {
 
-	Context();
+	// Context();
 
 	Engine *engine;
 	ResourceManager *resourceManager;
 	Display *display;
 	// Renderer *renderer;
 	GLFWwindow *window;
-	// Camera *camera;
 	struct GLFWOpenGLWindowInternalData *m_data;
 
 	Paths *paths = new Paths();

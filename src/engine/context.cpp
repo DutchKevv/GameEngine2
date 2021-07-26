@@ -1,7 +1,9 @@
-#include "context.h"
+#pragma once
 
-Context::Context()
-{
-}
+#include "./context.h"
+
+// Context::Context()
+// {
+// }
 
 Context *context = new Context();

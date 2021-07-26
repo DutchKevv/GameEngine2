@@ -8,31 +8,29 @@
 
 #include "./display.cpp"
 #include "./resourceManager.cpp"
-// #include "./renderer.h"
 #include "./scene.cpp"
 #include "./context.cpp"
-// #include "./texture.cpp"
 
 #include "imgui.h"
 #include "backends/imgui_impl_glfw.h"
 #include "backends/imgui_impl_opengl3.h"
-
-// timing
-float deltaTime = 0.0f; // time between current frame and last frame
-bool firstMouse = true;
-float lastX = SCR_WIDTH / 2.0f;
-float lastY = SCR_HEIGHT / 2.0f;
 
 class Engine
 {
 
 public:
   int TARGET_FPS = 120;
+
   unsigned int fbo;
   GLuint frameTexture;
   GLuint depthBuffer;
   GLuint depth_Texture;
-  // Texture2D texture;
+
+  // float lastX = SCR_WIDTH / 2.0f;
+  // float lastY = SCR_HEIGHT / 2.0f;
+  float lastMouseX = 0.5f;
+  float lastMouseY = 0.5f;
+  bool firstMouse = true;
 
   std::vector<Scene *> children;
 
@@ -47,7 +45,6 @@ public:
 
     // context->resourceManager = new ResourceManager();
 
-    // renderer = new Renderer();
     context->display->init();
     context->display->createWindow();
 
@@ -60,7 +57,7 @@ public:
     glGenTextures(1, &frameTexture);
     glBindTexture(GL_TEXTURE_2D, frameTexture);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, context->display->width / 2, context->display->height / 2, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, context->display->windowW / 2, context->display->windowH / 2, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -71,7 +68,7 @@ public:
     glGenTextures(1, &depth_Texture);
     glBindTexture(GL_TEXTURE_2D, depth_Texture);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32, context->display->width / 2, context->display->height / 2, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, NULL);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32, context->display->windowW / 2, context->display->windowH / 2, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, NULL);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -82,7 +79,7 @@ public:
     glGenRenderbuffers(1, &depthBuffer);
     glBindRenderbuffer(GL_RENDERBUFFER, depthBuffer);
 
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, context->display->width / 2, context->display->height / 2);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, context->display->windowW / 2, context->display->windowH / 2);
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBuffer);
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0); //return to rendering to the normal fbo
@@ -98,40 +95,49 @@ public:
     // tell GLFW to capture our mouse
     // glfwSetInputMode(context->display->window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-    // Setup Dear ImGui context
+    // ImGui setup
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO &io = ImGui::GetIO();
-    io.DisplaySize = ImVec2(context->display->height / 2, context->display->width / 2);
+    // io.DisplaySize = ImVec2(context->display->windowW / 2, context->display->windowH / 2);
+
+    // ImGui init
     ImGui_ImplGlfw_InitForOpenGL(context->display->window, true);
     ImGui_ImplOpenGL3_Init("#version 130");
-    ImGui::StyleColorsDark();
 
-    ImGui::SetNextWindowSize(ImVec2(context->display->width / 2, context->display->height / 2), ImGuiCond_FirstUseEver);
+    // ImGui style
+    ImGui::StyleColorsDark();
+    ImGuiStyle *style = &ImGui::GetStyle();
+    style->WindowMinSize = ImVec2(320, 320);
+
+    ImGui::SetNextWindowSize(ImVec2(context->display->windowW / 2, context->display->windowH / 2));
     //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
     //io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
   }
 
-  // render loop
-  // -----------
   void start()
   {
     double lasttime = glfwGetTime();
 
+    // render loop
+    // -----------
     while (!glfwWindowShouldClose(context->display->window))
     {
-      // per-frame time logic
-      // --------------------
-      float currentFrame = glfwGetTime();
-      deltaTime = currentFrame - lastFrame;
 
+      // MAX FPS LOOP
       while (glfwGetTime() < lasttime + 1.0 / TARGET_FPS)
       {
         // TODO: Put the thread to sleep, yield, or simply do nothing
       }
+
+      // per-frame time logic
+      // --------------------
+      float currentFrame = glfwGetTime();
+      deltaTime = currentFrame - lastFrame;
       lasttime += 1.0 / TARGET_FPS;
       lastFrame = currentFrame;
 
+      // frame logic
       tick();
     }
   }
@@ -164,6 +170,8 @@ public:
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
+    // ImGui::SetNextWindowSize(ImVec2(context->display->width / 2, context->display->height / 2));
+
     for (Scene *child : children)
     {
       child->draw();
@@ -194,7 +202,7 @@ public:
     // bool test = ImGui::IsWindowFocused(ImGuiFocusedFlags_ChildWindows);
     // std::cout << test;
 
-    ImGui::SetWindowFocus(NULL);
+    // ImGui::SetWindowFocus(NULL);
 
     glfwSwapBuffers(context->display->window);
 
@@ -230,18 +238,20 @@ public:
   // -------------------------------------------------------
   static void mouse_callback(GLFWwindow *window, double xpos, double ypos)
   {
-    if (firstMouse)
+    Engine *engine = context->engine;
+
+    if (engine->firstMouse)
     {
-      lastX = xpos;
-      lastY = ypos;
-      firstMouse = false;
+      engine->lastMouseX = xpos;
+      engine->lastMouseY = ypos;
+      engine->firstMouse = false;
     }
 
-    float xoffset = xpos - lastX;
-    float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
+    float xoffset = xpos - engine->lastMouseX;
+    float yoffset = engine->lastMouseY - ypos; // reversed since y-coordinates go from bottom to top
 
-    lastX = xpos;
-    lastY = ypos;
+    engine->lastMouseX = xpos;
+    engine->lastMouseY = ypos;
 
     context->engine->children[0]->camera->ProcessMouseMovement(xoffset, yoffset);
   }

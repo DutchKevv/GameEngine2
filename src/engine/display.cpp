@@ -3,19 +3,21 @@
 #include <glad/glad.h>
 #include <iostream>
 #include "imgui.h"
+#include "./context.h"
 
-// settings
-int SCR_WIDTH = 800;
-int SCR_HEIGHT = 600;
-
-void framebuffer_size_callback(GLFWwindow *window, int width, int height);
+void framebufferSizeCallback(GLFWwindow *window, int width, int height);
+void windowSizeCallback(GLFWwindow *window, int width, int height);
 
 class Display
 {
 public:
 	GLFWwindow *window;
-	int width;
-	int height;
+
+	int screenW;
+	int screenH;
+	int windowW;
+	int windowH;
+
 	bool fullscreen = true;
 
 	void init() {}
@@ -49,8 +51,10 @@ public:
 			glfwTerminate();
 			return -1;
 		}
+
 		glfwMakeContextCurrent(window);
-		glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+
+		glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
 
 		// VSYNC
 		glfwSwapInterval(1);
@@ -63,20 +67,35 @@ public:
 			return -1;
 		}
 
-		glfwGetWindowSize(window, &width, &height);
+		// on window resize
+		glfwGetWindowSize(window, &windowW, &windowH);
+		// glfwSetWindowSizeCallback(context->window, windowSizeCallback);
 
 		return 0;
 	}
 };
 
-// glfw: whenever the window size changed (by OS or user resize) this callback
-// function executes
-// ---------------------------------------------------------------------------------------------
-void framebuffer_size_callback(GLFWwindow *window, int width, int height)
+// TEMP
+// should be window size callback
+void framebufferSizeCallback(GLFWwindow *window, int width, int height)
 {
-	std::cout << "Resizing window / framebuffer" << std::endl;
+	std::cout << "Resizing framebuffer" << std::endl;
+
+	context->display->windowW = width;
+	context->display->windowH = height;
+
 	// make sure the viewport matches the new window dimensions; note that width
 	// and height will be significantly larger than specified on retina
 	// displays.
 	glViewport(0, 0, width, height);
+}
+
+// glfw: whenever the window size changed (by OS or user resize) this callback
+// function executes
+// ---------------------------------------------------------------------------------------------
+void windowSizeCallback(GLFWwindow *window, int width, int height)
+{
+	std::cout << "Resizing window" << std::endl;
+	// context->engine->display->windowSize.width = width;
+	// context->engine->display->windowSize.height = height;
 }
