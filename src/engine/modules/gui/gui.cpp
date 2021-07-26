@@ -35,6 +35,8 @@ public:
         ImGui::StyleColorsDark();
         ImGuiStyle *style = &ImGui::GetStyle();
         style->WindowMinSize = ImVec2(320, 320);
+
+        // ImGui::SetWindowFontScale(1.8);
     }
 
     void beforeDraw()
