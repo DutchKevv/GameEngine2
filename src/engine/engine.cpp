@@ -2,23 +2,31 @@
 
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
-
 #include <iostream>
 #include <vector>
+#include "imgui.h"
+#include "backends/imgui_impl_glfw.h"
+#include "backends/imgui_impl_opengl3.h"
 
 #include "./display.cpp"
 #include "./resourceManager.cpp"
 #include "./scene.cpp"
 #include "./context.cpp"
+#include "./editor/editor.cpp"
+#include "./modules/module.cpp"
+#include "./modules/gui/gui.cpp"
 
-#include "imgui.h"
-#include "backends/imgui_impl_glfw.h"
-#include "backends/imgui_impl_opengl3.h"
+unsigned int worldChild = 1;
 
 class Engine
 {
 
 public:
+  std::vector<Module *> modules;
+  std::vector<Scene *> children;
+
+  GUI *gui;
+
   int TARGET_FPS = 120;
 
   unsigned int fbo;
@@ -32,11 +40,11 @@ public:
   float lastMouseY = 0.5f;
   bool firstMouse = true;
 
-  std::vector<Scene *> children;
-
   // timing
   float deltaTime = 0.0f; // time between current frame and last frame
   float lastFrame = 0.0f;
+
+  Editor *editor;
 
   void init()
   {
@@ -47,6 +55,8 @@ public:
 
     context->display->init();
     context->display->createWindow();
+
+    addModule(new GUI());
 
     //create the FBO
     glGenFramebuffers(1, &fbo);
@@ -95,24 +105,12 @@ public:
     // tell GLFW to capture our mouse
     // glfwSetInputMode(context->display->window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-    // ImGui setup
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO &io = ImGui::GetIO();
-    // io.DisplaySize = ImVec2(context->display->windowW / 2, context->display->windowH / 2);
-
-    // ImGui init
-    ImGui_ImplGlfw_InitForOpenGL(context->display->window, true);
-    ImGui_ImplOpenGL3_Init("#version 130");
-
-    // ImGui style
-    ImGui::StyleColorsDark();
-    ImGuiStyle *style = &ImGui::GetStyle();
-    style->WindowMinSize = ImVec2(320, 320);
-
-    ImGui::SetNextWindowSize(ImVec2(context->display->windowW / 2, context->display->windowH / 2));
+    // ImGui::SetNextWindowSize(ImVec2(context->display->windowW / 2, context->display->windowH / 2));
     //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
     //io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+
+    editor = new Editor();
+    addScene(editor);
   }
 
   void start()
@@ -165,16 +163,21 @@ public:
     glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // Start the Dear ImGui frame
-    ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplGlfw_NewFrame();
-    ImGui::NewFrame();
-
     // ImGui::SetNextWindowSize(ImVec2(context->display->width / 2, context->display->height / 2));
+
+    for (Module *module : modules)
+    {
+      module->beforeDraw();
+    }
 
     for (Scene *child : children)
     {
       child->draw();
+    }
+
+    for (Module *module : modules)
+    {
+      module->afterDraw();
     }
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -213,29 +216,41 @@ public:
 
   void addScene(Scene *scene)
   {
-    // std::cout << "adding scene \n";
+    std::cout << "adding scene" << std::endl;
 
-    this->children.push_back(scene);
+    children.push_back(scene);
     scene->init();
   }
 
+  void addModule(Module *module)
+  {
+    std::cout << "adding module: " + module->name << std::endl;
+
+    modules.push_back(module);
+    module->init();
+  }
+
+  // TODO
+  // get child dynamic (find the 'world' child)
   void processInput(GLFWwindow *window)
   {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
       glfwSetWindowShouldClose(window, true);
 
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-      children[0]->camera->ProcessKeyboard(FORWARD, deltaTime);
+      children[worldChild]->camera->ProcessKeyboard(FORWARD, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-      children[0]->camera->ProcessKeyboard(BACKWARD, deltaTime);
+      children[worldChild]->camera->ProcessKeyboard(BACKWARD, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-      children[0]->camera->ProcessKeyboard(LEFT, deltaTime);
+      children[worldChild]->camera->ProcessKeyboard(LEFT, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-      children[0]->camera->ProcessKeyboard(RIGHT, deltaTime);
+      children[worldChild]->camera->ProcessKeyboard(RIGHT, deltaTime);
   }
 
   // glfw: whenever the mouse moves, this callback is called
   // -------------------------------------------------------
+  // TODO
+  // get child dynamic (find the 'world' child)
   static void mouse_callback(GLFWwindow *window, double xpos, double ypos)
   {
     Engine *engine = context->engine;
@@ -253,13 +268,15 @@ public:
     engine->lastMouseX = xpos;
     engine->lastMouseY = ypos;
 
-    context->engine->children[0]->camera->ProcessMouseMovement(xoffset, yoffset);
+    context->engine->children[worldChild]->camera->ProcessMouseMovement(xoffset, yoffset);
   }
 
   // glfw: whenever the mouse scroll wheel scrolls, this callback is called
   // ----------------------------------------------------------------------
+  // TODO
+  // get child dynamic (find the 'world' child)
   static void scroll_callback(GLFWwindow *window, double xoffset, double yoffset)
   {
-    context->engine->children[0]->camera->ProcessMouseScroll(yoffset);
+    context->engine->children[worldChild]->camera->ProcessMouseScroll(yoffset);
   }
 };

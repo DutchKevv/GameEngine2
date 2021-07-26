@@ -11,7 +11,6 @@
 #include "../../shape/cube.cpp"
 #include "../../shape/plane.cpp"
 #include "../../lights/spotlight.cpp"
-#include "../../shape/ui/gui.cpp"
 
 class WorldScene : public Scene
 {
@@ -23,7 +22,6 @@ public:
 	ShapeCube *cube5;
 	Spotlight *spotlight;
 	ShapePlane *floor;
-	GUI *gui;
 
 	void init()
 	{
@@ -36,7 +34,6 @@ public:
 		cube5 = new ShapeCube();
 		spotlight = new Spotlight();
 		floor = new ShapePlane();
-		gui = new GUI();
 
 		camera = new Camera(glm::vec3(0.0f, 10.0f, 20.0f));
 
@@ -53,7 +50,6 @@ public:
 		addChild(cube5, this);
 		addChild(spotlight, this);
 		addChild(floor, this);
-		addChild(gui, this);
 	}
 
 	void draw()
