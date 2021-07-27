@@ -73,6 +73,7 @@ message(STATUS "Found ASSIMP in ${ASSIMP_INCLUDE_DIR}")
 
 include_directories(
 	"${CMAKE_SOURCE_DIR}/src"
+	"${CMAKE_SOURCE_DIR}/src/engine"
 	"${CMAKE_SOURCE_DIR}/include"
 	"${CMAKE_SOURCE_DIR}/lib"
 )

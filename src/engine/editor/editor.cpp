@@ -1,13 +1,13 @@
 #pragma once
 
 #include <iostream>
+#include <string>
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
 #include "imgui.h"
-
-#include "../modules/gui/panels/gui_panel.cpp"
 #include "../scene.cpp"
-#include "../camera.h"
+#include "./panels/gui_panel_world.cpp"
+// #include "../modules/gui/panels/gui_panel.cpp"
 
 class Editor : public Scene
 {
@@ -16,25 +16,51 @@ public:
 
 	void init()
 	{
-		// std::cout << "adding editor scene \n";
+		std::cout << "adding editor scene \n";
 
-		// std::cout << __cplusplus;
+		addChild(new GuiPanelWorld(), this, "World");
 	}
 
 	void draw()
 	{
 		// std::cout << "drawing editor scene \n";
 
-		// Start the Dear ImGui frame
-		// ImGui_ImplOpenGL3_NewFrame();
-		// ImGui_ImplGlfw_NewFrame();
-		// ImGui::NewFrame();
+		Scene::draw();
 
-		// static float f = 0.0f;
-		// static int counter = 0;
+		//create our ImGui window
+		ImGui::Begin("Editor");
+		// std::cout << __cplusplus;
 
-		ImGui::Begin("Main Window");
-
+		if (ImGui::BeginMainMenuBar())
+		{
+			if (ImGui::BeginMenu("File"))
+			{
+				// ShowExampleMenuFile();
+				ImGui::EndMenu();
+			}
+			if (ImGui::BeginMenu("Edit"))
+			{
+				if (ImGui::MenuItem("Undo", "CTRL+Z"))
+				{
+				}
+				if (ImGui::MenuItem("Redo", "CTRL+Y", false, false))
+				{
+				} // Disabled item
+				ImGui::Separator();
+				if (ImGui::MenuItem("Cut", "CTRL+X"))
+				{
+				}
+				if (ImGui::MenuItem("Copy", "CTRL+C"))
+				{
+				}
+				if (ImGui::MenuItem("Paste", "CTRL+V"))
+				{
+				}
+				ImGui::EndMenu();
+			}
+			ImGui::EndMainMenuBar();
+		}
+		// close window
 		ImGui::End();
 	}
 };

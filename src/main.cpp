@@ -1,9 +1,4 @@
-#include <GLFW/glfw3.h>
-#include <glad/glad.h>
-#include <iostream>
-
 #include "./game/game.cpp"
-#include "./engine/context.h"
 
 int main()
 {

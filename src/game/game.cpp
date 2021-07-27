@@ -1,3 +1,5 @@
+#pragma once
+
 #include <iostream>
 #include "../engine/engine.cpp"
 #include "./scenes/world.cpp"
@@ -10,9 +12,7 @@ public:
 		Engine engine;
 		engine.init();
 
-		WorldScene worldScene;
-
-		engine.addScene(&worldScene);
+		engine.addScene(new WorldScene());
 
 		engine.start();
 	}

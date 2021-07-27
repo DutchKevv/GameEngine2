@@ -1,4 +1,6 @@
 #pragma once
+#include <GLFW/glfw3.h>
+#include <glad/glad.h>
 #include "./engine.cpp"
 #include "./resourceManager.cpp"
 #include "./display.cpp"
@@ -45,6 +47,10 @@ struct Context
 	Display *display;
 	// Renderer *renderer;
 	GLFWwindow *window;
+
+	unsigned int fbo;
+	GLuint frameTexture;
+
 	struct GLFWOpenGLWindowInternalData *m_data;
 
 	Paths *paths = new Paths();

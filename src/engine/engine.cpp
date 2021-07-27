@@ -30,7 +30,7 @@ public:
   int TARGET_FPS = 120;
 
   unsigned int fbo;
-  GLuint frameTexture;
+  // GLuint frameTexture;
   GLuint depthBuffer;
   GLuint depth_Texture;
 
@@ -64,15 +64,15 @@ public:
     glDrawBuffer(GL_COLOR_ATTACHMENT0);
 
     //create the texture and attach it to the fbo
-    glGenTextures(1, &frameTexture);
-    glBindTexture(GL_TEXTURE_2D, frameTexture);
+    glGenTextures(1, &context->frameTexture);
+    glBindTexture(GL_TEXTURE_2D, context->frameTexture);
 
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, context->display->windowW / 2, context->display->windowH / 2, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, frameTexture, 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, context->frameTexture, 0);
 
     //DEPTH buffer
     glGenTextures(1, &depth_Texture);
@@ -183,50 +183,6 @@ public:
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    //create our ImGui window
-    ImGui::Begin("Game");
-    // ImGui::Begin("Game", NULL, ImGuiWindowFlags_NoFocusOnAppearing);
-
-    //get the mouse position
-    // ImGui::SetCursorPos(ImVec2(0, 0));
-    ImVec2 pos = ImGui::GetCursorScreenPos();
-
-    ImDrawList *drawList = ImGui::GetWindowDrawList();
-    drawList->AddImage((void *)frameTexture, pos, ImVec2(pos.x + ImGui::GetWindowSize().x, pos.y + ImGui::GetWindowSize().y), ImVec2(0, 1), ImVec2(1, 0));
-
-    // close window
-    ImGui::End();
-
-    if (ImGui::BeginMainMenuBar())
-    {
-      if (ImGui::BeginMenu("File"))
-      {
-        // ShowExampleMenuFile();
-        ImGui::EndMenu();
-      }
-      if (ImGui::BeginMenu("Edit"))
-      {
-        if (ImGui::MenuItem("Undo", "CTRL+Z"))
-        {
-        }
-        if (ImGui::MenuItem("Redo", "CTRL+Y", false, false))
-        {
-        } // Disabled item
-        ImGui::Separator();
-        if (ImGui::MenuItem("Cut", "CTRL+X"))
-        {
-        }
-        if (ImGui::MenuItem("Copy", "CTRL+C"))
-        {
-        }
-        if (ImGui::MenuItem("Paste", "CTRL+V"))
-        {
-        }
-        ImGui::EndMenu();
-      }
-      ImGui::EndMainMenuBar();
-    }
 
     // Rendering
     ImGui::Render();

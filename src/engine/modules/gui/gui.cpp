@@ -34,7 +34,7 @@ public:
         // ImGui style
         ImGui::StyleColorsDark();
         ImGuiStyle *style = &ImGui::GetStyle();
-        style->WindowMinSize = ImVec2(320, 320);
+        style->WindowMinSize = ImVec2(800, 600);
 
         // ImGui::SetWindowFontScale(1.8);
     }

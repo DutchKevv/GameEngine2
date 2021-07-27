@@ -1,3 +1,5 @@
+#pragma once
+
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
 #include <iostream>
@@ -5,7 +7,7 @@
 #include "imgui.h"
 #include "backends/imgui_impl_glfw.h"
 #include "backends/imgui_impl_opengl3.h"
-#include "../../../context.h"
+// #include "../../../context.h"
 
 class GUIPanel : public RenderObject
 {

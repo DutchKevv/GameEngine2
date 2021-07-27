@@ -29,7 +29,7 @@ public:
 
 	void init()
 	{
-		// std::cout << "init world \n";
+		std::cout << "init world \n";
 
 		cube1 = new ShapeCube();
 		cube2 = new ShapeCube();
