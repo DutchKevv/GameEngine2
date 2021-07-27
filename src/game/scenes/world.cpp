@@ -8,6 +8,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "../../engine/scene.cpp"
 #include "../../engine/camera.h"
+#include "../../engine/model.cpp"
 #include "../../shape/cube.cpp"
 #include "../../shape/plane.cpp"
 #include "../../lights/spotlight.cpp"
@@ -22,6 +23,7 @@ public:
 	ShapeCube *cube5;
 	Spotlight *spotlight;
 	ShapePlane *floor;
+	Model *test;
 
 	void init()
 	{
@@ -34,6 +36,10 @@ public:
 		cube5 = new ShapeCube();
 		spotlight = new Spotlight();
 		floor = new ShapePlane();
+
+		// load models
+		// -----------
+		test = new Model("game/models/rock/rock1.obj");
 
 		camera = new Camera(glm::vec3(0.0f, 10.0f, 20.0f));
 

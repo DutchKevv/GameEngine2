@@ -59,7 +59,8 @@
                 "${workspaceFolder}/src/lights",
                 "${workspaceFolder}/lib/stb",
                 "${workspaceFolder}/lib/imgui",
-                "${workspaceFolder}/lib/glm"
+                "${workspaceFolder}/lib/glm",
+                "${workspaceFolder}/include"
             ],
             "defines": [
                 "_DEBUG",

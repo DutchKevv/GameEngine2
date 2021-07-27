@@ -1,7 +1,9 @@
 cmake_minimum_required(VERSION 3.0.0)
 project(game2 VERSION 0.1.0)
 
-# Source files
+# Add .lib files
+link_directories(${CMAKE_SOURCE_DIR}/lib)
+
 set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++ -static")
 set(SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
 set(LIB_DIR "${CMAKE_CURRENT_SOURCE_DIR}/lib")
@@ -19,6 +21,9 @@ include_directories ("${SRC_DIR}/engine")
 add_executable(${PROJECT_NAME} ${SOURCES})
 target_include_directories(${PROJECT_NAME} PUBLIC "${SRC_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}/src/engine")
 target_compile_features(game2 PRIVATE cxx_std_17)
+
+# We need a CMAKE_DIR with some code to find external dependencies
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 
 # GLFW
 set(GLFW_DIR "${LIB_DIR}/glfw-3.3.3")
@@ -61,6 +66,33 @@ target_link_libraries(${PROJECT_NAME} ImGui)
 
 # src
 target_include_directories(game2 PRIVATE src)
+
+# assimp
+find_package(ASSIMP REQUIRED)
+message(STATUS "Found ASSIMP in ${ASSIMP_INCLUDE_DIR}")
+
+include_directories(
+	"${CMAKE_SOURCE_DIR}/src"
+	"${CMAKE_SOURCE_DIR}/include"
+	"${CMAKE_SOURCE_DIR}/lib"
+)
+
+set(ENABLE_BOOST_WORKAROUND ON)
+set(BUILD_STATIC_LIB ON)
+set(BUILD_ASSIMP_TOOLS  ON)
+set(ASSIMP_BUILD_STATIC_LIB ON)
+
+add_subdirectory(${CMAKE_SOURCE_DIR}/lib/assimp-5.0.1)
+
+target_link_libraries(${PROJECT_NAME} assimp)
+
+# Copy dlls
+if(WIN32)
+	add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+		COMMAND ${CMAKE_COMMAND} -E copy_directory
+		"${PROJECT_SOURCE_DIR}/dlls"
+		$<TARGET_FILE_DIR:${PROJECT_NAME}>)
+endif()
 
 add_custom_target(copy-shaders ALL COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/shaders ${CMAKE_BINARY_DIR}/shaders DEPENDS ${MY_TARGET})
 add_custom_target(copy-textures ALL COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/textures ${CMAKE_BINARY_DIR}/textures DEPENDS ${MY_TARGET})
