@@ -81,8 +81,11 @@ set(ENABLE_BOOST_WORKAROUND ON)
 set(BUILD_STATIC_LIB ON)
 set(BUILD_ASSIMP_TOOLS  ON)
 set(ASSIMP_BUILD_STATIC_LIB ON)
-
+# add_library(assimp "assimp.dll")
+# add_subdirectory(${CMAKE_SOURCE_DIR}/lib/assimp-5.0.1/contrib/irrXML)
 add_subdirectory(${CMAKE_SOURCE_DIR}/lib/assimp-5.0.1)
+
+# target_link_libraries(${PROJECT_NAME} "assimp.lib")
 
 target_link_libraries(${PROJECT_NAME} assimp)
 

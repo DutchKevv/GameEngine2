@@ -8,7 +8,9 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "../../engine/scene.cpp"
 #include "../../engine/camera.h"
+#include "../../engine/context.h"
 #include "../../engine/model.cpp"
+#include "../../engine/shader.cpp"
 #include "../../shape/cube.cpp"
 #include "../../shape/plane.cpp"
 #include "../../lights/spotlight.cpp"
@@ -62,6 +64,8 @@ public:
 	{
 		glEnable(GL_DEPTH_TEST);
 		Scene::draw();
+		Shader *sh = context->resourceManager->loadShader("light");
+		test->Draw(sh);
 		glDisable(GL_DEPTH_TEST);
 	}
 };
