@@ -1,5 +1,3 @@
-#pragma once
-
 #include <fstream>
 #include <sstream>
 #include <iostream>
@@ -7,12 +5,12 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-
+#include "./context.cpp"
 // #include <STB/stb_image.h>
 #include "skybox.h"
 #include "shader.cpp"
 // #include "resourceManager.cpp"
-#include "./context.h"
+
 
 using namespace std;
 using namespace glm;

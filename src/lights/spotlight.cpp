@@ -39,7 +39,7 @@ public:
 
 	void draw(float delta = 0.0)
 	{
-		float speed = 0.1f;
+		float speed = 2.1f;
 		translationX = 12.0f * cos(0.0f + speed * (float)glfwGetTime());
 		translationY = 1.0f;
 		// translationY = 2.0f * sin(0.0f + 1.0f * (float)glfwGetTime());

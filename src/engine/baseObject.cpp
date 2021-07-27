@@ -14,7 +14,8 @@ class BaseObject
 public:
 	Scene *scene;
 	std::vector<BaseObject *> children;
-
+	glm::vec3 position = glm::vec3(1.0f);
+	
 	bool isInitialized = false;
 	bool isEnabled = true;
 	bool isVisible = true;
@@ -102,5 +103,20 @@ public:
 				return child;
 			}
 		}
+	}
+
+	template <class T>
+	BaseObject *getChildByClass()
+	{
+		for (BaseObject *child : children)
+		{
+			if (T *v = dynamic_cast<T *>(child))
+			{
+				// old was safely casted to NewType
+				return child;
+			}
+		}
+
+		return NULL;
 	}
 };

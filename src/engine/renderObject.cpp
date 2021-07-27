@@ -28,7 +28,6 @@ public:
 
 	bool focused = false;
 
-	glm::vec3 position = glm::vec3(1.0f);
 	glm::vec3 rotation;
 
 	virtual void draw()

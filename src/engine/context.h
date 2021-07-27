@@ -4,7 +4,6 @@
 #include "./engine.cpp"
 #include "./resourceManager.cpp"
 #include "./display.cpp"
-// #include "./renderer.cpp"
 
 class Engine;
 class ResourceManager;
@@ -39,8 +38,6 @@ struct Paths
 
 struct Context
 {
-
-	// Context();
 
 	Engine *engine;
 	ResourceManager *resourceManager;
