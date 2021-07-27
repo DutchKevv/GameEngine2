@@ -9,7 +9,7 @@
 #include "../../engine/scene.cpp"
 #include "../../engine/camera.h"
 #include "../../engine/context.h"
-#include "../../engine/model.cpp"
+// #include "../../engine/model.cpp"
 #include "../../engine/shader.cpp"
 #include "../../shape/cube.cpp"
 #include "../../shape/plane.cpp"
@@ -25,7 +25,7 @@ public:
 	ShapeCube *cube5;
 	Spotlight *spotlight;
 	ShapePlane *floor;
-	Model *test;
+	// Model *test;
 
 	void init()
 	{
@@ -41,7 +41,7 @@ public:
 
 		// load models
 		// -----------
-		test = new Model("game/models/rock/rock1.obj");
+		// test = new Model("game/models/rock/rock1.obj");
 
 		camera = new Camera(glm::vec3(0.0f, 10.0f, 20.0f));
 
@@ -64,8 +64,8 @@ public:
 	{
 		glEnable(GL_DEPTH_TEST);
 		Scene::draw();
-		Shader *sh = context->resourceManager->loadShader("light");
-		test->Draw(sh);
+		// Shader *sh = context->resourceManager->loadShader("light");
+		// test->Draw(sh);
 		glDisable(GL_DEPTH_TEST);
 	}
 };

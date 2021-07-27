@@ -83,19 +83,19 @@ set(BUILD_ASSIMP_TOOLS  ON)
 set(ASSIMP_BUILD_STATIC_LIB ON)
 # add_library(assimp "assimp.dll")
 # add_subdirectory(${CMAKE_SOURCE_DIR}/lib/assimp-5.0.1/contrib/irrXML)
-add_subdirectory(${CMAKE_SOURCE_DIR}/lib/assimp-5.0.1)
+# add_subdirectory(${CMAKE_SOURCE_DIR}/lib/assimp-5.0.1)
 
 # target_link_libraries(${PROJECT_NAME} "assimp.lib")
 
-target_link_libraries(${PROJECT_NAME} assimp)
+# target_link_libraries(${PROJECT_NAME} assimp)
 
 # Copy dlls
-if(WIN32)
-	add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-		COMMAND ${CMAKE_COMMAND} -E copy_directory
-		"${PROJECT_SOURCE_DIR}/dlls"
-		$<TARGET_FILE_DIR:${PROJECT_NAME}>)
-endif()
+# if(WIN32)
+# 	add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+# 		COMMAND ${CMAKE_COMMAND} -E copy_directory
+# 		"${PROJECT_SOURCE_DIR}/dlls"
+# 		$<TARGET_FILE_DIR:${PROJECT_NAME}>)
+# endif()
 
 add_custom_target(copy-shaders ALL COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/shaders ${CMAKE_BINARY_DIR}/shaders DEPENDS ${MY_TARGET})
 add_custom_target(copy-textures ALL COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/textures ${CMAKE_BINARY_DIR}/textures DEPENDS ${MY_TARGET})
