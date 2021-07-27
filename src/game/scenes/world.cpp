@@ -9,6 +9,7 @@
 #include "../../engine/scene.cpp"
 #include "../../engine/camera.h"
 #include "../../engine/context.h"
+#include "../../engine/skybox.cpp"
 // #include "../../engine/model.cpp"
 #include "../../engine/shader.cpp"
 #include "../../shape/cube.cpp"
@@ -25,6 +26,7 @@ public:
 	ShapeCube *cube5;
 	Spotlight *spotlight;
 	ShapePlane *floor;
+	SkyBox *skybox;
 	// Model *test;
 
 	void init()
@@ -38,6 +40,7 @@ public:
 		cube5 = new ShapeCube();
 		spotlight = new Spotlight();
 		floor = new ShapePlane();
+		skybox = new SkyBox();
 
 		// load models
 		// -----------
@@ -51,6 +54,7 @@ public:
 		cube4->position = glm::vec3(-3.8f, 0.0f, -12.3f);
 		cube5->position = glm::vec3(0.0f, 0.0f, 0.0f);
 
+		addChild(skybox, this);
 		addChild(cube1, this);
 		addChild(cube2, this);
 		addChild(cube3, this);

@@ -40,7 +40,7 @@ public:
   {
     if (loadTexture)
     {
-      texture = context->resourceManager->loadTexture("rock.jpg", true, "rock", 0, 0);
+      texture = context->resourceManager->loadTexture("grass.jpg", true, "rock", 0, 0);
     }
 
     shaderProgram = context->resourceManager->loadShader("light");

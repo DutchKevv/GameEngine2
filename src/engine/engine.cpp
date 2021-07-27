@@ -78,6 +78,7 @@ public:
     glGenTextures(1, &depth_Texture);
     glBindTexture(GL_TEXTURE_2D, depth_Texture);
 
+    // glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32, context->display->windowW, context->display->windowH, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, NULL);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32, context->display->windowW / 2, context->display->windowH / 2, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, NULL);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
