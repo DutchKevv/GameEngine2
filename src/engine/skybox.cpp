@@ -11,7 +11,6 @@
 #include "shader.cpp"
 // #include "resourceManager.cpp"
 
-
 using namespace std;
 using namespace glm;
 
@@ -61,9 +60,7 @@ static float skyboxVertices[] = {
 	-1.0f, -1.0f, 1.0f,
 	1.0f, -1.0f, 1.0f};
 
-SkyBox::SkyBox(){
-
-};
+SkyBox::SkyBox(){};
 
 void SkyBox::init()
 {
@@ -91,7 +88,6 @@ void SkyBox::init()
 	// 	"textures/skybox/2/elbrus_up.jpg"};
 
 	vector<std::string> faces{
-
 		"textures/skybox/1/mandaris_rt.tga",
 		"textures/skybox/1/mandaris_lf.tga",
 		"textures/skybox/1/mandaris_up.tga",
@@ -102,8 +98,13 @@ void SkyBox::init()
 	cubemapTexture = loadCubemap(faces);
 };
 
-void SkyBox::draw(float delta)
+void SkyBox::draw(float delta){
+
+};
+
+void SkyBox::renderScene(float delta, Shader *shader, bool isShadowRender)
 {
+	std::cout << "Render skybox: " << std::endl;
 
 	Shader *skyBoxShader = context->resourceManager->loadShader("skybox");
 	skyBoxShader->use();
@@ -132,7 +133,7 @@ void SkyBox::draw(float delta)
 	glBindVertexArray(0);
 	glDepthFunc(GL_LESS); // set depth function back to default
 						  // glDepthMask(GL_TRUE);
-};
+}
 
 void SkyBox::destroy()
 {

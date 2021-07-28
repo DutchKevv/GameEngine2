@@ -101,20 +101,25 @@ public:
 		addChild(floor, this);
 	}
 
-	void draw()
+	void draw(float delta)
 	{
 		// 1. render depth of scene to texture (from light's perspective)
 		// --------------------------------------------------------------
 
+		// render
+        // ------
+        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 		glm::mat4 lightProjection, lightView;
 		glm::mat4 lightSpaceMatrix;
 		float near_plane = 1.0f, far_plane = 7.5f;
-		// BaseObject *spotlight = getChildByClass<Spotlight>();
+		BaseObject *spotlight = getChildByClass<Spotlight>();
 		glm::vec3 lightPos(-2.0f, 4.0f, -1.0f);
-		// //lightProjection = glm::perspective(glm::radians(45.0f), (GLfloat)SHADOW_WIDTH / (GLfloat)SHADOW_HEIGHT, near_plane, far_plane); // note that if you use a perspective projection matrix you'll have to change the light position as the current light position isn't enough to reflect the whole scene
+		//lightProjection = glm::perspective(glm::radians(45.0f), (GLfloat)SHADOW_WIDTH / (GLfloat)SHADOW_HEIGHT, near_plane, far_plane); // note that if you use a perspective projection matrix you'll have to change the light position as the current light position isn't enough to reflect the whole scene
 		lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
-		lightView = glm::lookAt(lightPos, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
-		// lightView = glm::lookAt(spotlight->position, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
+		// lightView = glm::lookAt(lightPos, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
+		lightView = glm::lookAt(spotlight->position, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
 		lightSpaceMatrix = lightProjection * lightView;
 		// render scene from light's point of view
 		depthShader->use();
@@ -124,8 +129,8 @@ public:
 		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
 		glClear(GL_DEPTH_BUFFER_BIT);
 		glActiveTexture(GL_TEXTURE0);
-		texture.Bind();
-		renderScene(depthShader);
+		glBindTexture(GL_TEXTURE_2D, texture.ID);
+		renderScene(delta, depthShader, true);
 		glBindFramebuffer(GL_FRAMEBUFFER, context->engine->fbo);
 
 		// reset viewport
@@ -139,27 +144,33 @@ public:
 		shader->use();
 		glm::mat4 projection = glm::perspective(glm::radians(camera->Zoom), (float)context->display->windowW / (float)context->display->windowH, 0.1f, 100.0f);
 		glm::mat4 view = camera->GetViewMatrix();
+
 		shader->setMat4("projection", projection);
 		shader->setMat4("view", view);
+
+								     std::cout << "render 222 \n";
+
 		// set light uniforms
 		shader->setVec3("viewPos", camera->Position);
+		// shader->setVec3("lightPos", lightPos);
 		shader->setVec3("lightPos", spotlight->position);
 		shader->setMat4("lightSpaceMatrix", lightSpaceMatrix);
+
+
 		glActiveTexture(GL_TEXTURE0);
-		texture.Bind();
+		glBindTexture(GL_TEXTURE_2D, texture.ID);
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, depthMap);
-		renderScene(shader);
+		renderScene(delta, shader, false);
 	}
 
 	// renders the 3D scene
 	// --------------------
-	void renderScene(const Shader *shader)
+	void renderScene(float delta, Shader *shader, bool isShadowRender)
 	{
+		std::cout << "init world \n";
 		glEnable(GL_DEPTH_TEST);
-		Scene::draw();
-		// Shader *sh = context->resourceManager->loadShader("light");
-		// test->Draw(sh);
+		Scene::renderScene(delta, shader, isShadowRender);
 		glDisable(GL_DEPTH_TEST);
 	}
 };

@@ -173,7 +173,7 @@ public:
 
     for (Scene *child : children)
     {
-      child->draw();
+      child->draw(deltaTime);
     }
 
     for (Module *module : modules)

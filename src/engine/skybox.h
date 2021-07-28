@@ -28,6 +28,7 @@ public:
 
 	void init();
 	void draw(float delta);
+	void renderScene(float delta, Shader *shader, bool isShadowRender);
 	void move();
 	void destroy();
 };

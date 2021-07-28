@@ -4,17 +4,16 @@
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
 #include "imgui.h"
+#include "../../shader.cpp"
 #include "../../renderObject.cpp"
 #include "../../context.h"
-
-class Engine;
 
 class GuiPanelWorld : public RenderObject
 {
 public:
-	void draw(float delta = 0.0f)
+	void renderScene(float delta, Shader *shader, bool isShadowRender)
 	{
-		// std::cout << __cplusplus;
+		std::cout << "rebder window";
 		//create our ImGui window
 		ImGui::Begin("Game2");
 		// ImGui::Begin("Game", NULL, ImGuiWindowFlags_NoFocusOnAppearing);

@@ -7,7 +7,6 @@
 #include "imgui.h"
 #include "../scene.cpp"
 #include "./panels/gui_panel_world.cpp"
-// #include "../modules/gui/panels/gui_panel.cpp"
 
 class Editor : public Scene
 {
@@ -21,15 +20,16 @@ public:
 		addChild(new GuiPanelWorld(), this, "World");
 	}
 
-	void draw()
+	void draw(float delta)
 	{
-		// std::cout << "drawing editor scene \n";
+		renderScene(delta, NULL, false);
+	}
 
-		Scene::draw();
+	void renderScene(float delta, Shader *shader, bool isShadowRender) {
+		
+		std::cout << "drawing editor scene \n";
 
-		//create our ImGui window
 		ImGui::Begin("Editor");
-		// std::cout << __cplusplus;
 
 		if (ImGui::BeginMainMenuBar())
 		{
@@ -60,7 +60,10 @@ public:
 			}
 			ImGui::EndMainMenuBar();
 		}
+
 		// close window
 		ImGui::End();
+
+		Scene::renderScene(delta, shader, isShadowRender);
 	}
 };

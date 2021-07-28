@@ -6,16 +6,11 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "./baseObject.cpp"
-#include "./scene.cpp"
-#include "./camera.h"
-#include "./scene.cpp"
 
 class RenderObject : public BaseObject
 {
 public:
-	// Scene *scene;
 	std::vector<RenderObject *> children;
-	// Camera *camera;
 
 	unsigned int id;
 	unsigned int width;
@@ -30,8 +25,13 @@ public:
 
 	glm::vec3 rotation;
 
-	virtual void draw()
+	virtual void draw(float delta)
 	{
-		BaseObject::draw();
+		BaseObject::draw(delta);
 	}
+
+	// void renderScene(float delta, Shader *shader, bool isShadowRender)
+	// {
+	// 	BaseObject::renderScene(delta, shader, isShadowRender);
+	// }
 };

@@ -39,25 +39,23 @@ public:
 		}
 	}
 
-	virtual void draw(float delta = 0.0)
+	virtual void draw(float delta)
 	{
-		// std::cout << "Base draw \n";
 		for (BaseObject *child : children)
 		{
 			if (child->isEnabled)
 			{
-				// std::cout << "child draw \n";
-				child->draw();
+				std::cout << "child draw \n";
+				child->draw(delta);
 			}
 		}
 	}
 
-	void renderScene(float delta, Shader &shader, bool isShadowRender)
+	virtual void renderScene(float delta, Shader *shader, bool isShadowRender)
 	{
 		for (BaseObject *child : children)
 		{
-			shader.use();
-
+			// shader->use();
 			child->renderScene(delta, shader, isShadowRender);
 		}
 	}
