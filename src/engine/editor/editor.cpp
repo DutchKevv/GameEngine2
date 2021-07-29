@@ -27,7 +27,7 @@ public:
 
 	void renderScene(float delta, Shader *shader, bool isShadowRender) {
 		
-		std::cout << "drawing editor scene \n";
+		// std::cout << "drawing editor scene \n";
 
 		ImGui::Begin("Editor");
 

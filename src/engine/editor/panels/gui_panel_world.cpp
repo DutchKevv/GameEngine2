@@ -13,7 +13,7 @@ class GuiPanelWorld : public RenderObject
 public:
 	void renderScene(float delta, Shader *shader, bool isShadowRender)
 	{
-		std::cout << "rebder window";
+		// std::cout << "rebder window";
 		//create our ImGui window
 		ImGui::Begin("Game2");
 		// ImGui::Begin("Game", NULL, ImGuiWindowFlags_NoFocusOnAppearing);

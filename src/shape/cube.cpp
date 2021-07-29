@@ -154,7 +154,7 @@ public:
 
   void renderScene(float delta, Shader *shader, bool isShadowRender)
   {
-    std::cout << "render cube \n";
+    // std::cout << "render cube \n";
     // shader->use();
 
     // // world transformation

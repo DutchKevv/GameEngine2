@@ -40,7 +40,7 @@ public:
 	}
 
 	void renderScene(float delta, Shader *shader, bool isShadowRender) {
-		std::cout << "Render light" << std::endl;
+		// std::cout << "Render light" << std::endl;
 
 		// glm::vec3 lightPos(-0.0f, 40.0f, -30.0f);
 

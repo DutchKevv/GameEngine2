@@ -89,7 +89,7 @@ public:
 
 		// load models
 		// -----------
-		test = new Model("game/models/rock/rock1.obj");
+		test = new Model("game/models/blenderman/BLENDERMAN!.obj");
 
 		camera = new Camera(glm::vec3(0.0f, 10.0f, 20.0f));
 
@@ -167,6 +167,8 @@ public:
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, depthMap);
 		renderScene(delta, shader, false);
+
+		test->Draw(shader);
 	}
 
 	// renders the 3D scene

@@ -4,7 +4,7 @@ project(game2 VERSION 0.1.0)
 # Add .lib files
 link_directories(${CMAKE_SOURCE_DIR}/lib)
 
-set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++ -static")
+set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++ -static ${CMAKE_EXE_LINKER_FLAGS} -fuse-ld=lld")
 set(SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
 set(LIB_DIR "${CMAKE_CURRENT_SOURCE_DIR}/lib")
 set(SOURCES "${SRC_DIR}/main.cpp")
@@ -67,26 +67,30 @@ target_link_libraries(${PROJECT_NAME} ImGui)
 # src
 target_include_directories(game2 PRIVATE src)
 
-# assimp
-find_package(ASSIMP REQUIRED)
-message(STATUS "Found ASSIMP in ${ASSIMP_INCLUDE_DIR}")
-
 include_directories(
 	"${CMAKE_SOURCE_DIR}/src"
 	"${CMAKE_SOURCE_DIR}/src/engine"
-	"${CMAKE_SOURCE_DIR}/include"
-	"${CMAKE_SOURCE_DIR}/lib"
+	# "${CMAKE_SOURCE_DIR}/lib"
+	"${CMAKE_SOURCE_DIR}/lib/assimp-4.0.1/include/"
 )
 
 set(ASSIMP_ENABLE_BOOST_WORKAROUND ON)
 set(BUILD_STATIC_LIB ON)
-set(BUILD_ASSIMP_TOOLS  ON)
+set(BUILD_ASSIMP_TOOLS  OFF)
+set(ASSIMP_NO_EXPORT ON)
+set(ASSIMP_BUILD_ASSIMP_TOOLS  OFF)
 set(ASSIMP_BUILD_STATIC_LIB ON)
+set(ASSIMP_BUILD_TESTS OFF)
+set(ASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT OFF)
+set(ASSIMP_BUILD_FBX_IMPORTER ON)
+set(ASSIMP_BUILD_BLEND_IMPORTER ON)
+set(ASSIMP_BUILD_OBJ_IMPORTER ON)
+add_subdirectory(lib/assimp-4.0.1)
 # add_library(assimp "lib/assimp-5.0.1/assimp.dll")
 # add_subdirectory(${CMAKE_SOURCE_DIR}/lib/assimp-5.0.1/contrib/irrXML)
 # add_subdirectory(${CMAKE_SOURCE_DIR}/lib/assimp-5.0.1)
 
-# target_link_libraries(${PROJECT_NAME} assimp)
+target_link_libraries(${PROJECT_NAME} assimp)
 
 # target_link_libraries(${PROJECT_NAME} assimp ${ASSIMP_LIBRARIES})
 

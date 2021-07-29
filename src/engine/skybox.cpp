@@ -88,12 +88,12 @@ void SkyBox::init()
 	// 	"textures/skybox/2/elbrus_up.jpg"};
 
 	vector<std::string> faces{
-		"textures/skybox/1/mandaris_rt.tga",
-		"textures/skybox/1/mandaris_lf.tga",
-		"textures/skybox/1/mandaris_up.tga",
-		"textures/skybox/1/mandaris_dn.tga",
-		"textures/skybox/1/mandaris_bk.tga",
-		"textures/skybox/1/mandaris_ft.tga"};
+		"textures/skybox/mandaris/mandaris_rt.tga",
+		"textures/skybox/mandaris/mandaris_lf.tga",
+		"textures/skybox/mandaris/mandaris_up.tga",
+		"textures/skybox/mandaris/mandaris_dn.tga",
+		"textures/skybox/mandaris/mandaris_bk.tga",
+		"textures/skybox/mandaris/mandaris_ft.tga"};
 
 	cubemapTexture = loadCubemap(faces);
 };
@@ -104,7 +104,7 @@ void SkyBox::draw(float delta){
 
 void SkyBox::renderScene(float delta, Shader *shader, bool isShadowRender)
 {
-	std::cout << "Render skybox: " << std::endl;
+	// std::cout << "Render skybox: " << std::endl;
 
 	Shader *skyBoxShader = context->resourceManager->loadShader("skybox");
 	skyBoxShader->use();
