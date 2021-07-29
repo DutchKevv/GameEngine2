@@ -11,7 +11,7 @@
 #include "../../engine/context.h"
 #include "../../engine/skybox.cpp"
 #include "../../engine/texture.h"
-// #include "../../engine/model.cpp"
+#include "../../engine/model.cpp"
 #include "../../engine/shader.cpp"
 #include "../../shape/cube.cpp"
 #include "../../shape/plane.cpp"
@@ -38,7 +38,7 @@ public:
 	Shader *shader;
 	Shader *depthShader;
 	Texture2D texture;
-	// Model *test;
+	Model *test;
 
 	void init()
 	{
@@ -89,7 +89,7 @@ public:
 
 		// load models
 		// -----------
-		// test = new Model("game/models/rock/rock1.obj");
+		test = new Model("game/models/rock/rock1.obj");
 
 		camera = new Camera(glm::vec3(0.0f, 10.0f, 20.0f));
 
