@@ -23,6 +23,8 @@ struct Vertex
 	glm::vec3 Tangent;
 	// bitangent
 	glm::vec3 Bitangent;
+	// bitangent
+	glm::vec3 Color;
 };
 
 struct Texture
@@ -39,15 +41,16 @@ public:
 	vector<Vertex> vertices;
 	vector<unsigned int> indices;
 	vector<Texture> textures;
+	aiColor3D color;
 	unsigned int VAO;
 
 	// constructor
-	Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<Texture> textures)
+	Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<Texture> textures, aiColor3D color = aiColor3D(1.0f, 0.4f, 0.3f))
 	{
 		this->vertices = vertices;
 		this->indices = indices;
 		this->textures = textures;
-
+		this->color = color;
 		// now that we have all the required data, set the vertex buffers and its attribute pointers.
 		setupMesh();
 	}
@@ -60,10 +63,18 @@ public:
 		unsigned int specularNr = 1;
 		unsigned int normalNr = 1;
 		unsigned int heightNr = 1;
+
+		// shader->setVec3("color", 1.0f, 0.5f, 0.31f); shader->setVec3("material.ambient", 1.0f, 0.5f, 0.31f);
+		shader->setVec3("material.diffuse", 1.0f, 0.5f, 0.31f);
+		shader->setVec3("material.specular", 1.0f, 1.0f, 1.0f);
+		shader->setFloat("material.shininess", 32.0f);
+		shader->setVec3("color", glm::vec3(color.r, color.g, color.b));
+		// std::cout << "red: " << color.b << "\n";
+
 		for (unsigned int i = 0; i < textures.size(); i++)
 		{
 			glActiveTexture(GL_TEXTURE0 + i); // active proper texture unit before binding
-			
+
 			// retrieve texture number (the N in diffuse_textureN)
 			string number;
 			string name = textures[i].type;
@@ -82,7 +93,7 @@ public:
 			glBindTexture(GL_TEXTURE_2D, textures[i].id);
 		}
 
-		// glBindTexture(GL_TEXTURE_2D, 0);
+		glBindTexture(GL_TEXTURE_2D, 0);
 
 		// draw mesh
 		glBindVertexArray(VAO);

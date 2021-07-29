@@ -18,6 +18,9 @@
 #include "../../lights/spotlight.cpp"
 
 const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
+vector<glm::vec4> treePositions;
+const unsigned int space = 30;
+const unsigned int trees = 50;
 
 class WorldScene : public Scene
 {
@@ -39,6 +42,8 @@ public:
 	Shader *depthShader;
 	Texture2D texture;
 	Model *test;
+
+	vector<Model*> models;
 
 	void init()
 	{
@@ -78,23 +83,22 @@ public:
 
 		std::cout << "init world \n";
 
+		spotlight = new Spotlight();
 		cube1 = new ShapeCube();
 		cube2 = new ShapeCube();
 		cube3 = new ShapeCube();
 		cube4 = new ShapeCube();
 		cube5 = new ShapeCube();
-		spotlight = new Spotlight();
 		floor = new ShapePlane();
 		skybox = new SkyBox();
 
 		// load models
 		// -----------
-		test = new Model("game/models/trees/sdf/tree.fbx");
 		// test = new Model("game/models/trees/cartoon/CartoonTree.fbx");
-		// test = new Model("game/models/tree-low-poly/lowpolytree.obj");
+		test = new Model("game/models/tree-low-poly/lowpolytree.obj");
 		// test = new Model("game/models/plane/FREOBJ.obj");
 
-		camera = new Camera(glm::vec3(0.0f, 10.0f, 20.0f));
+		camera = new Camera(glm::vec3(0.0f, 50.0f, 50.0f));
 
 		cube1->position = glm::vec3(0.0f, 1.5f, 0.0);
 		cube2->position = glm::vec3(2.0f, 0.0f, -15.0f);
@@ -102,15 +106,28 @@ public:
 		cube4->position = glm::vec3(-3.8f, 0.0f, -12.3f);
 		cube5->position = glm::vec3(0.0f, 0.0f, 0.0f);
 
+		addChild(spotlight, this);
 		addChild(skybox, this);
 		addChild(cube1, this);
 		addChild(cube2, this);
 		addChild(cube3, this);
 		addChild(cube4, this);
 		addChild(cube5, this);
-		addChild(spotlight, this);
 		addChild(floor, this);
 		addChild(test, this);
+
+        // load random positions for models
+        float halfSpace = space / 2;
+		for (int i = 0; i < trees; i++)
+		{
+			Model *model = new Model("game/models/tree-low-poly/lowpolytree.obj");
+
+			glm::vec4 position = glm::vec4((rand() % space) - halfSpace, 2.0f, (rand() % space) - halfSpace, rand() % 100);
+
+			model->position = position;
+
+			addChild(model, this);
+		}
 	}
 
 	void draw(float delta)

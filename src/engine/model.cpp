@@ -42,9 +42,10 @@ public:
 	// draws the model, and thus all its meshes
 	void renderScene(float delta, Shader *shader, bool isShadowRender)
 	{
-		    // glm::mat4 model = glm::mat4(1.0f);
-			// model = glm::scale(model, glm::vec3(0.2f));
-   			// shader->setMat4("model", model);
+		    glm::mat4 model = glm::mat4(1.0f);
+			model = glm::scale(model, glm::vec3(2.2f));
+			model = glm::translate(model, position);
+   			shader->setMat4("model", model);
 
 		for (unsigned int i = 0; i < meshes.size(); i++)
 			meshes[i].Draw(shader);
@@ -155,6 +156,9 @@ private:
 		// specular: texture_specularN
 		// normal: texture_normalN
 
+		aiColor3D color(0.f,0.f,0.f);
+		material->Get(AI_MATKEY_COLOR_DIFFUSE, color);
+
 		// 1. diffuse maps
 		vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
 		textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
@@ -169,7 +173,7 @@ private:
 		textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 
 		// return a mesh object created from the extracted mesh data
-		return Mesh(vertices, indices, textures);
+		return Mesh(vertices, indices, textures, color);
 	}
 
 	// checks all material textures of a given type and loads the textures if they're not loaded yet.
