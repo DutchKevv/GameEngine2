@@ -41,42 +41,12 @@ public:
 	void draw(float delta)
 	{
 		std::cout << "draw light" << std::endl;
-
-		// float speed = 2.1f;
-		// translationX = 12.0f * cos(0.0f + speed * (float)glfwGetTime());
-		// translationY = 1.0f;
-		// // translationY = 2.0f * sin(0.0f + 1.0f * (float)glfwGetTime());
-		// translationZ = 14.0f * sin(0.0f + speed * (float)glfwGetTime());
-		// // glm::vec3 translation = glm::vec3(2.0f);
-		// glm::vec3 translation = glm::vec3(translationX, translationY, translationZ);
-
-		// glm::vec3 lightColor;
-		// lightColor.x = sin(glfwGetTime() * 2.0f);
-		// lightColor.y = sin(glfwGetTime() * 0.7f);
-		// lightColor.z = sin(glfwGetTime() * 1.3f);
-
-		// glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f);
-		// glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
-
-		// if (showCube)
-		// {
-		// 	cube.position = translation;
-		// 	cube.color = diffuseColor;
-		// 	cube.draw(delta);
-		// }
-
-		// shaderProgram->use();
-		// // shaderProgram->setVec3("light.color", lightColor);
-		// shaderProgram->setVec3("light.position", translation);
-		// shaderProgram->setVec3("light.ambient", ambientColor);
-		// // shaderProgram->setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
-		// shaderProgram->setVec3("light.diffuse", diffuseColor); // darken diffuse light a bit
-		// // shaderProgram->setVec3("light.diffuse", 0.5f, 0.5f, 0.5f); // darken diffuse light a bit
-		// shaderProgram->setVec3("light.specular", 1.0f, 1.0f, 1.0f);
 	}
 
 	void renderScene(float delta, Shader *shader, bool isShadowRender) {
 		std::cout << "Render light" << std::endl;
+
+		glm::vec3 lightPos(-2.0f, 4.0f, -10.0f);
 
 		float speed = 2.1f;
 		translationX = 12.0f * cos(0.0f + speed * (float)glfwGetTime());
@@ -85,6 +55,7 @@ public:
 		translationZ = 14.0f * sin(0.0f + speed * (float)glfwGetTime());
 		// glm::vec3 translation = glm::vec3(2.0f);
 		glm::vec3 translation = glm::vec3(translationX, translationY, translationZ);
+		position = lightPos;
 
 		glm::vec3 lightColor;
 		lightColor.x = sin(glfwGetTime() * 2.0f);
@@ -96,14 +67,15 @@ public:
 
 		if (showCube)
 		{
-			// cube.position = translation;
-			// cube.color = diffuseColor;
-			// cube.renderScene(delta, shader, isShadowRender);
+			cube.position = lightPos;
+			cube.color = diffuseColor;
+			cube.renderScene(delta, shader, isShadowRender);
 		}
 
 		shader->use();
 		// shaderProgram->setVec3("light.color", lightColor);
-		shader->setVec3("lightPosition", translation);
+		shader->setVec3("lightPosition", lightPos);
+		// shader->setVec3("lightPosition", translation);
 		shader->setVec3("light.ambient", ambientColor);
 		// shaderProgram->setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
 		shader->setVec3("light.diffuse", diffuseColor); // darken diffuse light a bit

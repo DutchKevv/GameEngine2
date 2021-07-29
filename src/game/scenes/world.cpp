@@ -33,6 +33,7 @@ public:
 
 	unsigned int depthMapFBO;
 	unsigned int depthMap;
+	unsigned int depthCubemap;
 
 	Shader *shader;
 	Shader *depthShader;
@@ -47,6 +48,8 @@ public:
 
 		// shadow buffer
 		glGenFramebuffers(1, &depthMapFBO);
+
+		glGenTextures(1, &depthCubemap);
 
 		glGenTextures(1, &depthMap);
 		glBindTexture(GL_TEXTURE_2D, depthMap);
@@ -85,7 +88,7 @@ public:
 
 		camera = new Camera(glm::vec3(0.0f, 10.0f, 20.0f));
 
-		cube1->position = glm::vec3(0.0f, 0.0f, 0.0f);
+		cube1->position = glm::vec3(0.0f, 1.5f, 0.0);
 		cube2->position = glm::vec3(2.0f, 0.0f, -15.0f);
 		cube3->position = glm::vec3(-1.5f, 0.0f, -2.5f);
 		cube4->position = glm::vec3(-3.8f, 0.0f, -12.3f);
@@ -113,13 +116,13 @@ public:
 
 		glm::mat4 lightProjection, lightView;
 		glm::mat4 lightSpaceMatrix;
-		float near_plane = 1.0f, far_plane = 7.5f;
+		float near_plane = 1.0f, far_plane = 17.5f;
 		BaseObject *spotlight = getChildByClass<Spotlight>();
-		glm::vec3 lightPos(-2.0f, 4.0f, -1.0f);
+		glm::vec3 lightPos(-2.0f, 4.0f, -10.0f);
 		//lightProjection = glm::perspective(glm::radians(45.0f), (GLfloat)SHADOW_WIDTH / (GLfloat)SHADOW_HEIGHT, near_plane, far_plane); // note that if you use a perspective projection matrix you'll have to change the light position as the current light position isn't enough to reflect the whole scene
 		lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
-		// lightView = glm::lookAt(lightPos, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
-		lightView = glm::lookAt(spotlight->position, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
+		lightView = glm::lookAt(lightPos, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
+		// lightView = glm::lookAt(spotlight->position, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
 		lightSpaceMatrix = lightProjection * lightView;
 		// render scene from light's point of view
 		depthShader->use();
@@ -152,8 +155,8 @@ public:
 
 		// set light uniforms
 		shader->setVec3("viewPos", camera->Position);
-		// shader->setVec3("lightPos", lightPos);
-		shader->setVec3("lightPos", spotlight->position);
+		shader->setVec3("lightPos", lightPos);
+		// shader->setVec3("lightPos", spotlight->position);
 		shader->setMat4("lightSpaceMatrix", lightSpaceMatrix);
 
 
