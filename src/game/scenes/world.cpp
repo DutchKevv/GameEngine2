@@ -173,7 +173,7 @@ public:
 	// --------------------
 	void renderScene(float delta, Shader *shader, bool isShadowRender)
 	{
-		std::cout << "init world \n";
+		// std::cout << "render world scene \n";
 		glEnable(GL_DEPTH_TEST);
 		Scene::renderScene(delta, shader, isShadowRender);
 		glDisable(GL_DEPTH_TEST);
