@@ -15,11 +15,10 @@ class Spotlight : public RenderObject
 {
 
 public:
-	bool showCube = true;
+	bool showCube = false;
 	glm::vec3 lightColor = glm::vec3(0.2f, 0.3f, 0.6f);
 	glm::vec3 lightPos = glm::vec3(1.2f, 1.0f, 2.0f);
 
-	// Shader *shaderProgram;
 	float translationX;
 	float translationY;
 	float translationZ;
@@ -27,9 +26,6 @@ public:
 
 	void init()
 	{
-		// shaderProgram = context->resourceManager->loadShader("light");
-		// shaderProgram->use();
-
 		if (showCube)
 		{
 			cube = ShapeCube();
@@ -46,16 +42,18 @@ public:
 	void renderScene(float delta, Shader *shader, bool isShadowRender) {
 		std::cout << "Render light" << std::endl;
 
-		glm::vec3 lightPos(-2.0f, 4.0f, -10.0f);
+		// glm::vec3 lightPos(-0.0f, 40.0f, -30.0f);
 
-		float speed = 2.1f;
+		float speed = 1.1f;
 		translationX = 12.0f * cos(0.0f + speed * (float)glfwGetTime());
-		translationY = 1.0f;
+		translationY = 20.0f * sin(0.0f + speed * (float)glfwGetTime());
 		// translationY = 2.0f * sin(0.0f + 1.0f * (float)glfwGetTime());
-		translationZ = 14.0f * sin(0.0f + speed * (float)glfwGetTime());
+		translationZ = -50.0f;
+		// translationZ = -100.0f * sin(0.0f + speed * (float)glfwGetTime());
 		// glm::vec3 translation = glm::vec3(2.0f);
 		glm::vec3 translation = glm::vec3(translationX, translationY, translationZ);
-		position = lightPos;
+		position = translation;
+		// position = lightPos;
 
 		glm::vec3 lightColor;
 		lightColor.x = sin(glfwGetTime() * 2.0f);
@@ -67,14 +65,15 @@ public:
 
 		if (showCube)
 		{
-			cube.position = lightPos;
+			cube.position = translation;
+			// cube.position = lightPos;
 			cube.color = diffuseColor;
 			cube.renderScene(delta, shader, isShadowRender);
 		}
 
 		shader->use();
 		// shaderProgram->setVec3("light.color", lightColor);
-		shader->setVec3("lightPosition", lightPos);
+		shader->setVec3("lightPosition", translation);
 		// shader->setVec3("lightPosition", translation);
 		shader->setVec3("light.ambient", ambientColor);
 		// shaderProgram->setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
