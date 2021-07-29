@@ -4,7 +4,6 @@ project(game2 VERSION 0.1.0)
 # Add .lib files
 link_directories(${CMAKE_SOURCE_DIR}/lib)
 
-set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++ -static")
 set(SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
 set(LIB_DIR "${CMAKE_CURRENT_SOURCE_DIR}/lib")
 set(SOURCES "${SRC_DIR}/main.cpp")
@@ -70,7 +69,7 @@ target_include_directories(game2 PRIVATE src)
 include_directories(
 	"${CMAKE_SOURCE_DIR}/src"
 	"${CMAKE_SOURCE_DIR}/src/engine"
-	"${CMAKE_SOURCE_DIR}/lib/assimp-4.0.1/include/"
+	"${CMAKE_SOURCE_DIR}/lib/assimp-5.0.1/include/"
 )
 
 set(ASSIMP_ENABLE_BOOST_WORKAROUND ON)
@@ -84,7 +83,7 @@ set(ASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT OFF)
 set(ASSIMP_BUILD_FBX_IMPORTER ON)
 set(ASSIMP_BUILD_BLEND_IMPORTER ON)
 set(ASSIMP_BUILD_OBJ_IMPORTER ON)
-add_subdirectory(lib/assimp-4.0.1)
+add_subdirectory(lib/assimp-5.0.1)
 # add_library(assimp "lib/assimp-5.0.1/assimp.dll")
 # add_subdirectory(${CMAKE_SOURCE_DIR}/lib/assimp-5.0.1/contrib/irrXML)
 # add_subdirectory(${CMAKE_SOURCE_DIR}/lib/assimp-5.0.1)
@@ -101,6 +100,12 @@ target_link_libraries(${PROJECT_NAME} assimp)
 # 		$<TARGET_FILE_DIR:${PROJECT_NAME}>)
 # endif()
 
-add_custom_target(copy-shaders ALL COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/shaders ${CMAKE_BINARY_DIR}/shaders DEPENDS ${MY_TARGET})
-add_custom_target(copy-textures ALL COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/textures ${CMAKE_BINARY_DIR}/textures DEPENDS ${MY_TARGET})
-add_custom_target(copy-models ALL COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/game/models ${CMAKE_BINARY_DIR}/game/models DEPENDS ${MY_TARGET})
+add_custom_target(TARGET ${PROJECT_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/shaders $<TARGET_FILE_DIR:${PROJECT_NAME}>/config)
+
+file(COPY src/shaders DESTINATION Debug)
+file(COPY src/textures DESTINATION Debug)
+file(COPY src/game/models DESTINATION Debug/game)
+
+# add_custom_target(copy-shaders ALL COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/shaders ${CMAKE_BINARY_DIR}/shaders DEPENDS ${MY_TARGET})
+# add_custom_target(copy-textures ALL COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/textures ${CMAKE_BINARY_DIR}/textures DEPENDS ${MY_TARGET})
+# add_custom_target(copy-models ALL COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/game/models ${CMAKE_BINARY_DIR}/game/models DEPENDS ${MY_TARGET})

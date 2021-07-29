@@ -176,7 +176,7 @@ public:
 		// std::cout << "render world scene \n";
 		glEnable(GL_DEPTH_TEST);
 		Scene::renderScene(delta, shader, isShadowRender);
-		// test->Draw(shader);
+		test->Draw(shader);
 		glDisable(GL_DEPTH_TEST);
 	}
 };

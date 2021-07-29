@@ -1,0 +1,23 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "type": "shell",
+        "label": "cl.exe build active file",
+        "command": "cl.exe",
+        "args": [
+          "/Zi",
+          "/EHsc",
+          "/Fe:",
+          "${fileDirname}\\${fileBasenameNoExtension}.exe",
+          "${file}",
+          // "--include-directory=C:\\Users\\kewin\\Projects\\GameEngine2\\lib\\glfw-3.3.3\\include"
+        ],
+        "problemMatcher": ["$msCompile"],
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        }
+      }
+    ]
+  }

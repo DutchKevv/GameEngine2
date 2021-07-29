@@ -1,0 +1,10 @@
+{
+    "includePath": [
+        "${workspaceFolder}/**",
+        "${workspaceFolder}/lib",
+        "${workspaceFolder}/lib/glfw-3.3.3/include",
+        "${workspaceFolder}/lib/glfw-3.3.3/include/**",
+        "lib/glad",
+        "C:\\Users\\kewin\\Projects\\GameEngine2\\include"
+    ]
+}
