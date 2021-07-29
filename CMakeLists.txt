@@ -9,6 +9,12 @@ set(LIB_DIR "${CMAKE_CURRENT_SOURCE_DIR}/lib")
 set(SOURCES "${SRC_DIR}/main.cpp")
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
+set(CMAKE_BUILD_TYPE "Debug")
+
+message(STATUS  "DEBUG!!!!!!!")
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+message(STATUS  "DEBUG!!!!!!!")
+endif()
 
 # include(CPack)
 # include(CTest)
@@ -72,20 +78,28 @@ include_directories(
 	"${CMAKE_SOURCE_DIR}/lib/assimp-5.0.1/include/"
 )
 
+# set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ${CMAKE_SOURCE_DIR}/lib/assimp-5.0.1)
+
+# find_package(assimp REQUIRED)
+# set_target_properties(assimp::assimp PROPERTIES MAP_IMPORTED_CONFIG_DEBUG Debug)
+
 set(ASSIMP_ENABLE_BOOST_WORKAROUND ON)
 set(BUILD_STATIC_LIB ON)
-set(BUILD_ASSIMP_TOOLS  OFF)
+set(BUILD_ASSIMP_TOOLS  ON)
 set(ASSIMP_NO_EXPORT ON)
-set(ASSIMP_BUILD_ASSIMP_TOOLS  OFF)
+set(ASSIMP_BUILD_ASSIMP_TOOLS  ON)
 set(ASSIMP_BUILD_STATIC_LIB ON)
 set(ASSIMP_BUILD_TESTS OFF)
-set(ASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT OFF)
-set(ASSIMP_BUILD_FBX_IMPORTER ON)
-set(ASSIMP_BUILD_BLEND_IMPORTER ON)
-set(ASSIMP_BUILD_OBJ_IMPORTER ON)
+# set(ASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT OFF)
+# set(ASSIMP_BUILD_FBX_IMPORTER ON)
+# set(ASSIMP_BUILD_BLEND_IMPORTER ON)
+# set(ASSIMP_BUILD_OBJ_IMPORTER ON)
 add_subdirectory(lib/assimp-5.0.1)
+
+
 # add_library(assimp "lib/assimp-5.0.1/assimp.dll")
 # add_subdirectory(${CMAKE_SOURCE_DIR}/lib/assimp-5.0.1/contrib/irrXML)
+# add_subdirectory(${CMAKE_SOURCE_DIR}/lib/assimp-5.0.1/contrib/zlib)
 # add_subdirectory(${CMAKE_SOURCE_DIR}/lib/assimp-5.0.1)
 
 target_link_libraries(${PROJECT_NAME} assimp)
@@ -100,7 +114,10 @@ target_link_libraries(${PROJECT_NAME} assimp)
 # 		$<TARGET_FILE_DIR:${PROJECT_NAME}>)
 # endif()
 
-add_custom_target(TARGET ${PROJECT_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/shaders $<TARGET_FILE_DIR:${PROJECT_NAME}>/config)
+add_custom_target(TARGET ${PROJECT_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/shaders $<TARGET_FILE_DIR:${PROJECT_NAME}>/shaders)
+
+
+# add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/game/models $<TARGET_FILE_DIR:${PROJECT_NAME}>/game/models)
 
 file(COPY src/shaders DESTINATION Debug)
 file(COPY src/textures DESTINATION Debug)

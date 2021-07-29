@@ -89,7 +89,10 @@ public:
 
 		// load models
 		// -----------
-		test = new Model("game/models/blenderman/BLENDERMAN!.obj");
+		test = new Model("game/models/trees/sdf/tree.fbx");
+		// test = new Model("game/models/trees/cartoon/CartoonTree.fbx");
+		// test = new Model("game/models/tree-low-poly/lowpolytree.obj");
+		// test = new Model("game/models/plane/FREOBJ.obj");
 
 		camera = new Camera(glm::vec3(0.0f, 10.0f, 20.0f));
 
@@ -107,6 +110,7 @@ public:
 		addChild(cube5, this);
 		addChild(spotlight, this);
 		addChild(floor, this);
+		addChild(test, this);
 	}
 
 	void draw(float delta)
@@ -176,7 +180,6 @@ public:
 		// std::cout << "render world scene \n";
 		glEnable(GL_DEPTH_TEST);
 		Scene::renderScene(delta, shader, isShadowRender);
-		test->Draw(shader);
 		glDisable(GL_DEPTH_TEST);
 	}
 };

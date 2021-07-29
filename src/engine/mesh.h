@@ -63,6 +63,7 @@ public:
 		for (unsigned int i = 0; i < textures.size(); i++)
 		{
 			glActiveTexture(GL_TEXTURE0 + i); // active proper texture unit before binding
+			
 			// retrieve texture number (the N in diffuse_textureN)
 			string number;
 			string name = textures[i].type;
@@ -80,6 +81,8 @@ public:
 			// and finally bind the texture
 			glBindTexture(GL_TEXTURE_2D, textures[i].id);
 		}
+
+		// glBindTexture(GL_TEXTURE_2D, 0);
 
 		// draw mesh
 		glBindVertexArray(VAO);

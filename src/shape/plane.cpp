@@ -90,20 +90,12 @@ public:
 
   void renderScene(float delta, Shader *shader, bool isShadowRender)
   {
-        shader->use();
     // std::cout << "render floor \n";
 
-    glUniform1i(glGetUniformLocation(shader->ID, "texture1"), 0);
+    // glUniform1i(glGetUniformLocation(shader->ID, "texture1"), 0);
 
-    // const unsigned int SCR_WIDTH = 800;
-    // const unsigned int SCR_HEIGHT = 600;
-
-    glActiveTexture(GL_TEXTURE0);
+    // glActiveTexture(GL_TEXTURE0);
     texture.Bind();
-    shader->setInt("useTextures", 1);
-
-    // be sure to activate shader when setting uniforms/drawing objects
-
 
     // shaderProgram->setVec3("objectColor", 1.0f, 0.5f, 0.31f);
     shader->setVec3("material.ambient", 1.0f, 0.5f, 0.31f);

@@ -9,9 +9,10 @@
           "/Zi",
           "/EHsc",
           "/Fe:",
-          "${fileDirname}\\${fileBasenameNoExtension}.exe",
+          "--std",
+          "c++17",
           "${file}",
-          "--include-directory=C:\\Users\\kewin\\Projects\\GameEngine2\\lib\\glfw-3.3.3\\include"
+          // "--include-directory=C:\\Users\\kewin\\Projects\\GameEngine2\\lib\\glfw-3.3.3\\include"
         ],
         "problemMatcher": ["$msCompile"],
         "group": {
