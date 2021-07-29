@@ -4,16 +4,16 @@ project(game2 VERSION 0.1.0)
 # Add .lib files
 link_directories(${CMAKE_SOURCE_DIR}/lib)
 
-set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++ -static ${CMAKE_EXE_LINKER_FLAGS} -fuse-ld=lld")
+set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++ -static")
 set(SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
 set(LIB_DIR "${CMAKE_CURRENT_SOURCE_DIR}/lib")
 set(SOURCES "${SRC_DIR}/main.cpp")
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 
-include(CPack)
-include(CTest)
-enable_testing()
+# include(CPack)
+# include(CTest)
+# enable_testing()
 
 include_directories ("${SRC_DIR}/engine")
 
@@ -70,7 +70,6 @@ target_include_directories(game2 PRIVATE src)
 include_directories(
 	"${CMAKE_SOURCE_DIR}/src"
 	"${CMAKE_SOURCE_DIR}/src/engine"
-	# "${CMAKE_SOURCE_DIR}/lib"
 	"${CMAKE_SOURCE_DIR}/lib/assimp-4.0.1/include/"
 )
 

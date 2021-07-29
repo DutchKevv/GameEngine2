@@ -167,8 +167,6 @@ public:
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, depthMap);
 		renderScene(delta, shader, false);
-
-		test->Draw(shader);
 	}
 
 	// renders the 3D scene
@@ -178,6 +176,7 @@ public:
 		// std::cout << "render world scene \n";
 		glEnable(GL_DEPTH_TEST);
 		Scene::renderScene(delta, shader, isShadowRender);
+		// test->Draw(shader);
 		glDisable(GL_DEPTH_TEST);
 	}
 };
