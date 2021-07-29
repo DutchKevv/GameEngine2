@@ -9,7 +9,13 @@
       "installRoot": "${projectDir}\\out\\install\\${name}",
       "cmakeCommandArgs": "",
       "buildCommandArgs": "",
-      "ctestCommandArgs": ""
+      "ctestCommandArgs": "",
+      "variables": [
+        {
+               "name": "include_directories",
+               "value": "${projectDir}\\lib/glfw-3.3.3/include ${projectDir}/lib/assimp-5.0.1/include/",
+               "type": "PATH"
+        }]
     }
   ]
 }

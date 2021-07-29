@@ -11,7 +11,7 @@
           "/Fe:",
           "${fileDirname}\\${fileBasenameNoExtension}.exe",
           "${file}",
-          // "--include-directory=C:\\Users\\kewin\\Projects\\GameEngine2\\lib\\glfw-3.3.3\\include"
+          "--include-directory=C:\\Users\\kewin\\Projects\\GameEngine2\\lib\\glfw-3.3.3\\include"
         ],
         "problemMatcher": ["$msCompile"],
         "group": {
