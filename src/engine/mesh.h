@@ -68,29 +68,38 @@ public:
 		shader->setVec3("material.diffuse", 1.0f, 0.5f, 0.31f);
 		shader->setVec3("material.specular", 1.0f, 1.0f, 1.0f);
 		shader->setFloat("material.shininess", 32.0f);
-		shader->setVec3("color", glm::vec3(color.r, color.g, color.b));
+		shader->setVec3("_color", glm::vec3(color.r, color.g, color.b));
 		// std::cout << "red: " << color.b << "\n";
 
-		for (unsigned int i = 0; i < textures.size(); i++)
+		if (textures.size() > 0)
 		{
-			glActiveTexture(GL_TEXTURE0 + i); // active proper texture unit before binding
+			shader->setInt("useTexture", 1);
 
-			// retrieve texture number (the N in diffuse_textureN)
-			string number;
-			string name = textures[i].type;
-			if (name == "texture_diffuse")
-				number = std::to_string(diffuseNr++);
-			else if (name == "texture_specular")
-				number = std::to_string(specularNr++); // transfer unsigned int to stream
-			else if (name == "texture_normal")
-				number = std::to_string(normalNr++); // transfer unsigned int to stream
-			else if (name == "texture_height")
-				number = std::to_string(heightNr++); // transfer unsigned int to stream
+			for (unsigned int i = 0; i < textures.size(); i++)
+			{
+				glActiveTexture(GL_TEXTURE0 + i); // active proper texture unit before binding
 
-			// now set the sampler to the correct texture unit
-			glUniform1i(glGetUniformLocation(shader->ID, (name + number).c_str()), i);
-			// and finally bind the texture
-			glBindTexture(GL_TEXTURE_2D, textures[i].id);
+				// retrieve texture number (the N in diffuse_textureN)
+				string number;
+				string name = textures[i].type;
+				if (name == "texture_diffuse")
+					number = std::to_string(diffuseNr++);
+				else if (name == "texture_specular")
+					number = std::to_string(specularNr++); // transfer unsigned int to stream
+				else if (name == "texture_normal")
+					number = std::to_string(normalNr++); // transfer unsigned int to stream
+				else if (name == "texture_height")
+					number = std::to_string(heightNr++); // transfer unsigned int to stream
+
+				// now set the sampler to the correct texture unit
+				glUniform1i(glGetUniformLocation(shader->ID, (name + number).c_str()), i);
+				// and finally bind the texture
+				glBindTexture(GL_TEXTURE_2D, textures[i].id);
+			}
+		}
+		else
+		{
+			shader->setInt("useTexture", 0);
 		}
 
 		glBindTexture(GL_TEXTURE_2D, 0);

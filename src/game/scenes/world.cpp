@@ -95,10 +95,10 @@ public:
 		// load models
 		// -----------
 		// test = new Model("game/models/trees/cartoon/CartoonTree.fbx");
-		test = new Model("game/models/tree-low-poly/lowpolytree.obj");
+		// test = new Model("game/models/tree-low-poly/lowpolytree.obj");
 		// test = new Model("game/models/plane/FREOBJ.obj");
 
-		camera = new Camera(glm::vec3(0.0f, 50.0f, 50.0f));
+		camera = new Camera(glm::vec3(7.0f, 37.0f, 8.0f));
 
 		cube1->position = glm::vec3(0.0f, 1.5f, 0.0);
 		cube2->position = glm::vec3(2.0f, 0.0f, -15.0f);
@@ -114,7 +114,6 @@ public:
 		addChild(cube4, this);
 		addChild(cube5, this);
 		addChild(floor, this);
-		addChild(test, this);
 
         // load random positions for models
         float halfSpace = space / 2;
@@ -122,7 +121,7 @@ public:
 		{
 			Model *model = new Model("game/models/tree-low-poly/lowpolytree.obj");
 
-			glm::vec4 position = glm::vec4((rand() % space) - halfSpace, 2.0f, (rand() % space) - halfSpace, rand() % 100);
+			glm::vec4 position = glm::vec4((rand() % space) - halfSpace, 1.8f, (rand() % space) - halfSpace, rand() % 100);
 
 			model->position = position;
 
@@ -134,7 +133,7 @@ public:
 	{
 		// 1. render depth of scene to texture (from light's perspective)
 		// --------------------------------------------------------------
-
+shader->setInt("useTexture", 1);
 		// render
 		// ------
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
@@ -146,7 +145,7 @@ public:
 		BaseObject *spotlight = getChildByClass<Spotlight>();
 		// glm::vec3 lightPos(-0.0f, 40.0f, -100.0f);
 		// lightProjection = glm::perspective(glm::radians(45.0f), (GLfloat)SHADOW_WIDTH / (GLfloat)SHADOW_HEIGHT, near_plane, far_plane); // note that if you use a perspective projection matrix you'll have to change the light position as the current light position isn't enough to reflect the whole scene
-		lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
+		lightProjection = glm::ortho(-50.0f, 50.0f, -40.0f, 40.0f, near_plane, far_plane);
 		// lightView = glm::lookAt(glm::vec3(-2.0f, 4.0f, -1.0f), glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
 		lightView = glm::lookAt(spotlight->position, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
 		lightSpaceMatrix = lightProjection * lightView;
@@ -171,6 +170,8 @@ public:
 		glViewport(0, 0, context->display->windowW, context->display->windowH);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		shader->use();
+
+		// draw distance
 		glm::mat4 projection = glm::perspective(glm::radians(camera->Zoom), (float)context->display->windowW / (float)context->display->windowH, 10.1f, 10000.0f);
 		glm::mat4 view = camera->GetViewMatrix();
 

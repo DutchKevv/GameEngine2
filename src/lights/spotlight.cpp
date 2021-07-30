@@ -39,7 +39,8 @@ public:
 		std::cout << "draw light" << std::endl;
 	}
 
-	void renderScene(float delta, Shader *shader, bool isShadowRender) {
+	void renderScene(float delta, Shader *shader, bool isShadowRender)
+	{
 		// std::cout << "Render light" << std::endl;
 
 		// glm::vec3 lightPos(-0.0f, 40.0f, -30.0f);
@@ -48,6 +49,7 @@ public:
 		translationX = 12.0f * cos(0.0f + speed * (float)glfwGetTime());
 		translationY = 20.0f * sin(0.0f + speed * (float)glfwGetTime());
 		// translationY = 2.0f * sin(0.0f + 1.0f * (float)glfwGetTime());
+		// translationZ = scene->camera->Position.z - 150.0f;
 		translationZ = -50.0f;
 		// translationZ = -100.0f * sin(0.0f + speed * (float)glfwGetTime());
 		// glm::vec3 translation = glm::vec3(2.0f);
