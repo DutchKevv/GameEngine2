@@ -20,7 +20,7 @@
 const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
 vector<glm::vec4> treePositions;
 const unsigned int space = 30;
-const unsigned int trees = 50;
+const unsigned int trees = 15;
 
 class WorldScene : public Scene
 {
@@ -171,7 +171,7 @@ public:
 		glViewport(0, 0, context->display->windowW, context->display->windowH);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		shader->use();
-		glm::mat4 projection = glm::perspective(glm::radians(camera->Zoom), (float)context->display->windowW / (float)context->display->windowH, 0.1f, 100.0f);
+		glm::mat4 projection = glm::perspective(glm::radians(camera->Zoom), (float)context->display->windowW / (float)context->display->windowH, 10.1f, 10000.0f);
 		glm::mat4 view = camera->GetViewMatrix();
 
 		shader->setMat4("projection", projection);

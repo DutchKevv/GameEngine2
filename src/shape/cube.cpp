@@ -107,49 +107,6 @@ public:
   void draw(float delta)
   {
     std::cout << "draw Cube \n";
-
-    // const unsigned int SCR_WIDTH = 800;
-    // const unsigned int SCR_HEIGHT = 600;
-
-    // if (loadTexture)
-    // {
-    //   glActiveTexture(GL_TEXTURE0);
-    //   texture.Bind();
-    //   shaderProgram->setInt("useTextures", 1);
-    // }
-    // else
-    // {
-    //   glBindTexture(GL_TEXTURE_2D, 0);
-    //   shaderProgram->setVec3("objectColor", color);
-    //   shaderProgram->setInt("useTextures", 0);
-    // }
-
-    // // be sure to activate shader when setting uniforms/drawing objects
-    // shaderProgram->use();
-
-    // // glUniform1i(glGetUniformLocation(shaderProgram->ID, "texture1"), 0);
-
-    // // shaderProgram->setVec3("objectColor", 1.0f, 0.5f, 0.31f);
-    // shaderProgram->setVec3("material.ambient", 1.0f, 0.5f, 0.31f);
-    // shaderProgram->setVec3("material.diffuse", 1.0f, 0.5f, 0.31f);
-    // shaderProgram->setVec3("material.specular", 0.0f, 0.0f, 0.0f);
-    // shaderProgram->setFloat("material.shininess", 32.0f);
-
-    // shaderProgram->setVec3("viewPos", scene->camera->Position);
-
-    // view/projection transformations
-    // glm::mat4 projection = glm::perspective(glm::radians(scene->camera->Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-    // glm::mat4 view = scene->camera->GetViewMatrix();
-    // shaderProgram->setMat4("projection", projection);
-    // shaderProgram->setMat4("view", view);
-
-    // world transformation
-    // glm::mat4 model = glm::mat4(1.0f);
-    // shaderProgram->setMat4("model", glm::translate(model, position));
-
-    // // render the cube
-    // glBindVertexArray(cubeVAO);
-    // glDrawArrays(GL_TRIANGLES, 0, 36);
   }
 
   void renderScene(float delta, Shader *shader, bool isShadowRender)
@@ -188,13 +145,13 @@ public:
     shader->setVec3("material.specular", 0.0f, 0.0f, 0.0f);
     shader->setFloat("material.shininess", 32.0f);
 
-    shader->setVec3("viewPos", scene->camera->Position);
+    // shader->setVec3("viewPos", scene->camera->Position);
 
-    // view/projection transformations
-    glm::mat4 projection = glm::perspective(glm::radians(scene->camera->Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-    glm::mat4 view = scene->camera->GetViewMatrix();
-    shader->setMat4("projection", projection);
-    shader->setMat4("view", view);
+    // // view/projection transformations
+    // glm::mat4 projection = glm::perspective(glm::radians(scene->camera->Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+    // glm::mat4 view = scene->camera->GetViewMatrix();
+    // shader->setMat4("projection", projection);
+    // shader->setMat4("view", view);
 
 
     // world transformation
