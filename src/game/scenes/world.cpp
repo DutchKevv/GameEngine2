@@ -18,10 +18,11 @@
 #include "../../shape/plane.cpp"
 #include "../../lights/spotlight.cpp"
 
-const unsigned int SHADOW_WIDTH = 10241, SHADOW_HEIGHT = 10241;
+const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
 vector<glm::vec4> treePositions;
 const unsigned int space = 330;
-const unsigned int trees = 575;
+const unsigned int trees = 300;
+const unsigned int trees2 = 399;
 const unsigned int rocks = 75;
 
 class WorldScene : public Scene
@@ -43,11 +44,13 @@ public:
 	Shader *shader;
 	Shader *depthShader;
 	Model *treeModel;
+	Model *treeModel2;
 	Model *rockModel;
 	Model *test;
 	// HeightMap *heightMap;
 
 	vector<glm::vec4> treePositions;
+	vector<glm::vec4> treePositions2;
 	vector<glm::vec4> rockPositions;
 
 	void init()
@@ -101,6 +104,8 @@ public:
 		// -----------
 		// test = new Model("game/models/trees/cartoon/CartoonTree.fbx");
 		// treeModel = new Model("game/models/cube/cube.obj");
+		// treeModel = new Model("game/models/tree-low-poly/polytree1.obj");
+		treeModel2 = new Model("game/models/tree-low-poly/polytree3.obj");
 		treeModel = new Model("game/models/tree-low-poly/polytree1.obj");
 		// test = new Model("game/models/plane/FREOBJ.obj");
 		rockModel = new Model("game/models/stone/stone.obj");
@@ -132,6 +137,12 @@ public:
 		for (int i = 0; i < trees; i++)
 		{
 			treePositions.push_back(
+				glm::vec4((rand() % space) - halfSpace, 0.0f, (rand() % space) - halfSpace, rand() % 100));
+		}
+
+		for (int i = 0; i < trees2; i++)
+		{
+			treePositions2.push_back(
 				glm::vec4((rand() % space) - halfSpace, 0.0f, (rand() % space) - halfSpace, rand() % 100));
 		}
 
@@ -247,6 +258,22 @@ public:
 			shader->setMat4("model", model);
 			// // textureGrass.Bind();
 			treeModel->renderScene(delta, shader, isShadowRender);
+		}
+
+		for (unsigned int i = 0; i < trees2; i++)
+		{
+			glm::mat4 model = glm::mat4(1.0f);
+			glm::vec4 random = treePositions2[i];
+
+			
+			model = glm::scale(model, glm::vec3(3.0f));
+			model = glm::translate(model, glm::vec3(random.x, 0.0f, random.z));
+			model = glm::rotate(model, random.w, glm::vec3(0.0f, 1.0f, 0.0f)); // where x, y, z is axis of rotation (e.g. 0 1 0)
+			model = glm::rotate(model, random.w / 200, glm::vec3(1.0f, 0.0f, 0.0f)); // where x, y, z is axis of rotation (e.g. 0 1 0)
+			// treeModel->position = glm::vec3(random);
+			shader->setMat4("model", model);
+			// // textureGrass.Bind();
+			treeModel2->renderScene(delta, shader, isShadowRender);
 		}
 
 		// for (unsigned int i = 0; i < trees; i++)

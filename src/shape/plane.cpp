@@ -42,7 +42,7 @@ public:
   {
     if (loadTexture)
     {
-      texture = context->resourceManager->loadTexture("wood.png", true, "grass", 0, 0);
+      texture = context->resourceManager->loadTexture("grass.jpg", true, "grass", 0, 0);
     }
 
     // plane VAO
