@@ -17,7 +17,7 @@ using namespace std;
 const string prefixShader = "shaders/";
 const string prefixTextures = "textures/";
 
-map<std::string, Texture2D> Textures;
+map<std::string, Texture2D *> Textures;
 map<std::string, Shader *> Shaders;
 
 class ResourceManager
@@ -62,14 +62,14 @@ public:
 		return Shaders[name];
 	}
 
-	Texture2D loadTexture(std::string filePath, GLboolean alpha, std::string name, GLuint WRAP_S, GLuint WRAP_T)
+	Texture2D *loadTexture(std::string filePath, GLboolean alpha, std::string name, GLuint WRAP_S, GLuint WRAP_T)
 	{
 		filePath = prefixTextures + filePath;
 		Textures[name] = loadTextureFromFile(filePath, alpha, WRAP_S, WRAP_T);
 		return Textures[name];
 	}
 
-	Texture2D GetTexture(std::string name)
+	Texture2D *GetTexture(std::string name)
 	{
 		return Textures[name];
 	}
@@ -180,22 +180,22 @@ public:
 	}
 
 	// TODO - revert parameter (default false)
-	Texture2D loadTextureFromFile(std::string file, GLboolean alpha, GLuint WRAP_S, GLuint WRAP_T)
+	Texture2D *loadTextureFromFile(std::string file, GLboolean alpha, GLuint WRAP_S, GLuint WRAP_T)
 	{
 
 		// enable reverting
 		stbi_set_flip_vertically_on_load(true);
 
 		// Create Texture object
-		Texture2D texture;
+		Texture2D *texture = new Texture2D;
 
-		texture.Wrap_S = WRAP_S;
-		texture.Wrap_T = WRAP_T;
+		texture->Wrap_S = WRAP_S;
+		texture->Wrap_T = WRAP_T;
 
 		if (alpha)
 		{
-			texture.Internal_Format = GL_RGBA;
-			texture.Image_Format = GL_RGBA;
+			texture->Internal_Format = GL_RGBA;
+			texture->Image_Format = GL_RGBA;
 		}
 		// Load image
 		int width, height, nrChannels;
@@ -207,7 +207,7 @@ public:
 		}
 
 		// Now generate texture
-		texture.Generate(width, height, image);
+		texture->Generate(width, height, image);
 
 		// free image data
 		stbi_image_free(image);

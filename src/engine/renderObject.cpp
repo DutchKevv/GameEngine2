@@ -24,6 +24,7 @@ public:
 	bool focused = false;
 
 	glm::vec3 rotation;
+	glm::vec3 scale = glm::vec3(1.0f);
 
 	virtual void draw(float delta)
 	{

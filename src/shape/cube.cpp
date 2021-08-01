@@ -69,7 +69,7 @@ public:
 
   glm::mat4 view;
   // Shader *shaderProgram;
-  Texture2D texture;
+  Texture2D *texture;
 
   void init()
   {
@@ -125,7 +125,7 @@ public:
     if (loadTexture)
     {
       glActiveTexture(GL_TEXTURE0);
-      texture.Bind();
+      texture->Bind();
       shader->setInt("useTextures", 1);
     }
     else

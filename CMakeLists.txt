@@ -118,6 +118,7 @@ target_link_libraries(${PROJECT_NAME} assimp)
 add_custom_target(TARGET ${PROJECT_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/shaders $<TARGET_FILE_DIR:${PROJECT_NAME}>/shaders)
 
 
+
 # add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/game/models $<TARGET_FILE_DIR:${PROJECT_NAME}>/game/models)
 
 file(COPY src/shaders DESTINATION Debug)

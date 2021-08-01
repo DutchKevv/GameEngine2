@@ -42,11 +42,6 @@ public:
 	// draws the model, and thus all its meshes
 	void renderScene(float delta, Shader *shader, bool isShadowRender)
 	{
-		    glm::mat4 model = glm::mat4(1.0f);
-			model = glm::scale(model, glm::vec3(2.2f));
-			model = glm::translate(model, position);
-   			shader->setMat4("model", model);
-
 		for (unsigned int i = 0; i < meshes.size(); i++)
 			meshes[i].Draw(shader);
 	}

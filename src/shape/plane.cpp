@@ -14,13 +14,13 @@
 
 float planeVertices[] = {
     // positions          // normals           // texture coords
-         250.0f, -0.5f,  250.0f,  0.0f, 1.0f, 0.0f,  250.0f,  0.0f,
-        -250.0f, -0.5f,  250.0f,  0.0f, 1.0f, 0.0f,   0.0f,  0.0f,
-        -250.0f, -0.5f, -250.0f,  0.0f, 1.0f, 0.0f,   0.0f, 250.0f,
+         1500.0f, -0.5f,  1500.0f,  0.0f, 1.0f, 0.0f,  1500.0f,  0.0f,
+        -1500.0f, -0.5f,  1500.0f,  0.0f, 1.0f, 0.0f,   0.0f,  0.0f,
+        -1500.0f, -0.5f, -1500.0f,  0.0f, 1.0f, 0.0f,   0.0f, 1500.0f,
 
-         250.0f, -0.5f,  250.0f,  0.0f, 1.0f, 0.0f,  250.0f,  0.0f,
-        -250.0f, -0.5f, -250.0f,  0.0f, 1.0f, 0.0f,   0.0f, 250.0f,
-         250.0f, -0.5f, -250.0f,  0.0f, 1.0f, 0.0f,  250.0f, 250.0f
+         1500.0f, -0.5f,  1500.0f,  0.0f, 1.0f, 0.0f,  1500.0f,  0.0f,
+        -1500.0f, -0.5f, -1500.0f,  0.0f, 1.0f, 0.0f,   0.0f, 1500.0f,
+         1500.0f, -0.5f, -1500.0f,  0.0f, 1.0f, 0.0f,  1500.0f, 1500.0f
 };
 
 class ShapePlane : public RenderObject
@@ -36,13 +36,13 @@ public:
 
   glm::mat4 view;
   Shader *shaderProgram;
-  Texture2D texture;
+  Texture2D *texture;
 
   void init()
   {
     if (loadTexture)
     {
-      texture = context->resourceManager->loadTexture("grass.jpg", true, "rock", 0, 0);
+      texture = context->resourceManager->loadTexture("wood.png", true, "grass", 0, 0);
     }
 
     // plane VAO
@@ -94,14 +94,14 @@ public:
 
     // glUniform1i(glGetUniformLocation(shader->ID, "texture1"), 0);
 
-    // glActiveTexture(GL_TEXTURE0);
-    texture.Bind();
+    glActiveTexture(GL_TEXTURE0);
+    texture->Bind();
 
     // shaderProgram->setVec3("objectColor", 1.0f, 0.5f, 0.31f);
     shader->setVec3("material.ambient", 1.0f, 0.5f, 0.31f);
     shader->setVec3("material.diffuse", 1.0f, 0.5f, 0.31f);
     shader->setVec3("material.specular", 0.5f, 0.5f, 0.5f);
-    shader->setFloat("material.shininess", 32.0f);
+    shader->setFloat("material.shininess", 0.0f);
 
     // shader->setVec3("viewPos", scene->camera->Position);
 

@@ -80,20 +80,29 @@ void SkyBox::init()
 	// -------------
 	// vector<std::string> faces{
 
-	// 	"textures/skybox/2/elbrus_bk.jpg",
-	// 	"textures/skybox/2/elbrus_dn.jpg",
-	// 	"textures/skybox/2/elbrus_ft.jpg",
-	// 	"textures/skybox/2/elbrus_lf.jpg",
-	// 	"textures/skybox/2/elbrus_rt.jpg",
-	// 	"textures/skybox/2/elbrus_up.jpg"};
+	// 	"textures/skybox/elbrus/elbrus_rt.jpg",
+	// 	"textures/skybox/elbrus/elbrus_lf.jpg",
+	// 	"textures/skybox/elbrus/elbrus_up.jpg",
+	// 	"textures/skybox/elbrus/elbrus_dn.jpg",
+	// 	"textures/skybox/elbrus/elbrus_bk.jpg",
+	// 	"textures/skybox/elbrus/elbrus_ft.jpg"};
 
 	vector<std::string> faces{
-		"textures/skybox/mandaris/mandaris_rt.tga",
-		"textures/skybox/mandaris/mandaris_lf.tga",
-		"textures/skybox/mandaris/mandaris_up.tga",
-		"textures/skybox/mandaris/mandaris_dn.tga",
-		"textures/skybox/mandaris/mandaris_bk.tga",
-		"textures/skybox/mandaris/mandaris_ft.tga"};
+
+		"textures/skybox/3/right.jpg",
+		"textures/skybox/3/left.jpg",
+		"textures/skybox/3/top.jpg",
+		"textures/skybox/3/bottom.jpg",
+		"textures/skybox/3/back.jpg",
+		"textures/skybox/3/front.jpg"};
+
+	// vector<std::string> faces{
+	// 	"textures/skybox/mandaris/mandaris_rt.tga",
+	// 	"textures/skybox/mandaris/mandaris_lf.tga",
+	// 	"textures/skybox/mandaris/mandaris_up.tga",
+	// 	"textures/skybox/mandaris/mandaris_dn.tga",
+	// 	"textures/skybox/mandaris/mandaris_bk.tga",
+	// 	"textures/skybox/mandaris/mandaris_ft.tga"};
 
 	cubemapTexture = loadCubemap(faces);
 };

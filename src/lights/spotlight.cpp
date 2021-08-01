@@ -46,11 +46,11 @@ public:
 		// glm::vec3 lightPos(-0.0f, 40.0f, -30.0f);
 
 		float speed = 1.1f;
-		translationX = 12.0f * cos(0.0f + speed * (float)glfwGetTime());
-		translationY = 20.0f * sin(0.0f + speed * (float)glfwGetTime());
+		translationX = 120.0f * cos(0.0f + speed * (float)glfwGetTime());
+		translationY = 120.0f * sin(0.0f + speed * (float)glfwGetTime());
 		// translationY = 2.0f * sin(0.0f + 1.0f * (float)glfwGetTime());
 		// translationZ = scene->camera->Position.z - 150.0f;
-		translationZ = -50.0f;
+		translationZ = -150.0f;
 		// translationZ = -100.0f * sin(0.0f + speed * (float)glfwGetTime());
 		// glm::vec3 translation = glm::vec3(2.0f);
 		glm::vec3 translation = glm::vec3(translationX, translationY, translationZ);

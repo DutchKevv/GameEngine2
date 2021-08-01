@@ -7,7 +7,6 @@
                 "${workspaceFolder}/lib",
                 "${workspaceFolder}/lib/glfw-3.3.3/include",
                 "${workspaceFolder}/lib/glfw-3.3.3/include/**",
-                "C:\\Users\\kewin\\Projects\\GameEngine2\\include",
                 "${workspaceFolder}/lib/imgui"
             ],
             "defines": [
