@@ -57,10 +57,10 @@ public:
 		modelMatrices = new glm::mat4[amount];
 
 		// std::cout << "init model2 \n";
-
+		float halfSpace = space / 2;
 		for (unsigned int i = 0; i < amount; i++)
 		{
-			glm::vec4 random = glm::vec4(rand() % space, 0.0f, (rand() % space), rand() % 100);
+			glm::vec4 random = glm::vec4((rand() % space) - halfSpace, 0.0f, (rand() % space) - halfSpace, rand() % 100);
 			glm::mat4 model = glm::mat4(1.0f);
 			// 	glm::vec4 random = treePositions[i];
 
@@ -112,10 +112,11 @@ public:
 	void renderScene(float delta, Shader *shader, bool isShadowRender)
 	{
 		shader->use();
-
+			shader->setBool("useTexture", false);
 		if (amount > 1)
 		{
 			shader->setBool("useInstances", true);
+
 		}
 		else
 		{

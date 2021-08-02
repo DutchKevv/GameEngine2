@@ -85,7 +85,7 @@ public:
 		// shader configuration
 		// --------------------
 		shader->use();
-		shader->setInt("diffuseTexture", 0);
+		shader->setInt("diffuseTexture", 1);
 		shader->setInt("shadowMap", 1);
 
 		std::cout << "init world \n";
@@ -105,8 +105,8 @@ public:
 		// test = new Model("game/models/trees/cartoon/CartoonTree.fbx");
 		// treeModel = new Model("game/models/cube/cube.obj");
 		// treeModel = new Model("game/models/tree-low-poly/polytree1.obj");
-		treeModel2 = new Model("game/models/tree-low-poly/polytree3.obj", 10000);
-		// treeModel = new Model("game/models/tree-low-poly/polytree1.obj");
+		// treeModel2 = new Model("game/models/tree-low-poly/polytree3.obj", 10000);
+		treeModel2 = new Model("game/models/tree-low-poly/polytree1.obj", 10000);
 		// test = new Model("game/models/plane/FREOBJ.obj");
 		// rockModel = new Model("game/models/stone/stone.obj");
 		// treeModel = new Model("game/models/tree-low-poly/lowpolytree.obj");
@@ -121,10 +121,11 @@ public:
 		// cube5->position = glm::vec3(0.0f, 0.0f, 0.0f);
 		// test->position = glm::vec3(1.0f, 2.0f, 0.0f);
 
-		addChild(spotlight, this);
+
 		addChild(skybox, this);
+				addChild(spotlight, this);
+				addChild(floor, this);
 		addChild(treeModel2, this);
-		addChild(floor, this);
 		// addChild(floor, this);
 		// addChild(cube1, this);
 		// addChild(cube2, this);
@@ -248,7 +249,7 @@ public:
 	{
 		// std::cout << "render world scene \n";
 		glEnable(GL_DEPTH_TEST);
-		// shader->use();
+		shader->use();
 		Scene::renderScene(delta, shader, isShadowRender);
 
 		// for (unsigned int i = 0; i < trees; i++)

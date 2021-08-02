@@ -43,7 +43,6 @@ target_link_libraries(${PROJECT_NAME} "glfw" "${GLFW_LIBRARIES}")
 target_include_directories(${PROJECT_NAME} PRIVATE "${GLFW_DIR}/include")
 target_compile_definitions(${PROJECT_NAME} PRIVATE "GLFW_INCLUDE_NONE")
 
-
 # glad
 set(GLAD_DIR "${LIB_DIR}/glad")
 add_library("glad" "${GLAD_DIR}/src/glad.c")
@@ -53,6 +52,8 @@ target_link_libraries(${CMAKE_PROJECT_NAME} "glad")
 # imgui
 # Set where the ImGui files are stored
 set(IMGUI_PATH  "${LIB_DIR}/imgui")
+
+
 
 # STB Image
 set(STB_PATH  "${LIB_DIR}/stb")
@@ -96,7 +97,6 @@ set(ASSIMP_BUILD_TESTS OFF)
 # set(ASSIMP_BUILD_BLEND_IMPORTER ON)
 # set(ASSIMP_BUILD_OBJ_IMPORTER ON)
 add_subdirectory(lib/assimp-5.0.1)
-
 
 # add_library(assimp "lib/assimp-5.0.1/assimp.dll")
 # add_subdirectory(${CMAKE_SOURCE_DIR}/lib/assimp-5.0.1/contrib/irrXML)

@@ -43,7 +43,7 @@ public:
     // ------------------------------------------------------------------------
     void use() const
     {
-        std::cout << ID << "\n";
+        // std::cout << ID << "\n";
         glUseProgram(ID);
     }
     // utility uniform functions

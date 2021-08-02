@@ -14,14 +14,13 @@
 
 float planeVertices[] = {
     // positions          // normals           // texture coords
-         1500.0f, -0.5f,  1500.0f,  0.0f, 1.0f, 0.0f,  1500.0f,  0.0f,
-        -1500.0f, -0.5f,  1500.0f,  0.0f, 1.0f, 0.0f,   0.0f,  0.0f,
-        -1500.0f, -0.5f, -1500.0f,  0.0f, 1.0f, 0.0f,   0.0f, 1500.0f,
+    1500.0f, -0.5f, 1500.0f, 0.0f, 1.0f, 0.0f, 1500.0f, 0.0f,
+    -1500.0f, -0.5f, 1500.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
+    -1500.0f, -0.5f, -1500.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1500.0f,
 
-         1500.0f, -0.5f,  1500.0f,  0.0f, 1.0f, 0.0f,  1500.0f,  0.0f,
-        -1500.0f, -0.5f, -1500.0f,  0.0f, 1.0f, 0.0f,   0.0f, 1500.0f,
-         1500.0f, -0.5f, -1500.0f,  0.0f, 1.0f, 0.0f,  1500.0f, 1500.0f
-};
+    1500.0f, -0.5f, 1500.0f, 0.0f, 1.0f, 0.0f, 1500.0f, 0.0f,
+    -1500.0f, -0.5f, -1500.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1500.0f,
+    1500.0f, -0.5f, -1500.0f, 0.0f, 1.0f, 0.0f, 1500.0f, 1500.0f};
 
 class ShapePlane : public RenderObject
 {
@@ -37,49 +36,36 @@ public:
   glm::mat4 view;
   Shader *shaderProgram;
   Texture2D *texture;
+  Texture2D *textureN;
 
   void init()
   {
     if (loadTexture)
     {
-      texture = context->resourceManager->loadTexture("grass.jpg", true, "grass2", 0, 0);
+      texture = context->resourceManager->loadTexture("pbr/grass/albedo.png", true, "grass2", 0, 0);
+      textureN = context->resourceManager->loadTexture("pbr/grass/ao.png", true, "grass2N", 0, 0);
     }
 
-    // plane VAO
+    // first, configure the cube's VAO (and VBO)
     glGenVertexArrays(1, &planeVAO);
     glGenBuffers(1, &planeVBO);
     glBindVertexArray(planeVAO);
+
     glBindBuffer(GL_ARRAY_BUFFER, planeVBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(planeVertices), planeVertices, GL_STATIC_DRAW);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+
+    // position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)0);
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+
+    // normal attribute
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)(3 * sizeof(float)));
     glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+
+    // texture coord attribute
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)(6 * sizeof(float)));
     glBindVertexArray(0);
-
-    // // first, configure the cube's VAO (and VBO)
-    // glGenVertexArrays(1, &cubeVAO);
-    // glGenBuffers(1, &VBO);
-
-    // glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    // glBufferData(GL_ARRAY_BUFFER, sizeof(planeVertices), planeVertices, GL_STATIC_DRAW);
-
-    // glBindVertexArray(cubeVAO);
-
-    // // position attribute
-    // glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)0);
-    // glEnableVertexAttribArray(0);
-
-    // // normal attribute
-    // glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)(3 * sizeof(float)));
-    // glEnableVertexAttribArray(1);
-
-    // // texture coord attribute
-    // glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)(6 * sizeof(float)));
-    // glEnableVertexAttribArray(2);
-    // // glUniform1i(glGetUniformLocation(shaderProgram->ID, "texture1"), 0);
   }
 
   void draw(float delta)
@@ -95,15 +81,19 @@ public:
     shader->use();
     shader->setBool("useInstances", false);
     shader->setBool("useTexture", true);
-
+    shader->setBool("useNormal", true);
+    // shader->setInt("normalMap", 1);
     glActiveTexture(GL_TEXTURE0);
-    texture->Bind();
+    glBindTexture(GL_TEXTURE_2D, texture->ID);
+    // glActiveTexture(GL_TEXTURE2);
+    // glBindTexture(GL_TEXTURE_2D, textureN->ID);
+    // textureN->Bind();awwwewaaewawaw
 
     // shaderProgram->setVec3("objectColor", 1.0f, 0.5f, 0.31f);
-    shader->setVec3("material.ambient", 1.0f, 0.5f, 0.31f);
-    shader->setVec3("material.diffuse", 1.0f, 0.5f, 0.31f);
-    shader->setVec3("material.specular", 0.5f, 0.5f, 0.5f);
-    shader->setFloat("material.shininess", 0.0f);
+    // shader->setVec3("material.ambient",  0.4f, 0.4f, 0.24f);
+    // shader->setVec3("material.diffuse", 0.5f, 0.5f, 0.5f);
+    // shader->setVec3("material.specular", 0.33f, 0.33f, 0.33f);
+    // shader->setFloat("material.shininess", 0.3f);
 
     // world transformation
     glm::mat4 model = glm::mat4(1.0f);
@@ -114,5 +104,7 @@ public:
     // render the cube
     glBindVertexArray(planeVAO);
     glDrawArrays(GL_TRIANGLES, 0, 6);
+
+     glActiveTexture(GL_TEXTURE0);
   }
 };

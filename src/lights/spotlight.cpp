@@ -16,7 +16,7 @@ class Spotlight : public RenderObject
 
 public:
 	bool showCube = false;
-	glm::vec3 lightColor = glm::vec3(0.2f, 0.3f, 0.6f);
+	glm::vec3 lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
 	glm::vec3 lightPos = glm::vec3(1.2f, 1.0f, 2.0f);
 
 	float translationX;
@@ -26,12 +26,12 @@ public:
 
 	void init()
 	{
-		if (showCube)
-		{
-			cube = ShapeCube();
-			cube.loadTexture = false;
-			cube.addChild(&cube, scene);
-		}
+		// if (showCube)
+		// {
+		// 	cube = ShapeCube();
+		// 	cube.loadTexture = false;
+		// 	cube.addChild(&cube, scene);
+		// }
 	}
 
 	void draw(float delta)
@@ -54,33 +54,40 @@ public:
 		// translationZ = -100.0f * sin(0.0f + speed * (float)glfwGetTime());
 		// glm::vec3 translation = glm::vec3(2.0f);
 		glm::vec3 translation = glm::vec3(translationX, translationY, translationZ);
+
+		// if (translation.y < 2.0f) {
+		// 	translation.y = 2.0f;
+		// }
 		position = translation;
 		// position = lightPos;
 
 		glm::vec3 lightColor;
-		lightColor.x = sin(glfwGetTime() * 2.0f);
-		lightColor.y = sin(glfwGetTime() * 0.7f);
+		lightColor.x = sin(glfwGetTime() * 1.0f);
+		lightColor.y = sin(glfwGetTime() * 1.7f);
 		lightColor.z = sin(glfwGetTime() * 1.3f);
 
-		glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f);
-		glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
+		glm::vec3 diffuseColor = lightColor * glm::vec3(1.5f);
+		glm::vec3 ambientColor = diffuseColor * glm::vec3(1.4f);
 
-		if (showCube)
-		{
-			cube.position = translation;
-			// cube.position = lightPos;
-			cube.color = diffuseColor;
-			cube.renderScene(delta, shader, isShadowRender);
-		}
+		// if (showCube)
+		// {
+		// 	cube.position = translation;
+		// 	// cube.position = lightPos;
+		// 	cube.color = diffuseColor;
+		// 	cube.renderScene(delta, shader, isShadowRender);
+		// }
 
 		shader->use();
-		// shaderProgram->setVec3("light.color", lightColor);
-		shader->setVec3("lightPosition", translation);
+		shader->setBool("useInstances", false);
+		shader->setBool("useNormal", false);
+		shader->setVec3("light.color", glm::vec3(1.3f));
+		// shader->setVec3("light.color", lightColor);
+		shader->setVec3("light.position", translation);
 		// shader->setVec3("lightPosition", translation);
+		// shader->setVec3("light.ambient", ambientColor);
 		shader->setVec3("light.ambient", ambientColor);
-		// shaderProgram->setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
 		shader->setVec3("light.diffuse", diffuseColor); // darken diffuse light a bit
-		// shaderProgram->setVec3("light.diffuse", 0.5f, 0.5f, 0.5f); // darken diffuse light a bit
-		shader->setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+		// shader->setVec3("light.diffuse", 0.5f, 0.5f, 0.5f); // darken diffuse light a bit
+		shader->setVec3("light.specular", 0.0f, 0.0f, 0.0f);
 	}
 };
