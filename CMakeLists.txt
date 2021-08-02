@@ -123,7 +123,6 @@ file(COPY src/shaders DESTINATION Debug)
 file(COPY src/textures DESTINATION Debug)
 file(COPY src/game/models DESTINATION Debug/game)
 
-
 # add_custom_target(copy-shaders ALL COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/shaders ${CMAKE_BINARY_DIR}/shaders DEPENDS ${MY_TARGET})
 # add_custom_target(copy-textures ALL COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/textures ${CMAKE_BINARY_DIR}/textures DEPENDS ${MY_TARGET})
 # add_custom_target(copy-models ALL COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/game/models ${CMAKE_BINARY_DIR}/game/models DEPENDS ${MY_TARGET})

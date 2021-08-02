@@ -123,6 +123,7 @@ public:
 
 		addChild(spotlight, this);
 		addChild(skybox, this);
+		addChild(floor, this);
 		addChild(treeModel2, this);
 		// addChild(cube1, this);
 		// addChild(cube2, this);
@@ -130,7 +131,6 @@ public:
 		// addChild(test, this);
 		// addChild(cube4, this);
 		// addChild(cube5, this);
-		addChild(floor, this);
 
 		// addChild(heightMap, this);
 
@@ -218,7 +218,10 @@ public:
 		shader->use();
 
 		// draw distance
-		glm::mat4 projection = glm::perspective(glm::radians(camera->Zoom), (float)context->display->windowW / (float)context->display->windowH, 10.1f, 10000.0f);
+		// TODO - does not set float correct in display class
+		float ratio = (float)context->display->windowW / (float)context->display->windowH;
+		glm::mat4 projection = glm::perspective(glm::radians(camera->Zoom), ratio, 10.1f, 10000.0f);
+
 		glm::mat4 view = camera->GetViewMatrix();
 
 		shader->setMat4("projection", projection);
@@ -243,6 +246,7 @@ public:
 	{
 		// std::cout << "render world scene \n";
 		glEnable(GL_DEPTH_TEST);
+		shader->use();
 		Scene::renderScene(delta, shader, isShadowRender);
 
 		// for (unsigned int i = 0; i < trees; i++)

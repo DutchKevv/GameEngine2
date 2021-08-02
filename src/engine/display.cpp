@@ -18,6 +18,8 @@ public:
 	int windowW;
 	int windowH;
 
+	float ratio = 1.0f;
+
 	bool fullscreen = true;
 
 	void init() {}
@@ -70,6 +72,8 @@ public:
 		// on window resize
 		glfwGetWindowSize(window, &windowW, &windowH);
 		// glfwSetWindowSizeCallback(context->window, windowSizeCallback);
+
+		ratio = (float)context->display->windowW / (float)context->display->windowH;
 
 		return 0;
 	}

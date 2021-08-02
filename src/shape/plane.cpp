@@ -46,7 +46,6 @@ public:
     }
 
     // plane VAO
-    unsigned int planeVBO;
     glGenVertexArrays(1, &planeVAO);
     glGenBuffers(1, &planeVBO);
     glBindVertexArray(planeVAO);
@@ -93,8 +92,9 @@ public:
     // std::cout << "render floor \n";
 
     // glUniform1i(glGetUniformLocation(shader->ID, "texture1"), 0);
+    shader->use();
     shader->setBool("useInstances", false);
-    
+
     glActiveTexture(GL_TEXTURE0);
     texture->Bind();
 
