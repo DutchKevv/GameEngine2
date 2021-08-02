@@ -123,8 +123,9 @@ public:
 
 		addChild(spotlight, this);
 		addChild(skybox, this);
-		addChild(floor, this);
 		addChild(treeModel2, this);
+		addChild(floor, this);
+		// addChild(floor, this);
 		// addChild(cube1, this);
 		// addChild(cube2, this);
 		// addChild(cube3, this);
@@ -179,7 +180,8 @@ public:
 	{
 		// 1. render depth of scene to texture (from light's perspective)
 		// --------------------------------------------------------------
-		shader->setInt("useTexture", 1);
+		shader->setBool("useTexture", true);
+
 		// render
 		// ------
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
@@ -246,7 +248,7 @@ public:
 	{
 		// std::cout << "render world scene \n";
 		glEnable(GL_DEPTH_TEST);
-		shader->use();
+		// shader->use();
 		Scene::renderScene(delta, shader, isShadowRender);
 
 		// for (unsigned int i = 0; i < trees; i++)

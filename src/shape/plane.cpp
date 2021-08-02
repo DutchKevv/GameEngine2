@@ -42,7 +42,7 @@ public:
   {
     if (loadTexture)
     {
-      texture = context->resourceManager->loadTexture("grass.jpg", true, "grass", 0, 0);
+      texture = context->resourceManager->loadTexture("grass.jpg", true, "grass2", 0, 0);
     }
 
     // plane VAO
@@ -94,6 +94,7 @@ public:
     // glUniform1i(glGetUniformLocation(shader->ID, "texture1"), 0);
     shader->use();
     shader->setBool("useInstances", false);
+    shader->setBool("useTexture", true);
 
     glActiveTexture(GL_TEXTURE0);
     texture->Bind();
@@ -104,20 +105,11 @@ public:
     shader->setVec3("material.specular", 0.5f, 0.5f, 0.5f);
     shader->setFloat("material.shininess", 0.0f);
 
-    // shader->setVec3("viewPos", scene->camera->Position);
-
-    // // view/projection transformations
-    // glm::mat4 projection = glm::perspective(glm::radians(scene->camera->Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-    // glm::mat4 view = scene->camera->GetViewMatrix();
-    // shader->setMat4("projection", projection);
-    // shader->setMat4("view", view);
-
     // world transformation
     glm::mat4 model = glm::mat4(1.0f);
     // model = glm::translate(model, glm::vec3(0.0f, -1.0f, 0.0f));
-    // model = glm::scale(model, glm::vec3(100.0f, 1.0f, 100.0f));
+    model = glm::scale(model, glm::vec3(10.0f, 1.0f, 10.0f));
     shader->setMat4("model", model);
-    // shader->setMat4("model", glm::rotate(model, glm::radians(90.0f), glm::vec3(0.5f, 0.0f, 0.0f)));
 
     // render the cube
     glBindVertexArray(planeVAO);

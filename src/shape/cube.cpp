@@ -126,13 +126,13 @@ public:
     {
       glActiveTexture(GL_TEXTURE0);
       texture->Bind();
-      shader->setInt("useTextures", 1);
+      shader->setBool("useTextures", true);
     }
     else
     {
       glBindTexture(GL_TEXTURE_2D, 0);
       shader->setVec3("objectColor", color);
-      shader->setInt("useTextures", 0);
+      shader->setBool("useTextures", false);
     }
 
     // be sure to activate shader when setting uniforms/drawing objects

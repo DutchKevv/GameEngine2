@@ -25,14 +25,4 @@ public:
 
 	glm::vec3 rotation;
 	glm::vec3 scale = glm::vec3(1.0f);
-
-	virtual void draw(float delta)
-	{
-		BaseObject::draw(delta);
-	}
-
-	// void renderScene(float delta, Shader *shader, bool isShadowRender)
-	// {
-	// 	BaseObject::renderScene(delta, shader, isShadowRender);
-	// }
 };

@@ -15,7 +15,7 @@ public:
 	Scene *scene;
 	std::vector<BaseObject *> children;
 	glm::vec3 position = glm::vec3(1.0f);
-	
+
 	bool isInitialized = false;
 	bool isEnabled = true;
 	bool isVisible = true;
@@ -53,9 +53,13 @@ public:
 
 	virtual void renderScene(float delta, Shader *shader, bool isShadowRender)
 	{
+		if (shader)
+		{
+			shader->use();
+		}
+
 		for (BaseObject *child : children)
 		{
-			// shader->use();
 			child->renderScene(delta, shader, isShadowRender);
 		}
 	}

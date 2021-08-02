@@ -12,7 +12,7 @@ uniform sampler2D diffuseTexture;
 uniform sampler2D shadowMap;
 
 uniform vec3 _color;
-uniform int useTexture;
+uniform bool useTexture;
 uniform vec3 lightPos;
 uniform vec3 viewPos;
 
@@ -56,7 +56,7 @@ void main()
 {           
     vec3 color;
 
-    if (useTexture == 1) {
+    if (useTexture) {
         color = texture(diffuseTexture, fs_in.TexCoords).rgb;
     } else {
         color = _color;
