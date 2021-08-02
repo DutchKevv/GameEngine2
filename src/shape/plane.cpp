@@ -82,18 +82,18 @@ public:
     shader->setBool("useInstances", false);
     shader->setBool("useTexture", true);
     shader->setBool("useNormal", true);
-    // shader->setInt("normalMap", 1);
+    shader->setInt("normalMap", 1);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, texture->ID);
-    // glActiveTexture(GL_TEXTURE2);
-    // glBindTexture(GL_TEXTURE_2D, textureN->ID);
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_2D, textureN->ID);
     // textureN->Bind();awwwewaaewawaw
 
     // shaderProgram->setVec3("objectColor", 1.0f, 0.5f, 0.31f);
-    // shader->setVec3("material.ambient",  0.4f, 0.4f, 0.24f);
-    // shader->setVec3("material.diffuse", 0.5f, 0.5f, 0.5f);
-    // shader->setVec3("material.specular", 0.33f, 0.33f, 0.33f);
-    // shader->setFloat("material.shininess", 0.3f);
+		shader->setVec3("material.ambient", 1.0f, 0.5f, 0.31f);
+        shader->setInt("material.diffuse", 0);
+        shader->setVec3("material.specular", 0.5f, 0.5f, 0.5f); // specular lighting doesn't have full effect on this object's material
+        shader->setFloat("material.shininess", 32.0f);
 
     // world transformation
     glm::mat4 model = glm::mat4(1.0f);

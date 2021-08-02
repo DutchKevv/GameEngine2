@@ -54,7 +54,6 @@ target_link_libraries(${CMAKE_PROJECT_NAME} "glad")
 set(IMGUI_PATH  "${LIB_DIR}/imgui")
 
 
-
 # STB Image
 set(STB_PATH  "${LIB_DIR}/stb")
 target_include_directories(${CMAKE_PROJECT_NAME} PUBLIC ${STB_PATH})
@@ -70,6 +69,7 @@ set(IMGUI_SOURCES ${IMGUI_SOURCES} "${LIB_DIR}/imgui/backends/imgui_impl_opengl3
 add_library("ImGui" STATIC ${IMGUI_SOURCES})
 target_include_directories("ImGui" PUBLIC ${IMGUI_PATH})
 target_link_libraries(${PROJECT_NAME} ImGui)
+
 
 # src
 target_include_directories(game2 PRIVATE src)
@@ -90,6 +90,10 @@ set(BUILD_STATIC_LIB ON)
 set(BUILD_ASSIMP_TOOLS  ON)
 set(ASSIMP_NO_EXPORT ON)
 set(ASSIMP_BUILD_ASSIMP_TOOLS  ON)
+
+
+
+
 set(ASSIMP_BUILD_STATIC_LIB ON)
 set(ASSIMP_BUILD_TESTS OFF)
 # set(ASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT OFF)

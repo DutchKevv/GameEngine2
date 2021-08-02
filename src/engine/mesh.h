@@ -65,10 +65,11 @@ public:
 		unsigned int heightNr = 1;
 
 		// // shader->setVec3("color", 1.0f, 0.5f, 0.31f); 
-		// shader->setVec3("material.ambient", 1.0f, 0.5f, 0.31f);
-		// shader->setVec3("material.diffuse", 1.3f, 0.5f, 0.31f);
-		// shader->setVec3("material.specular", 1.4f, 0.4f, 0.4f);
-		// shader->setFloat("material.shininess", 777.0f);
+		shader->setVec3("material.ambient", 1.0f, 0.5f, 0.31f);
+        shader->setVec3("material.diffuse", 1.0f, 0.5f, 0.31f);
+        shader->setVec3("material.specular", 0.5f, 0.5f, 0.5f); // specular lighting doesn't have full effect on this object's material
+        shader->setFloat("material.shininess", 32.0f);
+
 		shader->setVec3("_color", glm::vec3(color.r, color.g, color.b));
 		// std::cout << "red: " << color.b << "\n";
 

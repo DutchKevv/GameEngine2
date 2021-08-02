@@ -63,11 +63,11 @@ public:
 
 		glm::vec3 lightColor;
 		lightColor.x = sin(glfwGetTime() * 1.0f);
-		lightColor.y = sin(glfwGetTime() * 1.7f);
+		lightColor.y = sin(glfwGetTime() * 0.7f);
 		lightColor.z = sin(glfwGetTime() * 1.3f);
 
-		glm::vec3 diffuseColor = lightColor * glm::vec3(1.5f);
-		glm::vec3 ambientColor = diffuseColor * glm::vec3(1.4f);
+		glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f);
+		glm::vec3 ambientColor = diffuseColor * glm::vec3(0.4f);
 
 		// if (showCube)
 		// {
@@ -80,14 +80,14 @@ public:
 		shader->use();
 		shader->setBool("useInstances", false);
 		shader->setBool("useNormal", false);
-		shader->setVec3("light.color", glm::vec3(1.3f));
+		shader->setVec3("light.color", lightColor);
 		// shader->setVec3("light.color", lightColor);
 		shader->setVec3("light.position", translation);
 		// shader->setVec3("lightPosition", translation);
 		// shader->setVec3("light.ambient", ambientColor);
 		shader->setVec3("light.ambient", ambientColor);
-		shader->setVec3("light.diffuse", diffuseColor); // darken diffuse light a bit
+		shader->setVec3("light.diffuse", lightColor); // darken diffuse light a bit
 		// shader->setVec3("light.diffuse", 0.5f, 0.5f, 0.5f); // darken diffuse light a bit
-		shader->setVec3("light.specular", 0.0f, 0.0f, 0.0f);
+		shader->setVec3("light.specular", 1.0f, 1.0f, 1.0f);
 	}
 };
