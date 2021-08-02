@@ -56,7 +56,7 @@ public:
 	}
 
 	// render the mesh
-	void Draw(Shader *shader)
+	void Draw(Shader *shader, unsigned int amount)
 	{
 		// bind appropriate textures
 		unsigned int diffuseNr = 1;
@@ -64,7 +64,8 @@ public:
 		unsigned int normalNr = 1;
 		unsigned int heightNr = 1;
 
-		// shader->setVec3("color", 1.0f, 0.5f, 0.31f); shader->setVec3("material.ambient", 1.0f, 0.5f, 0.31f);
+		// shader->setVec3("color", 1.0f, 0.5f, 0.31f); 
+		shader->setVec3("material.ambient", 1.0f, 0.5f, 0.31f);
 		shader->setVec3("material.diffuse", 0.3f, 0.5f, 0.31f);
 		shader->setVec3("material.specular", 0.4f, 0.4f, 0.4f);
 		shader->setFloat("material.shininess", 12.0f);
@@ -102,12 +103,16 @@ public:
 			shader->setInt("useTexture", 0);
 		}
 
-		glBindTexture(GL_TEXTURE_2D, 0);
+		// glBindTexture(GL_TEXTURE_2D, 0);
 
 		// draw mesh
 		glBindVertexArray(VAO);
-		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+		glDrawElementsInstanced(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0, amount);
 		glBindVertexArray(0);
+
+		// glBindVertexArray(VAO);
+		// glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+		// glBindVertexArray(0);
 
 		// always good practice to set everything back to defaults once configured.
 		glActiveTexture(GL_TEXTURE0);

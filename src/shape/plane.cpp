@@ -93,7 +93,8 @@ public:
     // std::cout << "render floor \n";
 
     // glUniform1i(glGetUniformLocation(shader->ID, "texture1"), 0);
-
+    shader->setBool("useInstances", false);
+    
     glActiveTexture(GL_TEXTURE0);
     texture->Bind();
 

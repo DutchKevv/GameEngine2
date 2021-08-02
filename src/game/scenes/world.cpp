@@ -1,6 +1,6 @@
 #pragma once
-#include <GLFW/glfw3.h>
 #include <glad/glad.h>
+#include <GLFW/glfw3.h>
 
 #include <iostream>
 #include <glm/glm.hpp>
@@ -105,10 +105,10 @@ public:
 		// test = new Model("game/models/trees/cartoon/CartoonTree.fbx");
 		// treeModel = new Model("game/models/cube/cube.obj");
 		// treeModel = new Model("game/models/tree-low-poly/polytree1.obj");
-		treeModel2 = new Model("game/models/tree-low-poly/polytree3.obj");
-		treeModel = new Model("game/models/tree-low-poly/polytree1.obj");
+		treeModel2 = new Model("game/models/tree-low-poly/polytree3.obj", 10000);
+		// treeModel = new Model("game/models/tree-low-poly/polytree1.obj");
 		// test = new Model("game/models/plane/FREOBJ.obj");
-		rockModel = new Model("game/models/stone/stone.obj");
+		// rockModel = new Model("game/models/stone/stone.obj");
 		// treeModel = new Model("game/models/tree-low-poly/lowpolytree.obj");
 		// treeModel = new Model("game/models/tree-low-poly/polytree1.obj");
 
@@ -123,7 +123,8 @@ public:
 
 		addChild(spotlight, this);
 		addChild(skybox, this);
-		addChild(cube1, this);
+		addChild(treeModel2, this);
+		// addChild(cube1, this);
 		// addChild(cube2, this);
 		// addChild(cube3, this);
 		// addChild(test, this);
@@ -244,37 +245,37 @@ public:
 		glEnable(GL_DEPTH_TEST);
 		Scene::renderScene(delta, shader, isShadowRender);
 
-		for (unsigned int i = 0; i < trees; i++)
-		{
-			glm::mat4 model = glm::mat4(1.0f);
-			glm::vec4 random = treePositions[i];
+		// for (unsigned int i = 0; i < trees; i++)
+		// {
+		// 	glm::mat4 model = glm::mat4(1.0f);
+		// 	glm::vec4 random = treePositions[i];
 
 			
-			model = glm::scale(model, glm::vec3(3.0f));
-			model = glm::translate(model, glm::vec3(random.x, 0.0f, random.z));
-			model = glm::rotate(model, random.w, glm::vec3(0.0f, 1.0f, 0.0f)); // where x, y, z is axis of rotation (e.g. 0 1 0)
-			model = glm::rotate(model, random.w / 200, glm::vec3(1.0f, 0.0f, 0.0f)); // where x, y, z is axis of rotation (e.g. 0 1 0)
-			// treeModel->position = glm::vec3(random);
-			shader->setMat4("model", model);
-			// // textureGrass.Bind();
-			treeModel->renderScene(delta, shader, isShadowRender);
-		}
+		// 	model = glm::scale(model, glm::vec3(3.0f));
+		// 	model = glm::translate(model, glm::vec3(random.x, 0.0f, random.z));
+		// 	model = glm::rotate(model, random.w, glm::vec3(0.0f, 1.0f, 0.0f)); // where x, y, z is axis of rotation (e.g. 0 1 0)
+		// 	model = glm::rotate(model, random.w / 200, glm::vec3(1.0f, 0.0f, 0.0f)); // where x, y, z is axis of rotation (e.g. 0 1 0)
+		// 	// treeModel->position = glm::vec3(random);
+		// 	shader->setMat4("model", model);
+		// 	// // textureGrass.Bind();
+		// 	treeModel->renderScene(delta, shader, isShadowRender);
+		// }
 
-		for (unsigned int i = 0; i < trees2; i++)
-		{
-			glm::mat4 model = glm::mat4(1.0f);
-			glm::vec4 random = treePositions2[i];
+		// for (unsigned int i = 0; i < trees2; i++)
+		// {
+		// 	glm::mat4 model = glm::mat4(1.0f);
+		// 	glm::vec4 random = treePositions2[i];
 
 			
-			model = glm::scale(model, glm::vec3(3.0f));
-			model = glm::translate(model, glm::vec3(random.x, 0.0f, random.z));
-			model = glm::rotate(model, random.w, glm::vec3(0.0f, 1.0f, 0.0f)); // where x, y, z is axis of rotation (e.g. 0 1 0)
-			model = glm::rotate(model, random.w / 200, glm::vec3(1.0f, 0.0f, 0.0f)); // where x, y, z is axis of rotation (e.g. 0 1 0)
-			// treeModel->position = glm::vec3(random);
-			shader->setMat4("model", model);
-			// // textureGrass.Bind();
-			treeModel2->renderScene(delta, shader, isShadowRender);
-		}
+		// 	model = glm::scale(model, glm::vec3(3.0f));
+		// 	model = glm::translate(model, glm::vec3(random.x, 0.0f, random.z));
+		// 	model = glm::rotate(model, random.w, glm::vec3(0.0f, 1.0f, 0.0f)); // where x, y, z is axis of rotation (e.g. 0 1 0)
+		// 	model = glm::rotate(model, random.w / 200, glm::vec3(1.0f, 0.0f, 0.0f)); // where x, y, z is axis of rotation (e.g. 0 1 0)
+		// 	// treeModel->position = glm::vec3(random);
+		// 	shader->setMat4("model", model);
+		// 	// // textureGrass.Bind();
+		// 	treeModel2->renderScene(delta, shader, isShadowRender);
+		// }
 
 		// for (unsigned int i = 0; i < trees; i++)
 		// {
@@ -289,18 +290,18 @@ public:
 		// 	treeModel->renderScene(delta, shader, isShadowRender);
 		// }
 
-		for (unsigned int i = 0; i < rocks; i++)
-		{
-			glm::mat4 model = glm::mat4(1.0f);
-			glm::vec4 random = rockPositions[i];
+		// for (unsigned int i = 0; i < rocks; i++)
+		// {
+		// 	glm::mat4 model = glm::mat4(1.0f);
+		// 	glm::vec4 random = rockPositions[i];
 
-			model = glm::scale(model, glm::vec3(1.0f));
-			model = glm::translate(model, glm::vec3(random.x, 0.0f, random.z));
-			// treeModel->position = glm::vec3(random);
-			shader->setMat4("model", model);
-			// // textureGrass.Bind();
-			rockModel->renderScene(delta, shader, isShadowRender);
-		}
+		// 	model = glm::scale(model, glm::vec3(1.0f));
+		// 	model = glm::translate(model, glm::vec3(random.x, 0.0f, random.z));
+		// 	// treeModel->position = glm::vec3(random);
+		// 	shader->setMat4("model", model);
+		// 	// // textureGrass.Bind();
+		// 	rockModel->renderScene(delta, shader, isShadowRender);
+		// }
 
 		// for (unsigned int i = 0; i < rockPositions.size(); i++)
 		// {

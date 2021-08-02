@@ -115,15 +115,14 @@ target_link_libraries(${PROJECT_NAME} assimp)
 # 		$<TARGET_FILE_DIR:${PROJECT_NAME}>)
 # endif()
 
-add_custom_target(TARGET ${PROJECT_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/shaders $<TARGET_FILE_DIR:${PROJECT_NAME}>/shaders)
-
-
-
-# add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/game/models $<TARGET_FILE_DIR:${PROJECT_NAME}>/game/models)
+# add_custom_target(TARGET1 ${PROJECT_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/shaders $<TARGET_FILE_DIR:${PROJECT_NAME}>/shaders)
+# add_custom_target(TARGET2 ${PROJECT_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/textures $<TARGET_FILE_DIR:${PROJECT_NAME}>/textures)
+# add_custom_target(TARGET3 ${PROJECT_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/game/models $<TARGET_FILE_DIR:${PROJECT_NAME}>/game/models)
 
 file(COPY src/shaders DESTINATION Debug)
 file(COPY src/textures DESTINATION Debug)
 file(COPY src/game/models DESTINATION Debug/game)
+
 
 # add_custom_target(copy-shaders ALL COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/shaders ${CMAKE_BINARY_DIR}/shaders DEPENDS ${MY_TARGET})
 # add_custom_target(copy-textures ALL COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/textures ${CMAKE_BINARY_DIR}/textures DEPENDS ${MY_TARGET})
