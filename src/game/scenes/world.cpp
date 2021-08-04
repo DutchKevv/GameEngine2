@@ -124,8 +124,8 @@ public:
 
 		addChild(skybox, this);
 		addChild(spotlight, this);
-		addChild(floor, this);
 		addChild(treeModel2, this);
+		addChild(floor, this);
 		// addChild(floor, this);
 		addChild(cube1, this);
 		addChild(cube2, this);

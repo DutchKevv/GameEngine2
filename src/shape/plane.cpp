@@ -43,7 +43,7 @@ public:
     if (loadTexture)
     {
       texture = context->resourceManager->loadTexture("pbr/grass/albedo.png", true, "grass2", 0, 0);
-      textureN = context->resourceManager->loadTexture("pbr/grass/ao.png", true, "grass2N", 0, 0);
+      // textureN = context->resourceManager->loadTexture("pbr/grass/ao.png", true, "grass2N", 0, 0);
     }
 
     // first, configure the cube's VAO (and VBO)
@@ -81,19 +81,19 @@ public:
     shader->use();
     shader->setBool("useInstances", false);
     shader->setBool("useTexture", true);
-    shader->setBool("useNormal", true);
-    shader->setInt("normalMap", 1);
+    shader->setBool("useNormal", false);
+    shader->setInt("normalMap", 0);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, texture->ID);
-    glActiveTexture(GL_TEXTURE2);
-    glBindTexture(GL_TEXTURE_2D, textureN->ID);
+    // glActiveTexture(GL_TEXTURE2);
+    // glBindTexture(GL_TEXTURE_2D, textureN->ID);
     // textureN->Bind();awwwewaaewawaw
 
     // shaderProgram->setVec3("objectColor", 1.0f, 0.5f, 0.31f);
-		shader->setVec3("material.ambient", 1.0f, 0.5f, 0.31f);
-        shader->setInt("material.diffuse", 0);
-        shader->setVec3("material.specular", 0.5f, 0.5f, 0.5f); // specular lighting doesn't have full effect on this object's material
-        shader->setFloat("material.shininess", 32.0f);
+		// shader->setVec3("material.ambient", 1.0f, 0.5f, 0.31f);
+    // shader->setInt("material.diffuse", 0);
+    // shader->setVec3("material.specular", 0.5f, 0.5f, 0.5f); // specular lighting doesn't have full effect on this object's material
+    // shader->setFloat("material.shininess", 32.0f);
 
     // world transformation
     glm::mat4 model = glm::mat4(1.0f);
