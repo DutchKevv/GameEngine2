@@ -85,7 +85,7 @@ public:
 		// shader configuration
 		// --------------------
 		shader->use();
-		shader->setInt("diffuseTexture", 1);
+		shader->setInt("diffuseTexture", 0);
 		shader->setInt("shadowMap", 1);
 
 		std::cout << "init world \n";
@@ -121,10 +121,9 @@ public:
 		// cube5->position = glm::vec3(0.0f, 0.0f, 0.0f);
 		// test->position = glm::vec3(1.0f, 2.0f, 0.0f);
 
-
 		addChild(skybox, this);
-				addChild(spotlight, this);
-				addChild(floor, this);
+		addChild(spotlight, this);
+		addChild(floor, this);
 		addChild(treeModel2, this);
 		// addChild(floor, this);
 		// addChild(cube1, this);
@@ -233,7 +232,7 @@ public:
 		// set light uniforms
 		shader->setVec3("viewPos", camera->Position);
 		// shader->setVec3("lightPos", lightPos);
-		shader->setVec3("lightPos", spotlight->position);
+		shader->setVec3("light.position", spotlight->position);
 		shader->setMat4("lightSpaceMatrix", lightSpaceMatrix);
 
 		glActiveTexture(GL_TEXTURE0);
@@ -257,7 +256,6 @@ public:
 		// 	glm::mat4 model = glm::mat4(1.0f);
 		// 	glm::vec4 random = treePositions[i];
 
-			
 		// 	model = glm::scale(model, glm::vec3(3.0f));
 		// 	model = glm::translate(model, glm::vec3(random.x, 0.0f, random.z));
 		// 	model = glm::rotate(model, random.w, glm::vec3(0.0f, 1.0f, 0.0f)); // where x, y, z is axis of rotation (e.g. 0 1 0)
@@ -273,7 +271,6 @@ public:
 		// 	glm::mat4 model = glm::mat4(1.0f);
 		// 	glm::vec4 random = treePositions2[i];
 
-			
 		// 	model = glm::scale(model, glm::vec3(3.0f));
 		// 	model = glm::translate(model, glm::vec3(random.x, 0.0f, random.z));
 		// 	model = glm::rotate(model, random.w, glm::vec3(0.0f, 1.0f, 0.0f)); // where x, y, z is axis of rotation (e.g. 0 1 0)

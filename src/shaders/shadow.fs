@@ -118,7 +118,7 @@ void main()
     float spec = 0.0;
     vec3 halfwayDir = normalize(lightDir + viewDir);  
 
-    spec =     pow(max(dot(normal, halfwayDir), 0.0), 64);
+    spec = pow(max(dot(normal, halfwayDir), 0.0), 64);
     // spec =     pow(max(dot(normal, reflectDir), 0.0), material.shininess);
         // vec3 specular = light.specular * (spec * vec3(texture(material.specular, fs_in.TexCoords)));
     vec3 specular = light.specular * (spec * material.specular);

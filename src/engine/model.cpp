@@ -112,7 +112,7 @@ public:
 	void renderScene(float delta, Shader *shader, bool isShadowRender)
 	{
 		shader->use();
-			shader->setBool("useTexture", false);
+		shader->setBool("useTexture", false);
 		if (amount > 1)
 		{
 			shader->setBool("useInstances", true);

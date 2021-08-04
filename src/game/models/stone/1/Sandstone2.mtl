@@ -1,0 +1,12 @@
+# Blender MTL File: 'Sandstone2.blend'
+# Material Count: 1
+
+newmtl Material.001
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.735658 0.404174 0.157882
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
