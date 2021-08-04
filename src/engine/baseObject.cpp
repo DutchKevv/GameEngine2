@@ -60,6 +60,11 @@ public:
 
 		for (BaseObject *child : children)
 		{
+			if (shader) {
+				shader->setBool("useInstances", false);
+				shader->setBool("useTexture", 1);
+			}
+
 			child->renderScene(delta, shader, isShadowRender);
 		}
 	}

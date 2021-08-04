@@ -10,11 +10,11 @@ uniform bool useInstances;
 
 void main()
 {
-    //  if (useInstances) {
-    //     gl_Position = lightSpaceMatrix * instanceMatrix * vec4(aPos, 1.0);
-    // } else {
+     if (useInstances) {
+        gl_Position = lightSpaceMatrix * instanceMatrix * vec4(aPos, 1.0);
+    } else {
         gl_Position = lightSpaceMatrix * model * vec4(aPos, 1.0);
-    // }
+    }
 
     // gl_Position = lightSpaceMatrix * model * vec4(aPos, 1.0);
 }

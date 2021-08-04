@@ -65,17 +65,17 @@ public:
 		unsigned int heightNr = 1;
 
 		// // shader->setVec3("color", 1.0f, 0.5f, 0.31f); 
-		shader->setVec3("material.ambient", 1.0f, 0.5f, 0.31f);
-        shader->setVec3("material.diffuse", 1.0f, 0.5f, 0.31f);
-        shader->setVec3("material.specular", 0.5f, 0.5f, 0.5f); // specular lighting doesn't have full effect on this object's material
-        shader->setFloat("material.shininess", 32.0f);
+		// shader->setVec3("material.ambient", 1.0f, 0.5f, 0.31f);
+        // shader->setInt("material.diffuse", 0);
+        // shader->setVec3("material.specular", 0.0f, 0.0f, 0.0f); // specular lighting doesn't have full effect on this object's material
+        // shader->setFloat("material.shininess", 64.0f);
 
-		shader->setVec3("_color", glm::vec3(color.r, color.g, color.b));
+		// shader->setVec3("_color", glm::vec3(color.r, color.g, color.b));
 		// std::cout << "red: " << color.b << "\n";
 
 		if (textures.size() > 0)
 		{
-			shader->setInt("useTexture", 1);
+			shader->setBool("useTexture", true);
 
 			for (unsigned int i = 0; i < textures.size(); i++)
 			{
@@ -93,18 +93,21 @@ public:
 				else if (name == "texture_height")
 					number = std::to_string(heightNr++); // transfer unsigned int to stream
 
+				shader->setFloat(("material." + name + number).c_str(), i);
+       	 		glBindTexture(GL_TEXTURE_2D, textures[i].id);
+
 				// now set the sampler to the correct texture unit
-				glUniform1i(glGetUniformLocation(shader->ID, (name + number).c_str()), i);
+				// glUniform1i(glGetUniformLocation(shader->ID, (name + number).c_str()), i);
 				// and finally bind the texture
-				glBindTexture(GL_TEXTURE_2D, textures[i].id);
+				// glBindTexture(GL_TEXTURE_2D, textures[i].id);
 			}
 		}
 		else
 		{
-			shader->setInt("useTexture", 0);
+			shader->setBool("useTexture", false);
 		}
 
-		glBindTexture(GL_TEXTURE_2D, 0);
+		// glBindTexture(GL_TEXTURE_2D, 0);
 
 		// draw mesh
 		glBindVertexArray(VAO);
@@ -116,7 +119,7 @@ public:
 		// glBindVertexArray(0);
 
 		// always good practice to set everything back to defaults once configured.
-		// glActiveTexture(GL_TEXTURE0);
+		glActiveTexture(GL_TEXTURE0);
 	}
 
 private:

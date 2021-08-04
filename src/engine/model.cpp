@@ -36,8 +36,6 @@ public:
 	bool gammaCorrection;
 	unsigned int amount;
 	glm::mat4 *modelMatrices;
-	float radius = 150.0f;
-	float offset = 25.0f;
 
 	const unsigned int space = 1330;
 
@@ -64,10 +62,10 @@ public:
 			glm::mat4 model = glm::mat4(1.0f);
 			// 	glm::vec4 random = treePositions[i];
 
-			model = glm::scale(model, glm::vec3(3.0f));
-			model = glm::translate(model, glm::vec3(random.x, 0.0f, random.z));
-			model = glm::rotate(model, random.w, glm::vec3(0.0f, 1.0f, 0.0f));
-			model = glm::rotate(model, random.w / 200, glm::vec3(1.0f, 0.0f, 0.0f));
+			// model = glm::scale(model, glm::vec3(3.0f));
+			// model = glm::translate(model, glm::vec3(random.x, 0.0f, random.z));
+			// model = glm::rotate(model, random.w, glm::vec3(0.0f, 1.0f, 0.0f));
+			// model = glm::rotate(model, random.w / 200, glm::vec3(1.0f, 0.0f, 0.0f));
 
 			// 4. now add to list of matrices
 			modelMatrices[i] = model;
@@ -112,7 +110,7 @@ public:
 	void renderScene(float delta, Shader *shader, bool isShadowRender)
 	{
 		shader->use();
-		shader->setBool("useTexture", false);
+		// shader->setBool("useTexture", false);
 		if (amount > 1)
 		{
 			shader->setBool("useInstances", true);

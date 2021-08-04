@@ -93,7 +93,7 @@ public:
 		skybox = new SkyBox();
 		spotlight = new Spotlight();
 		cube1 = new ShapeCube();
-		// cube2 = new ShapeCube();
+		cube2 = new ShapeCube();
 		// cube3 = new ShapeCube();
 		// cube4 = new ShapeCube();
 		// cube5 = new ShapeCube();
@@ -103,11 +103,12 @@ public:
 		// load models
 		// -----------
 		// test = new Model("game/models/trees/cartoon/CartoonTree.fbx");
-		// treeModel = new Model("game/models/cube/cube.obj");
+		// treeModel2 = new Model("game/models/cube/cube.obj", 1);
 		// treeModel = new Model("game/models/tree-low-poly/polytree1.obj");
 		// treeModel2 = new Model("game/models/tree-low-poly/polytree3.obj", 10000);
-		treeModel2 = new Model("game/models/tree-low-poly/polytree1.obj", 10000);
-		// test = new Model("game/models/plane/FREOBJ.obj");
+		treeModel2 = new Model("game/models/tree-low-poly/pinetree2.obj", 2);
+		// treeModel2 = new Model("game/models/tree-low-poly/polytree1.obj", 10000);
+		// treeModel2 = new Model("game/models/plane/FREOBJ.obj", 2);
 		// rockModel = new Model("game/models/stone/stone.obj");
 		// treeModel = new Model("game/models/tree-low-poly/lowpolytree.obj");
 		// treeModel = new Model("game/models/tree-low-poly/polytree1.obj");
@@ -115,7 +116,7 @@ public:
 		camera = new Camera(glm::vec3(0.0f, 14.0f, 120.0f), glm::vec3(0.0f, 1.0f, 0.0f), -75.5f);
 
 		cube1->position = glm::vec3(10.0f, 1.5f, 0.0);
-		// cube2->position = glm::vec3(2.0f, 0.0f, -15.0f);
+		cube2->position = glm::vec3(2.0f, 0.0f, -15.0f);
 		// cube3->position = glm::vec3(-1.5f, 0.0f, -2.5f);
 		// cube4->position = glm::vec3(-3.8f, 0.0f, -12.3f);
 		// cube5->position = glm::vec3(0.0f, 0.0f, 0.0f);
@@ -126,8 +127,8 @@ public:
 		addChild(floor, this);
 		addChild(treeModel2, this);
 		// addChild(floor, this);
-		// addChild(cube1, this);
-		// addChild(cube2, this);
+		addChild(cube1, this);
+		addChild(cube2, this);
 		// addChild(cube3, this);
 		// addChild(test, this);
 		// addChild(cube4, this);
@@ -248,7 +249,7 @@ public:
 	{
 		// std::cout << "render world scene \n";
 		glEnable(GL_DEPTH_TEST);
-		shader->use();
+		// shader->use();
 		Scene::renderScene(delta, shader, isShadowRender);
 
 		// for (unsigned int i = 0; i < trees; i++)

@@ -46,11 +46,11 @@ public:
 		// glm::vec3 lightPos(-0.0f, 40.0f, -30.0f);
 
 		float speed = 1.1f;
-		translationX = 120.0f * cos(0.0f + speed * (float)glfwGetTime());
-		translationY = 320.0f * sin(0.0f + speed * (float)glfwGetTime());
+		// translationX = 120.0f * cos(0.0f + speed * (float)glfwGetTime());
+		// translationY = 120.0f * sin(0.0f + speed * (float)glfwGetTime());
 		// translationY = 2.0f * sin(0.0f + 1.0f * (float)glfwGetTime());
 		// translationZ = scene->camera->Position.z - 150.0f;
-		translationZ = -150.0f;
+		translationZ = -50.0f;
 		// translationZ = -100.0f * sin(0.0f + speed * (float)glfwGetTime());
 		// glm::vec3 translation = glm::vec3(2.0f);
 		glm::vec3 translation = glm::vec3(translationX, translationY, translationZ);
@@ -65,8 +65,8 @@ public:
 		// lightColor.y = sin(glfwGetTime() * 0.7f);
 		// lightColor.z = sin(glfwGetTime() * 1.3f);
 
-		glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f);
-		glm::vec3 ambientColor = diffuseColor * glm::vec3(0.4f);
+		glm::vec3 diffuseColor = lightColor * glm::vec3(1.0f);
+		glm::vec3 ambientColor = diffuseColor * glm::vec3(1.0f);
 
 		// if (showCube)
 		// {
@@ -81,12 +81,13 @@ public:
 		shader->setBool("useNormal", false);
 		shader->setVec3("light.color", lightColor);
 		// shader->setVec3("light.color", lightColor);
-		shader->setVec3("light.position", translation);
+		shader->setVec3("light.position", lightPos);
 		// shader->setVec3("lightPosition", translation);
 		// shader->setVec3("light.ambient", ambientColor);
 		shader->setVec3("light.ambient", ambientColor);
 		// shader->setVec3("light.diffuse", lightColor); // darken diffuse light a bit
-		shader->setVec3("light.diffuse", 0.5f, 0.5f, 0.5f); // darken diffuse light a bit
+		shader->setVec3("light.diffuse", 1.5f, 1.5f, 1.5f); // darken diffuse light a bit
+		// shader->setVec3("light.diffuse", 0.5f, 0.5f, 0.5f); // darken diffuse light a bit
 		shader->setVec3("light.specular", 1.0f, 1.0f, 1.0f);
 	}
 };
