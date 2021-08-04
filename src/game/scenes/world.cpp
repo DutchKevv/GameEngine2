@@ -223,7 +223,7 @@ public:
 		// draw distance
 		// TODO - does not set float correct in display class
 		float ratio = (float)context->display->windowW / (float)context->display->windowH;
-		glm::mat4 projection = glm::perspective(glm::radians(camera->Zoom), ratio, 10.1f, 10000.0f);
+		glm::mat4 projection = glm::perspective(glm::radians(camera->Zoom), ratio, 1.1f, 10000.0f);
 
 		glm::mat4 view = camera->GetViewMatrix();
 
