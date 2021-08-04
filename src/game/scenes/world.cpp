@@ -53,10 +53,17 @@ public:
 	vector<glm::vec4> treePositions2;
 	vector<glm::vec4> rockPositions;
 
+	Texture2D *texture;
+
 	void init()
 	{
 		shader = context->resourceManager->loadShader("shadow");
 		depthShader = context->resourceManager->loadShader("shadow_depth");
+
+		// load textures
+    	// -------------
+		texture = context->resourceManager->loadTexture("container2.jpg", true, "grass3", 0, 0);
+
 
 		// configure depth map FBO
 		// -----------------------
@@ -94,7 +101,7 @@ public:
 		spotlight = new Spotlight();
 		cube1 = new ShapeCube();
 		cube2 = new ShapeCube();
-		// cube3 = new ShapeCube();
+		cube3 = new ShapeCube();
 		// cube4 = new ShapeCube();
 		// cube5 = new ShapeCube();
 		floor = new ShapePlane();
@@ -106,6 +113,7 @@ public:
 		// treeModel2 = new Model("game/models/cube/cube.obj", 1);
 		// treeModel = new Model("game/models/tree-low-poly/polytree1.obj");
 		// treeModel2 = new Model("game/models/tree-low-poly/polytree3.obj", 10000);
+		// treeModel2 = new Model("game/models/tree-low-poly/pinetree2withrocks.obj", 10000);
 		treeModel2 = new Model("game/models/tree-low-poly/pinetree2.obj", 10000);
 		// treeModel2 = new Model("game/models/tree-low-poly/polytree1.obj", 10000);
 		// treeModel2 = new Model("game/models/plane/FREOBJ.obj", 2);
@@ -117,7 +125,7 @@ public:
 
 		cube1->position = glm::vec3(10.0f, 1.5f, 0.0);
 		cube2->position = glm::vec3(2.0f, 0.0f, -15.0f);
-		// cube3->position = glm::vec3(-1.5f, 0.0f, -2.5f);
+		cube3->position = glm::vec3(-1.5f, 0.0f, -2.5f);
 		// cube4->position = glm::vec3(-3.8f, 0.0f, -12.3f);
 		// cube5->position = glm::vec3(0.0f, 0.0f, 0.0f);
 		// test->position = glm::vec3(1.0f, 2.0f, 0.0f);
@@ -125,11 +133,11 @@ public:
 		addChild(skybox, this);
 		addChild(spotlight, this);
 		addChild(treeModel2, this);
-		addChild(floor, this);
 		// addChild(floor, this);
 		addChild(cube1, this);
 		addChild(cube2, this);
-		// addChild(cube3, this);
+		addChild(cube3, this);
+		addChild(floor, this);
 		// addChild(test, this);
 		// addChild(cube4, this);
 		// addChild(cube5, this);
@@ -181,7 +189,7 @@ public:
 	{
 		// 1. render depth of scene to texture (from light's perspective)
 		// --------------------------------------------------------------
-		shader->setBool("useTexture", true);
+		// shader->setBool("useTexture", true);
 
 		// render
 		// ------
@@ -190,13 +198,13 @@ public:
 
 		glm::mat4 lightProjection, lightView;
 		glm::mat4 lightSpaceMatrix;
-		float near_plane = 1.0f, far_plane = 275.5f;
+		float near_plane = 1.0f, far_plane = 750.5f;
 		BaseObject *spotlight = getChildByClass<Spotlight>();
 		// glm::vec3 lightPos(-0.0f, 40.0f, -100.0f);
 		// lightProjection = glm::perspective(glm::radians(45.0f), (GLfloat)SHADOW_WIDTH / (GLfloat)SHADOW_HEIGHT, near_plane, far_plane); // note that if you use a perspective projection matrix you'll have to change the light position as the current light position isn't enough to reflect the whole scene
-		lightProjection = glm::ortho(-150.0f, 150.0f, -80.0f, 80.0f, near_plane, far_plane);
-		// lightView = glm::lookAt(glm::vec3(-2.0f, 4.0f, -1.0f), glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
+   		lightProjection = glm::ortho(-80.0f, 80.0f, -80.0f, 80.0f, near_plane, far_plane);
 		lightView = glm::lookAt(spotlight->position, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
+		// lightView = glm::lookAt(spotlight->position, glm::vec3(2.0f), glm::vec3(0.0, 1.0, 0.0));
 		lightSpaceMatrix = lightProjection * lightView;
 		// render scene from light's point of view
 		depthShader->use();
@@ -205,7 +213,7 @@ public:
 		glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
 		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
 		glClear(GL_DEPTH_BUFFER_BIT);
-		glActiveTexture(GL_TEXTURE0);
+		// glActiveTexture(GL_TEXTURE0);
 		// glBindTexture(GL_TEXTURE_2D, texture.ID);
 		renderScene(delta, depthShader, true);
 		glBindFramebuffer(GL_FRAMEBUFFER, context->engine->fbo);
@@ -223,7 +231,7 @@ public:
 		// draw distance
 		// TODO - does not set float correct in display class
 		float ratio = (float)context->display->windowW / (float)context->display->windowH;
-		glm::mat4 projection = glm::perspective(glm::radians(camera->Zoom), ratio, 1.1f, 10000.0f);
+		glm::mat4 projection = glm::perspective(glm::radians(camera->Zoom), ratio, 1.1f, 1000.0f);
 
 		glm::mat4 view = camera->GetViewMatrix();
 
@@ -236,7 +244,7 @@ public:
 		shader->setVec3("light.position", spotlight->position);
 		shader->setMat4("lightSpaceMatrix", lightSpaceMatrix);
 
-		glActiveTexture(GL_TEXTURE0);
+		// glActiveTexture(GL_TEXTURE0);
 		// glBindTexture(GL_TEXTURE_2D, texture.ID);
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, depthMap);
@@ -249,7 +257,7 @@ public:
 	{
 		// std::cout << "render world scene \n";
 		glEnable(GL_DEPTH_TEST);
-		// shader->use();
+		shader->use();
 		Scene::renderScene(delta, shader, isShadowRender);
 
 		// for (unsigned int i = 0; i < trees; i++)

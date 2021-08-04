@@ -70,7 +70,7 @@ public:
         // shader->setVec3("material.specular", 0.0f, 0.0f, 0.0f); // specular lighting doesn't have full effect on this object's material
         // shader->setFloat("material.shininess", 64.0f);
 
-		shader->setVec3("_color", glm::vec3(color.r, color.g, color.b));
+
 		// std::cout << "red: " << color.b << "\n";
 
 		if (textures.size() > 0)
@@ -93,7 +93,7 @@ public:
 				else if (name == "texture_height")
 					number = std::to_string(heightNr++); // transfer unsigned int to stream
 
-				shader->setFloat(("material." + name + number).c_str(), i);
+				shader->setFloat(("material." + name).c_str(), i);
        	 		glBindTexture(GL_TEXTURE_2D, textures[i].id);
 
 				// now set the sampler to the correct texture unit
@@ -104,6 +104,7 @@ public:
 		}
 		else
 		{
+			shader->setVec3("_color", glm::vec3(color.r, color.g, color.b));
 			shader->setBool("useTexture", false);
 		}
 

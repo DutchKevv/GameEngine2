@@ -52,6 +52,7 @@ add_library("glad" "${GLAD_DIR}/src/glad.c")
 include_directories("${GLAD_DIR}/include")
 target_link_libraries(${CMAKE_PROJECT_NAME} "glad")
 
+
 # imgui
 # Set where the ImGui files are stored
 set(IMGUI_PATH  "${LIB_DIR}/imgui")

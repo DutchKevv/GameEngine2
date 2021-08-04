@@ -62,7 +62,7 @@ public:
 		{
 			if (shader) {
 				shader->setBool("useInstances", false);
-				shader->setBool("useTexture", 1);
+				shader->setBool("useTexture", true);
 			}
 
 			child->renderScene(delta, shader, isShadowRender);
