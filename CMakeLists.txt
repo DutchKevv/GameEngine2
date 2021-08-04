@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.0.0)
 project(game2 VERSION 0.1.0)
 
+set(CMAKE_TOOLCHAIN_FILE "C:/vcpkg/scripts/buildsystems/vcpkg.cmake")
+
 # Add .lib files
 link_directories(${CMAKE_SOURCE_DIR}/lib)
 
@@ -11,7 +13,7 @@ set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 # set(CMAKE_BUILD_TYPE "Debug")
 
-message(STATUS CMAKE_BUILD_TYPE)
+message(STATUS ${CMAKE_BUILD_TYPE})
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
 	message(STATUS  "DEBUG!!!!!!!")
 endif()
@@ -54,7 +56,6 @@ target_link_libraries(${CMAKE_PROJECT_NAME} "glad")
 # Set where the ImGui files are stored
 set(IMGUI_PATH  "${LIB_DIR}/imgui")
 
-
 # STB Image
 set(STB_PATH  "${LIB_DIR}/stb")
 target_include_directories(${CMAKE_PROJECT_NAME} PUBLIC ${STB_PATH})
@@ -78,7 +79,7 @@ target_include_directories(game2 PRIVATE src)
 include_directories(
 	"${CMAKE_SOURCE_DIR}/src"
 	"${CMAKE_SOURCE_DIR}/src/engine"
-	"${CMAKE_SOURCE_DIR}/lib/assimp-5.0.1/include/"
+	# "${CMAKE_SOURCE_DIR}/lib/assimp-5.0.1/include/"
 )
 
 # set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ${CMAKE_SOURCE_DIR}/lib/assimp-5.0.1)
@@ -88,42 +89,42 @@ include_directories(
 
 set(ASSIMP_ENABLE_BOOST_WORKAROUND ON)
 set(BUILD_STATIC_LIB ON)
-set(BUILD_ASSIMP_TOOLS  ON)
+set(BUILD_ASSIMP_TOOLS OFF)
 set(ASSIMP_NO_EXPORT ON)
-set(ASSIMP_BUILD_ASSIMP_TOOLS  ON)
+set(ASSIMP_BUILD_ASSIMP_TOOLS OFF)
 set(ASSIMP_BUILD_STATIC_LIB ON)
 set(ASSIMP_BUILD_TESTS OFF)
-# set(ASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT OFF)
-# set(ASSIMP_BUILD_FBX_IMPORTER ON)
-# set(ASSIMP_BUILD_BLEND_IMPORTER ON)
-# set(ASSIMP_BUILD_OBJ_IMPORTER ON)
-add_subdirectory(lib/assimp-5.0.1)
+set(BUILD_SHARED_LIBS OFF)
+# # set(ASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT OFF)
+# # set(ASSIMP_BUILD_FBX_IMPORTER ON)
+# # set(ASSIMP_BUILD_BLEND_IMPORTER ON)
+# # set(ASSIMP_BUILD_OBJ_IMPORTER ON)
+# add_subdirectory(lib/assimp-5.0.1)
 
-# add_library(assimp "lib/assimp-5.0.1/assimp.dll")
-# add_subdirectory(${CMAKE_SOURCE_DIR}/lib/assimp-5.0.1/contrib/irrXML)
-# add_subdirectory(${CMAKE_SOURCE_DIR}/lib/assimp-5.0.1/contrib/zlib)
-# add_subdirectory(${CMAKE_SOURCE_DIR}/lib/assimp-5.0.1)
+# # add_library(assimp "lib/assimp-5.0.1/assimp.dll")
+# # add_subdirectory(${CMAKE_SOURCE_DIR}/lib/assimp-5.0.1/contrib/irrXML)
+# # add_subdirectory(${CMAKE_SOURCE_DIR}/lib/assimp-5.0.1/contrib/zlib)
+# # add_subdirectory(${CMAKE_SOURCE_DIR}/lib/assimp-5.0.1)
 
-target_link_libraries(${PROJECT_NAME} assimp)
+# target_link_libraries(${PROJECT_NAME} assimp)
 
-# target_link_libraries(${PROJECT_NAME} assimp ${ASSIMP_LIBRARIES})
+find_package(assimp REQUIRED)
+if (assimp_FOUND)
+    set(ASSIMP_LIBRARY "assimp")
+    add_library(${ASSIMP_LIBRARY} SHARED IMPORTED)
+    set_target_properties(${ASSIMP_LIBRARY} PROPERTIES IMPORTED_LOCATION "${ASSIMP_LIBRARY_DIRS}/libassimp.so")
+endif(assimp_FOUND)
 
-# Copy dlls
-# if(WIN32)
-# 	add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-# 		COMMAND ${CMAKE_COMMAND} -E copy_directory
-# 		"${PROJECT_SOURCE_DIR}/dlls"
-# 		$<TARGET_FILE_DIR:${PROJECT_NAME}>)
-# endif()
+target_link_libraries(${PROJECT_NAME} ${ASSIMP_LIBRARIES})
 
 # add_custom_target(TARGET1 ${PROJECT_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/shaders $<TARGET_FILE_DIR:${PROJECT_NAME}>/shaders)
 # add_custom_target(TARGET2 ${PROJECT_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/textures $<TARGET_FILE_DIR:${PROJECT_NAME}>/textures)
 # add_custom_target(TARGET3 ${PROJECT_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/game/models $<TARGET_FILE_DIR:${PROJECT_NAME}>/game/models)
 
 
-file(COPY src/shaders DESTINATION Debug)
-file(COPY src/textures DESTINATION Debug)
-file(COPY src/game/models DESTINATION Debug/game)
+file(COPY src/shaders DESTINATION .)
+file(COPY src/textures DESTINATION .)
+file(COPY src/game/models DESTINATION ./game)
 
 # add_custom_target(copy-shaders ALL COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/shaders ${CMAKE_BINARY_DIR}/shaders DEPENDS ${MY_TARGET})
 # add_custom_target(copy-textures ALL COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/textures ${CMAKE_BINARY_DIR}/textures DEPENDS ${MY_TARGET})

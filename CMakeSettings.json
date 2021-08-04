@@ -15,7 +15,12 @@
                "name": "include_directories",
                "value": "${projectDir}/lib/glfw-3.3.3/include",
                "type": "PATH"
-        }]
+        },
+        {
+          "name": "CMAKE_TOOLCHAIN_FILE",
+          "value": "C:/vcpkg/scripts/buildsystems/vcpkg.cmake"
+        }
+      ]
     }
   ]
 }

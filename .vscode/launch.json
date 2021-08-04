@@ -6,10 +6,11 @@
         "type": "cppvsdbg",
         "request": "launch",
         "program": "${fileDirname}\\${fileBasenameNoExtension}.exe",
-        "args": [],
+        "args": [
+        ],
         "stopAtEntry": false,
         "cwd": "${workspaceFolder}",
-        "environment": [],
+        "environment": ["CMAKE_TOOLCHAIN_FILE=2"],
         "externalConsole": false,
         "preLaunchTask": "cl.exe build active file",
         "code-runner.runInTerminal": false,

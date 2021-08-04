@@ -7,7 +7,7 @@
 #include <iostream>
 #include <sstream>
 #include <map>
-#include "stb/stb_image.h"
+#include "stb_image.h"
 #include "./texture.h"
 #include "./shader.cpp"
 #include "logger.cpp"
