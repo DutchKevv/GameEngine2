@@ -106,7 +106,7 @@ public:
 		// treeModel2 = new Model("game/models/cube/cube.obj", 1);
 		// treeModel = new Model("game/models/tree-low-poly/polytree1.obj");
 		// treeModel2 = new Model("game/models/tree-low-poly/polytree3.obj", 10000);
-		treeModel2 = new Model("game/models/tree-low-poly/pinetree2.obj", 2);
+		treeModel2 = new Model("game/models/tree-low-poly/pinetree2.obj", 10000);
 		// treeModel2 = new Model("game/models/tree-low-poly/polytree1.obj", 10000);
 		// treeModel2 = new Model("game/models/plane/FREOBJ.obj", 2);
 		// rockModel = new Model("game/models/stone/stone.obj");

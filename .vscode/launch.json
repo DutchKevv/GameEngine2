@@ -10,7 +10,7 @@
         ],
         "stopAtEntry": false,
         "cwd": "${workspaceFolder}",
-        "environment": ["CMAKE_TOOLCHAIN_FILE=2"],
+        "environment": [],
         "externalConsole": false,
         "preLaunchTask": "cl.exe build active file",
         "code-runner.runInTerminal": false,
