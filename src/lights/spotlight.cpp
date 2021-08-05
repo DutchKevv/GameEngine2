@@ -44,11 +44,11 @@ public:
 
 		// glm::vec3 lightPos(-0.0f, 40.0f, -30.0f);
 
-		float speed = 1.1f;
-		translationX = 0.0f;
-		// translationX = 120.0f * cos(0.0f + speed * (float)glfwGetTime());
-		translationY = 220.0f;
-		// translationY = 25.0f * sin(0.0f + speed * (float)glfwGetTime());
+		float speed = 0.6f;
+		// translationX = 0.0f;
+		translationX = 120.0f * cos(0.0f + speed * (float)glfwGetTime());
+		// translationY = 220.0f;
+		translationY = 58.0f * sin(0.0f + speed * (float)glfwGetTime());
 		// translationY = 2.0f * sin(0.0f + 1.0f * (float)glfwGetTime());
 		// translationZ = scene->camera->Position.z - 150.0f;
 		translationZ = -250.0f;
@@ -66,7 +66,7 @@ public:
 		// lightColor.y = sin(glfwGetTime() * 0.7f);
 		// lightColor.z = sin(glfwGetTime() * 1.3f);
 
-		glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f);
+		glm::vec3 diffuseColor = lightColor * glm::vec3(0.9f);
 		glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
 
 		if (showCube)

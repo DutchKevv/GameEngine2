@@ -33,7 +33,7 @@ public:
 	unsigned int amount;
 	glm::mat4 *modelMatrices;
 
-	const unsigned int space = 1330;
+	const unsigned int space = 9330;
 
 	// constructor, expects a filepath to a 3D model.
 	Model(string const &path, unsigned int _amount = 1, bool gamma = false) : gammaCorrection(gamma)

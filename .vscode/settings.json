@@ -4,6 +4,7 @@
         "vector": "cpp",
         "xstring": "cpp",
         "iostream": "cpp",
-        "sstream": "cpp"
+        "sstream": "cpp",
+        "cmath": "cpp"
     }
 }

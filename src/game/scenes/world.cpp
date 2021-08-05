@@ -20,7 +20,7 @@
 #include "../../shape/plane.h"
 #include "../../lights/spotlight.cpp"
 
-const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
+const unsigned int SHADOW_WIDTH = 10240, SHADOW_HEIGHT = 10240;
 vector<glm::vec4> treePositions;
 const unsigned int space = 330;
 const unsigned int trees = 300;
@@ -170,12 +170,12 @@ void WorldScene::draw(float delta)
 	glm::mat4 lightProjection, lightView;
 	glm::mat4 lightSpaceMatrix;
 	float near_plane = 1.0f, far_plane = 750.5f;
-	// BaseObject *spotlight = getChildByClass<Spotlight>();
+	BaseObject *spotlight = this->getChildByClass<Spotlight>();
 	// glm::vec3 lightPos(-0.0f, 40.0f, -100.0f);
 	// lightProjection = glm::perspective(glm::radians(45.0f), (GLfloat)SHADOW_WIDTH / (GLfloat)SHADOW_HEIGHT, near_plane, far_plane); // note that if you use a perspective projection matrix you'll have to change the light position as the current light position isn't enough to reflect the whole scene
-	lightProjection = glm::ortho(-80.0f, 80.0f, -80.0f, 80.0f, near_plane, far_plane);
-	lightView = glm::lookAt(glm::vec3(-0.0f, 40.0f, -30.0f), glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
-	// lightView = glm::lookAt(spotlight->position, glm::vec3(2.0f), glm::vec3(0.0, 1.0, 0.0));
+	lightProjection = glm::ortho(-380.0f, 380.0f, -380.0f, 380.0f, near_plane, far_plane);
+	// lightView = glm::lookAt(glm::vec3(-0.0f, 40.0f, -30.0f), glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
+	lightView = glm::lookAt(spotlight->position, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
 	lightSpaceMatrix = lightProjection * lightView;
 	// render scene from light's point of view
 	depthShader->use();

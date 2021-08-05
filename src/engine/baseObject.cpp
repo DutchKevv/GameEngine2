@@ -48,18 +48,3 @@ BaseObject *BaseObject::getChildById(int id)
 
 	return NULL;
 };
-
-template <class T>
-BaseObject *BaseObject::getChildByClass()
-{
-	for (BaseObject *child : children)
-	{
-		if (T *v = dynamic_cast<T *>(child))
-		{
-			// old was safely casted to NewType
-			return child;
-		}
-	}
-
-	return NULL;
-};

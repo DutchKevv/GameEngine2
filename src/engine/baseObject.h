@@ -58,7 +58,8 @@ public:
 
 		for (BaseObject *child : children)
 		{
-			if (shader) {
+			if (shader)
+			{
 				shader->setBool("useInstances", false);
 				shader->setBool("useTexture", true);
 			}
@@ -78,5 +79,17 @@ public:
 	BaseObject *getChildById(int id);
 
 	template <class T>
-	BaseObject *getChildByClass();
+	BaseObject *getChildByClass()
+	{
+		for (BaseObject *child : children)
+		{
+			if (T *v = dynamic_cast<T *>(child))
+			{
+				// old was safely casted to NewType
+				return child;
+			}
+		}
+
+		return NULL;
+	};
 };
