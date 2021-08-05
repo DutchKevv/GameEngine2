@@ -1,19 +1,14 @@
-#pragma once
-
 #include <iostream>
-#include "../engine/engine.cpp"
-#include "./scenes/world.cpp"
+#include "game.h"
+#include "../engine/engine.h"
+#include "./scenes/world.h"
 
-class Game
+void Game::init()
 {
-public:
-	void init()
-	{
-		Engine engine;
-		engine.init();
+	Engine engine;
+	engine.init();
 
-		engine.addScene(new WorldScene());
+	engine.addScene(new WorldScene());
 
-		engine.start();
-	}
-};
+	engine.start();
+}

@@ -4,12 +4,13 @@
 #include <iostream>
 #include <glm/glm.hpp>
 
+#include "plane.h"
 #include "../engine/logger.h"
 #include "../engine/logger.h"
-#include "../engine/renderObject.cpp"
+#include "../engine/renderObject.h"
 #include "../engine/context.h"
-#include "../engine/texture.cpp"
-#include "../engine/resourceManager.cpp"
+#include "../engine/texture.h"
+#include "../engine/resourceManager.h"
 #include "../engine/shader.cpp"
 
 float planeVertices[] = {
@@ -22,23 +23,7 @@ float planeVertices[] = {
     -1500.0f, -0.5f, -1500.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1500.0f,
     1500.0f, -0.5f, -1500.0f, 0.0f, 1.0f, 0.0f, 1500.0f, 1500.0f};
 
-class ShapePlane : public RenderObject
-{
-
-public:
-  glm::vec3 color = glm::vec3(1.0f);
-  bool loadTexture = true;
-
-  unsigned int planeVBO;
-  unsigned int planeVAO;
-  unsigned int EBO;
-
-  glm::mat4 view;
-  Shader *shaderProgram;
-  Texture2D *texture;
-  Texture2D *textureN;
-
-  void init()
+  void ShapePlane::init()
   {
     if (loadTexture)
     {
@@ -68,12 +53,12 @@ public:
     glBindVertexArray(0);
   }
 
-  void draw(float delta)
+  void ShapePlane::draw(float delta)
   {
     std::cout << "draw floor \n";
   }
 
-  void renderScene(float delta, Shader *shader, bool isShadowRender)
+  void ShapePlane::renderScene(float delta, Shader *shader, bool isShadowRender)
   {
     // std::cout << "render floor \n";
 
@@ -107,4 +92,3 @@ public:
 
     // glActiveTexture(GL_TEXTURE0);
   }
-};

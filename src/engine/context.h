@@ -1,9 +1,9 @@
 #pragma once
-#include <GLFW/glfw3.h>
 #include <glad/glad.h>
-#include "./engine.cpp"
-#include "./resourceManager.cpp"
-#include "./display.cpp"
+#include <GLFW/glfw3.h>
+#include "./engine.h"
+#include "./resourceManager.h"
+#include "./display.h"
 
 class Engine;
 class ResourceManager;

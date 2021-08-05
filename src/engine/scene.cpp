@@ -1,13 +1,8 @@
-#pragma once
 #include <iostream>
 #include <string>
 #include <glm/glm.hpp>
+#include "scene.h"
 
-#include "./renderobject.cpp"
-#include "./camera.h"
+Scene::Scene(): RenderObject() {
 
-class Scene : public RenderObject
-{
-public:
-  Camera *camera;
-};
+}

@@ -8,7 +8,47 @@ link_directories(${CMAKE_SOURCE_DIR}/lib)
 
 set(SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
 set(LIB_DIR "${CMAKE_CURRENT_SOURCE_DIR}/lib")
-set(SOURCES "${SRC_DIR}/main.cpp")
+set(SOURCES "${SRC_DIR}/main.cpp" 
+	"${SRC_DIR}/game/game.cpp" 
+	"${SRC_DIR}/engine/engine.cpp" 
+	"${SRC_DIR}/engine/engine.h" 
+	"${SRC_DIR}/game/scenes/world.h" 
+	"${SRC_DIR}/game/scenes/world.cpp" 
+	"${SRC_DIR}/engine/baseObject.cpp" 
+	"${SRC_DIR}/engine/baseObject.h" 
+	"${SRC_DIR}/engine/renderObject.cpp" 
+	"${SRC_DIR}/engine/renderObject.h" 
+	"${SRC_DIR}/shape/cube.cpp" 
+	"${SRC_DIR}/shape/cube.h" 
+	"${SRC_DIR}/shape/plane.h" 
+	"${SRC_DIR}/shape/plane.cpp" 
+	"${SRC_DIR}/engine/resourceManager.cpp" 
+	"${SRC_DIR}/engine/resourceManager.h" 
+	"${SRC_DIR}/engine/model.cpp" 
+	"${SRC_DIR}/engine/model.h" 
+	"${SRC_DIR}/engine/scene.cpp" 
+	"${SRC_DIR}/engine/camera.h" 
+	"${SRC_DIR}/engine/editor/editor.cpp" 
+	"${SRC_DIR}/engine/editor/editor.h" 
+	"${SRC_DIR}/engine/scene.cpp" 
+	"${SRC_DIR}/engine/scene.h" 
+	"${SRC_DIR}/engine/logger.cpp" 
+	"${SRC_DIR}/engine/logger.h" 
+	"${SRC_DIR}/engine/skybox.cpp" 
+	"${SRC_DIR}/engine/skybox.h" 
+	"${SRC_DIR}/engine/context.cpp" 
+	"${SRC_DIR}/engine/context.h" 
+	"${SRC_DIR}/engine/texture.cpp" 
+	"${SRC_DIR}/engine/texture.h" 
+
+
+	"${SRC_DIR}/engine/display.cpp" 
+	"${SRC_DIR}/engine/display.h" 
+	"${SRC_DIR}/engine/modules/gui/gui.cpp" 
+	"${SRC_DIR}/engine/modules/gui/gui.h" 
+	# "${SRC_DIR}/engine/editor/panels/gui_panel_world.h" 
+	# "${SRC_DIR}/engine/editor/panels/gui_panel_world.cpp"
+)
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 # set(CMAKE_BUILD_TYPE "Debug")
@@ -108,6 +148,7 @@ set(BUILD_SHARED_LIBS OFF)
 # # add_subdirectory(${CMAKE_SOURCE_DIR}/lib/assimp-5.0.1)
 
 # target_link_libraries(${PROJECT_NAME} assimp)
+
 
 find_package(assimp REQUIRED)
 if (assimp_FOUND)

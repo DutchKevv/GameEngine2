@@ -2,7 +2,7 @@
 #include <glm/glm.hpp>
 #include "shader.cpp"
 #include "camera.h"
-#include "renderObject.cpp"
+#include "renderObject.h"
 
 class SkyBox : public RenderObject
 {
@@ -24,7 +24,7 @@ public:
 
 	unsigned int cubemapTexture;
 
-	SkyBox();
+	// SkyBox();
 
 	void init();
 	void draw(float delta);

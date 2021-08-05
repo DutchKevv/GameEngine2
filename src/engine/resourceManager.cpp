@@ -1,29 +1,29 @@
-#pragma once
 
-#define STB_IMAGE_IMPLEMENTATION
+
+#include "stb_image.h"
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <map>
-#include "stb_image.h"
+// #define STB_IMAGE_IMPLEMENTATION
+// #include "stb_image.h"
 #include "./texture.h"
 #include "./shader.cpp"
-#include "logger.cpp"
+#include "logger.h"
+#include "resourceManager.h"
 
 using namespace std;
 
 const string prefixShader = "shaders/";
 const string prefixTextures = "textures/";
 
-map<std::string, Texture2D *> Textures;
+map<std::string, Texture2D *> Textures2;
 map<std::string, Shader *> Shaders;
 
-class ResourceManager
-{
-public:
-	inline bool fileExists(std::string name)
+
+	inline bool ResourceManager::fileExists(std::string name)
 	{
 		std::cout << ("checking : '" + name) << std::endl;
 		ifstream ifile;
@@ -37,7 +37,7 @@ public:
 		return true;
 	}
 
-	string loadFileToString(string filePath)
+	string ResourceManager::loadFileToString(string filePath)
 	{
 		filePath = prefixShader + filePath;
 
@@ -49,7 +49,7 @@ public:
 		return shaderString;
 	}
 
-	Shader *loadShader(string name)
+	Shader *ResourceManager::loadShader(string name)
 	{
 		if (Shaders.count(name) == 0)
 		{
@@ -62,19 +62,19 @@ public:
 		return Shaders[name];
 	}
 
-	Texture2D *loadTexture(std::string filePath, GLboolean alpha, std::string name, GLuint WRAP_S, GLuint WRAP_T)
+	Texture2D *ResourceManager::loadTexture(std::string filePath, GLboolean alpha, std::string name, GLuint WRAP_S, GLuint WRAP_T)
 	{
 		filePath = prefixTextures + filePath;
-		Textures[name] = loadTextureFromFile(filePath, alpha, WRAP_S, WRAP_T);
-		return Textures[name];
+		Textures2[name] = loadTextureFromFile(filePath, alpha, WRAP_S, WRAP_T);
+		return Textures2[name];
 	}
 
-	Texture2D *GetTexture(std::string name)
+	Texture2D *ResourceManager::GetTexture(std::string name)
 	{
-		return Textures[name];
+		return Textures2[name];
 	}
 
-	void Clear()
+	void ResourceManager::Clear()
 	{
 		// // (Properly) delete all shaders
 		// for (auto iter : Shaders)
@@ -84,7 +84,7 @@ public:
 		// 	glDeleteTextures(1, &iter.second.ID);
 	}
 
-	char *file_read(const char *filename)
+	char *ResourceManager::file_read(const char *filename)
 	{
 		FILE *in = fopen(filename, "rb");
 		if (in == NULL)
@@ -113,7 +113,7 @@ public:
 		return res;
 	}
 
-	Shader loadShaderFromFile(string vShaderFile, string fShaderFile, const char *gShaderFile)
+	Shader ResourceManager::loadShaderFromFile(string vShaderFile, string fShaderFile, const char *gShaderFile)
 	{
 		// 1. Retrieve the vertex/fragment source code from filePath
 		std::string vertexCode;
@@ -180,7 +180,7 @@ public:
 	}
 
 	// TODO - revert parameter (default false)
-	Texture2D *loadTextureFromFile(std::string file, GLboolean alpha, GLuint WRAP_S, GLuint WRAP_T)
+	Texture2D *ResourceManager::loadTextureFromFile(std::string file, GLboolean alpha, GLuint WRAP_S, GLuint WRAP_T)
 	{
 
 		// enable reverting
@@ -217,4 +217,3 @@ public:
 
 		return texture;
 	}
-};
