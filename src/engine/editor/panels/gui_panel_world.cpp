@@ -5,7 +5,7 @@
 #include "gui_panel_world.h"
 #include "../../shader.cpp"
 // #include "../../renderObject.h"
-// #include "../../context.h"
+#include "../../context.h"
 
 void GuiPanelWorld::renderScene(float delta, Shader *shader, bool isShadowRender)
 {
@@ -19,7 +19,7 @@ void GuiPanelWorld::renderScene(float delta, Shader *shader, bool isShadowRender
 	ImVec2 pos = ImGui::GetCursorScreenPos();
 
 	ImDrawList *drawList = ImGui::GetWindowDrawList();
-	// drawList->AddImage((void *)context->frameTexture, pos, ImVec2(pos.x + ImGui::GetWindowSize().x, pos.y + ImGui::GetWindowSize().y), ImVec2(0, 1), ImVec2(1, 0));
+	drawList->AddImage((void *)context->frameTexture, pos, ImVec2(pos.x + ImGui::GetWindowSize().x, pos.y + ImGui::GetWindowSize().y), ImVec2(0, 1), ImVec2(1, 0));
 
 	// close window
 	ImGui::End();

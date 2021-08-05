@@ -10,7 +10,7 @@ int BaseObject::addChild(BaseObject *child, Scene *scene, std::string name)
 {
 	child->id = IDCounter++;
 	child->name = name;
-	// child->scene = scene;
+	child->scene = scene;
 
 	this->children.push_back(child);
 

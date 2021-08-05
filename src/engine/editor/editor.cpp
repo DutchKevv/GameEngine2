@@ -4,14 +4,16 @@
 #include <GLFW/glfw3.h>
 #include "imgui.h"
 #include "editor.h"
-// #include "../scene.h"
-// #include "./panels/gui_panel_world.h"
+#include "../scene.h"
+#include "./panels/gui_panel_world.h"
 
 void Editor::init()
 {
 	std::cout << "adding editor scene \n";
 
-	// addChild(new GuiPanelWorld(), this, "World");
+	// GuiPanelWorld *test = new GuiPanelWorld();
+
+	addChild(new GuiPanelWorld(), this, "World");
 };
 
 void Editor::draw(float delta)

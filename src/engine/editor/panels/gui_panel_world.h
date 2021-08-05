@@ -1,5 +1,6 @@
 #pragma once
 #include "../../renderObject.h"
+#include "../../shader.cpp"
 
 class GuiPanelWorld : public RenderObject
 {

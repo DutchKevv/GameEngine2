@@ -23,16 +23,3 @@ public:
 
 	int createWindow();
 };
-
-// void framebufferSizeCallback(GLFWwindow *window, int width, int height)
-// {
-// 	std::cout << "Resizing framebuffer" << std::endl;
-
-// 	context->display->windowW = width;
-// 	context->display->windowH = height;
-
-// 	// make sure the viewport matches the new window dimensions; note that width
-// 	// and height will be significantly larger than specified on retina
-// 	// displays.
-// 	glViewport(0, 0, width, height);
-// }

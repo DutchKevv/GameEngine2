@@ -5,8 +5,8 @@
 #include "display.h"
 // #include "context.h"
 
-// void framebufferSizeCallback(GLFWwindow *window, int width, int height);
-// void windowSizeCallback(GLFWwindow *window, int width, int height);
+void framebufferSizeCallback(GLFWwindow *window, int width, int height);
+void windowSizeCallback(GLFWwindow *window, int width, int height);
 
 int Display::createWindow()
 {
@@ -40,7 +40,7 @@ int Display::createWindow()
 
 	glfwMakeContextCurrent(window);
 
-	// glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
+	glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
 
 	// VSYNC
 	glfwSwapInterval(1);
@@ -64,18 +64,18 @@ int Display::createWindow()
 
 // TEMP
 // should be window size callback
-// void framebufferSizeCallback(GLFWwindow *window, int width, int height)
-// {
-// 	std::cout << "Resizing framebuffer" << std::endl;
+void framebufferSizeCallback(GLFWwindow *window, int width, int height)
+{
+	std::cout << "Resizing framebuffer" << std::endl;
 
-// 	context->display->windowW = width;
-// 	context->display->windowH = height;
+	context->display->windowW = width;
+	context->display->windowH = height;
 
-// 	// make sure the viewport matches the new window dimensions; note that width
-// 	// and height will be significantly larger than specified on retina
-// 	// displays.
-// 	glViewport(0, 0, width, height);
-// }
+	// make sure the viewport matches the new window dimensions; note that width
+	// and height will be significantly larger than specified on retina
+	// displays.
+	glViewport(0, 0, width, height);
+}
 
 // glfw: whenever the window size changed (by OS or user resize) this callback
 // function executes

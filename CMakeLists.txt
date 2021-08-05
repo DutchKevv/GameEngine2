@@ -46,8 +46,8 @@ set(SOURCES "${SRC_DIR}/main.cpp"
 	"${SRC_DIR}/engine/display.h" 
 	"${SRC_DIR}/engine/modules/gui/gui.cpp" 
 	"${SRC_DIR}/engine/modules/gui/gui.h" 
-	# "${SRC_DIR}/engine/editor/panels/gui_panel_world.h" 
-	# "${SRC_DIR}/engine/editor/panels/gui_panel_world.cpp"
+	"${SRC_DIR}/engine/editor/panels/gui_panel_world.h" 
+	"${SRC_DIR}/engine/editor/panels/gui_panel_world.cpp"
 )
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
