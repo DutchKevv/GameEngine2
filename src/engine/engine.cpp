@@ -1,22 +1,7 @@
 #include "./engine.h"
-// #define STB_IMAGE_IMPLEMENTATION
-// #include "stb_image.h"
-// #include <GLFW/glfw3.h>
-// #include <glad/glad.h>
-// #include <iostream>
-// #include <vector>
-// #include "imgui.h"
-// #include "backends/imgui_impl_glfw.h"
-// #include "backends/imgui_impl_opengl3.h"
-
-// #include "./display.cpp"
-// #include "./resourceManager.cpp"
-// #include "./scene.cpp"
-// #include "./context.cpp"
-// #include "./editor/editor.cpp"
-// #include "./modules/module.cpp"
-// #include "./modules/gui/gui.cpp"
 unsigned int worldChild = 1;
+
+void mouse_callback(GLFWwindow *window, double xpos, double ypos);
 
 void Engine::init()
 {
@@ -67,7 +52,7 @@ void Engine::init()
 
   glBindFramebuffer(GL_FRAMEBUFFER, 0); //return to rendering to the normal fbo
 
-  // glfwSetCursorPosCallback(context->display->window, mouse_callback);
+  glfwSetCursorPosCallback(context->display->window, mouse_callback);
   // glfwSetScrollCallback(context->display->window, scroll_callback);
 
   if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
@@ -210,25 +195,25 @@ void Engine::processInput(GLFWwindow *window)
 // // -------------------------------------------------------
 // // TODO
 // // get child dynamic (find the 'world' child)
-// static void mouse_callback(GLFWwindow *window, double xpos, double ypos)
-// {
-//   Engine *engine = context->engine;
+void mouse_callback(GLFWwindow *window, double xpos, double ypos)
+{
+  Engine *engine = context->engine;
 
-//   if (engine->firstMouse)
-//   {
-//     engine->lastMouseX = xpos;
-//     engine->lastMouseY = ypos;
-//     engine->firstMouse = false;
-//   }
+  if (engine->firstMouse)
+  {
+    engine->lastMouseX = xpos;
+    engine->lastMouseY = ypos;
+    engine->firstMouse = false;
+  }
 
-//   float xoffset = xpos - engine->lastMouseX;
-//   float yoffset = engine->lastMouseY - ypos; // reversed since y-coordinates go from bottom to top
+  float xoffset = xpos - engine->lastMouseX;
+  float yoffset = engine->lastMouseY - ypos; // reversed since y-coordinates go from bottom to top
 
-//   engine->lastMouseX = xpos;
-//   engine->lastMouseY = ypos;
+  engine->lastMouseX = xpos;
+  engine->lastMouseY = ypos;
 
-//   context->engine->children[worldChild]->camera->ProcessMouseMovement(xoffset, yoffset);
-// }
+  context->engine->children[worldChild]->camera->ProcessMouseMovement(xoffset, yoffset);
+}
 
 // // glfw: whenever the mouse scroll wheel scrolls, this callback is called
 // // ----------------------------------------------------------------------
