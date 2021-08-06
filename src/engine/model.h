@@ -11,7 +11,6 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-// #include <stb_image.h>
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
@@ -32,8 +31,9 @@ public:
 	bool gammaCorrection;
 	unsigned int amount;
 	glm::mat4 *modelMatrices;
-
-	const unsigned int space = 9330;
+	unsigned int buffer;
+	
+	const unsigned int space = 1730;
 
 	// constructor, expects a filepath to a 3D model.
 	Model(string const &path, unsigned int _amount = 1, bool gamma = false) : gammaCorrection(gamma)

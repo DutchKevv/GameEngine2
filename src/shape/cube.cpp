@@ -86,7 +86,6 @@ void ShapeCube::init()
   // texture coord attribute
   glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)(6 * sizeof(float)));
   glEnableVertexAttribArray(2);
-  // glUniform1i(glGetUniformLocation(shaderProgram->ID, "texture1"), 0);
 }
 
 void ShapeCube::draw(float delta)
@@ -97,9 +96,12 @@ void ShapeCube::draw(float delta)
 void ShapeCube::renderScene(float delta, Shader *shader, bool isShadowRender)
 {
   // std::cout << "render cube \n";
-  // shader->use();
+  shader->use();
 
-  shader->setBool("useTextures", loadTexture);
+  shader->setBool("useTexture", loadTexture);
+
+  shader->setBool("useNormal", false);
+  shader->setInt("normalMap", 0);
 
   if (loadTexture)
   {
@@ -108,14 +110,14 @@ void ShapeCube::renderScene(float delta, Shader *shader, bool isShadowRender)
   }
   else
   {
-    glBindTexture(GL_TEXTURE_2D, 0);
+    glActiveTexture(GL_TEXTURE0);
     shader->setVec3("_color", color);
   }
 
-  shader->setVec3("material.ambient", 1.0f, 0.5f, 0.31f);
-  shader->setVec3("material.diffuse", 1.0f, 0.5f, 0.31f);
-  shader->setVec3("material.specular", 0.0f, 0.0f, 0.0f);
-  shader->setFloat("material.shininess", 32.0f);
+  shader->setVec3("material.ambient", 0.8f, 0.8f, 0.8);
+  shader->setInt("material.diffuse", 0);
+  shader->setVec3("material.specular", 1.0f, 1.0f, 1.0f);
+  shader->setFloat("material.shininess", 10.0f);
 
   // world transformation
   glm::mat4 model = glm::mat4(1.0f);
@@ -124,4 +126,6 @@ void ShapeCube::renderScene(float delta, Shader *shader, bool isShadowRender)
   // render the cube
   glBindVertexArray(cubeVAO);
   glDrawArrays(GL_TRIANGLES, 0, 36);
+
+  // glActiveTexture(GL_TEXTURE0);
 }

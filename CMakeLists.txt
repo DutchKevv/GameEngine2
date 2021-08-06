@@ -40,8 +40,6 @@ set(SOURCES "${SRC_DIR}/main.cpp"
 	"${SRC_DIR}/engine/context.h" 
 	"${SRC_DIR}/engine/texture.cpp" 
 	"${SRC_DIR}/engine/texture.h" 
-
-
 	"${SRC_DIR}/engine/display.cpp" 
 	"${SRC_DIR}/engine/display.h" 
 	"${SRC_DIR}/engine/modules/gui/gui.cpp" 
@@ -51,13 +49,12 @@ set(SOURCES "${SRC_DIR}/main.cpp"
 )
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
-# set(CMAKE_BUILD_TYPE "Debug")
+
 
 message(STATUS ${CMAKE_BUILD_TYPE})
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
 	message(STATUS  "DEBUG!!!!!!!")
 endif()
-
 
 # include(CPack)
 # include(CTest)
@@ -91,7 +88,6 @@ set(GLAD_DIR "${LIB_DIR}/glad")
 add_library("glad" "${GLAD_DIR}/src/glad.c")
 include_directories("${GLAD_DIR}/include")
 target_link_libraries(${CMAKE_PROJECT_NAME} "glad")
-
 
 # imgui
 # Set where the ImGui files are stored

@@ -8,6 +8,8 @@
 #include <string>
 #include <vector>
 #include "./shader.cpp"
+#include "./texture.h"
+#include "./context.h"
 
 using namespace std;
 
@@ -44,6 +46,8 @@ public:
 	aiColor3D color;
 	unsigned int VAO;
 
+	Texture2D *texture;
+
 	// constructor
 	Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<Texture> textures, aiColor3D color = aiColor3D(1.0f, 0.4f, 0.3f))
 	{
@@ -51,6 +55,9 @@ public:
 		this->indices = indices;
 		this->textures = textures;
 		this->color = color;
+
+		texture = context->resourceManager->loadTexture("1x1.png", true, "1x1", 0, 0);
+
 		// now that we have all the required data, set the vertex buffers and its attribute pointers.
 		setupMesh();
 	}
@@ -64,12 +71,10 @@ public:
 		unsigned int normalNr = 1;
 		unsigned int heightNr = 1;
 
-		// shader->setVec3("_color", 1.0f, 0.5f, 0.31f); 
-		// shader->setVec3("material.ambient", 1.0f, 0.5f, 0.31f);
-        // shader->setInt("material.diffuse", 0);
-        // shader->setVec3("material.specular", 0.0f, 0.0f, 0.0f); // specular lighting doesn't have full effect on this object's material
-        // shader->setFloat("material.shininess", 64.0f);
-
+		// shader->setVec3("material.ambient", 0.8f, 0.8f, 0.8);
+		// shader->setInt("material.diffuse", 0);
+		// shader->setVec3("material.specular", 1.0f, 1.0f, 1.0f);
+		// shader->setFloat("material.shininess", 10.0f);
 
 		// std::cout << "red: " << color.b << "\n";
 
@@ -84,8 +89,10 @@ public:
 				// retrieve texture number (the N in diffuse_textureN)
 				string number;
 				string name = textures[i].type;
-				if (name == "texture_diffuse")
+				if (name == "texture_diffuse") {
 					number = std::to_string(diffuseNr++);
+					// shader->setFloat(("material.diffuse"), i);
+				}
 				else if (name == "texture_specular")
 					number = std::to_string(specularNr++); // transfer unsigned int to stream
 				else if (name == "texture_normal")
@@ -94,7 +101,7 @@ public:
 					number = std::to_string(heightNr++); // transfer unsigned int to stream
 
 				shader->setFloat(("material." + name).c_str(), i);
-       	 		glBindTexture(GL_TEXTURE_2D, textures[i].id);
+				glBindTexture(GL_TEXTURE_2D, textures[i].id);
 
 				// now set the sampler to the correct texture unit
 				// glUniform1i(glGetUniformLocation(shader->ID, (name + number).c_str()), i);
@@ -104,20 +111,22 @@ public:
 		}
 		else
 		{
+			texture->Bind();
+			glActiveTexture(GL_TEXTURE0);
 			shader->setVec3("_color", glm::vec3(color.r, color.g, color.b));
+			// shader->setVec3("material.diffuse", glm::vec3(color.r, color.g, color.b));
 			shader->setBool("useTexture", false);
 		}
 
+		//   shader->setBool("useNormal", false);
+		//   shader->setInt("normalMap", 0);
 		// glBindTexture(GL_TEXTURE_2D, 0);
 
 		// draw mesh
 		glBindVertexArray(VAO);
 		glDrawElementsInstanced(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0, amount);
-		glBindVertexArray(0);
-
-		// glBindVertexArray(VAO);
 		// glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
-		// glBindVertexArray(0);
+		glBindVertexArray(0);
 
 		// always good practice to set everything back to defaults once configured.
 		glActiveTexture(GL_TEXTURE0);

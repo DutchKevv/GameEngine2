@@ -62,6 +62,7 @@ public:
 			{
 				shader->setBool("useInstances", false);
 				shader->setBool("useTexture", true);
+				// glBindTexture(GL_TEXTURE_2D, 0);
 			}
 
 			child->renderScene(delta, shader, isShadowRender);

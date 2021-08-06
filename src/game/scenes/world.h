@@ -30,6 +30,7 @@ public:
 	Spotlight *spotlight;
 	ShapePlane *floor;
 	SkyBox *skybox;
+	Model *sun;
 
 	unsigned int depthMapFBO;
 	unsigned int depthMap;
@@ -39,6 +40,7 @@ public:
 	Shader *depthShader;
 	Model *treeModel;
 	Model *treeModel2;
+	Model *treeModel3;
 	Model *rockModel;
 	Model *test;
 	// HeightMap *heightMap;

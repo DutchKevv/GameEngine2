@@ -97,13 +97,21 @@ void SkyBox::init()
 	// 	"textures/skybox/3/back.jpg",
 	// 	"textures/skybox/3/front.jpg"};
 
+	// vector<std::string> faces{
+	// 	"textures/skybox/mandaris/mandaris_rt.tga",
+	// 	"textures/skybox/mandaris/mandaris_lf.tga",
+	// 	"textures/skybox/mandaris/mandaris_up.tga",
+	// 	"textures/skybox/mandaris/mandaris_dn.tga",
+	// 	"textures/skybox/mandaris/mandaris_bk.tga",
+	// 	"textures/skybox/mandaris/mandaris_ft.tga"};
+
 	vector<std::string> faces{
-		"textures/skybox/mandaris/mandaris_rt.tga",
-		"textures/skybox/mandaris/mandaris_lf.tga",
-		"textures/skybox/mandaris/mandaris_up.tga",
-		"textures/skybox/mandaris/mandaris_dn.tga",
-		"textures/skybox/mandaris/mandaris_bk.tga",
-		"textures/skybox/mandaris/mandaris_ft.tga"};
+		"textures/skybox/jajlands1/jajlands1_rt.jpg",
+		"textures/skybox/jajlands1/jajlands1_lf.jpg",
+		"textures/skybox/jajlands1/jajlands1_up.jpg",
+		"textures/skybox/jajlands1/jajlands1_dn.jpg",
+		"textures/skybox/jajlands1/jajlands1_bk.jpg",
+		"textures/skybox/jajlands1/jajlands1_ft.jpg"};
 
 	cubemapTexture = loadCubemap(faces);
 };
@@ -119,30 +127,30 @@ void SkyBox::renderScene(float delta, Shader *shader, bool isShadowRender)
 	Shader *skyBoxShader = context->resourceManager->loadShader("skybox");
 	skyBoxShader->use();
 
-	////    glm::mat4 model;
+	//    glm::mat4 model;
 	//    glm::mat4 view = context->camera->GetViewMatrix();
-	// glm::mat4 projection = glm::perspective(scene->camera->Zoom, (float)context->windowW / (float)context->windowH, 0.1f, 1.0f);
-	// ////    shader->setMat4("model", model);
-	// //    shader->setMat4("view", view);
-	// //    shader->setMat4("projection", projection);
-	// //    shader->setVec3("cameraPos", context->camera->Position);
+	glm::mat4 projection = glm::perspective(scene->camera->Zoom, (float)context->windowW / (float)context->windowH, 0.1f, 1.0f);
+	////    shader->setMat4("model", model);
+	//    shader->setMat4("view", view);
+	//    shader->setMat4("projection", projection);
+	//    shader->setVec3("cameraPos", context->camera->Position);
 
-	// // draw skybox as last
-	// glDepthFunc(GL_LEQUAL); // change depth function so depth test passes when values are equal to depth buffer's content
-	// // glDepthMask(GL_FALSE);
+	// draw skybox as last
+	glDepthFunc(GL_LEQUAL); // change depth function so depth test passes when values are equal to depth buffer's content
+	// glDepthMask(GL_FALSE);
 
-	// glm::mat4 view = glm::mat4(glm::mat3(scene->camera->GetViewMatrix())); // remove translation from the view matrix
-	// skyBoxShader->setMat4("view", view);
-	// skyBoxShader->setMat4("projection", projection);
+	glm::mat4 view = glm::mat4(glm::mat3(scene->camera->GetViewMatrix())); // remove translation from the view matrix
+	skyBoxShader->setMat4("view", view);
+	skyBoxShader->setMat4("projection", projection);
 
-	// // skybox cube
-	// glBindVertexArray(VAO);
-	// glActiveTexture(GL_TEXTURE0);
-	// glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
-	// glDrawArrays(GL_TRIANGLES, 0, 36);
-	// glBindVertexArray(0);
-	// glDepthFunc(GL_LESS); // set depth function back to default
-	// 					  // glDepthMask(GL_TRUE);
+	// skybox cube
+	glBindVertexArray(VAO);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+	glBindVertexArray(0);
+	glDepthFunc(GL_LESS); // set depth function back to default
+						  // glDepthMask(GL_TRUE);
 }
 
 void SkyBox::destroy()

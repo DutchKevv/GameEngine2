@@ -66,30 +66,31 @@ public:
 		// lightColor.y = sin(glfwGetTime() * 0.7f);
 		// lightColor.z = sin(glfwGetTime() * 1.3f);
 
-		glm::vec3 diffuseColor = lightColor * glm::vec3(0.9f);
-		glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
+		glm::vec3 diffuseColor = lightColor * glm::vec3(0.7f);
+		glm::vec3 ambientColor = diffuseColor * glm::vec3(0.5f);
 
 		if (showCube)
 		{
 			cube.position = translation;
 			// cube.position = lightPos;
-			cube.color = diffuseColor;
+			cube.color = glm::vec3(1.0f, 1.0f, 1.0f);
 			cube.renderScene(delta, shader, isShadowRender);
 		}
 
 		shader->use();
 		shader->setBool("useInstances", false);
 		shader->setBool("useNormal", false);
-		shader->setBool("useTexture", true);
-		shader->setVec3("light.color", lightColor);
+		shader->setBool("useTexture", false);
 		// shader->setVec3("light.color", lightColor);
 		// shader->setVec3("light.position", lightPos);
 		shader->setVec3("light.position", translation);
 		// shader->setVec3("light.ambient", ambientColor);
 		shader->setVec3("light.ambient", ambientColor);
 		// shader->setVec3("light.diffuse", lightColor); // darken diffuse light a bit
-		// shader->setVec3("light.diffuse", lightColor); // darken diffuse light a bit
-		shader->setVec3("light.diffuse", 0.5f, 0.5f, 0.5f); // darken diffuse light a bit
+		shader->setVec3("light.diffuse", lightColor); // darken diffuse light a bit
+		// shader->setVec3("light.diffuse",diffuseColor); // darken diffuse light a bit
 		shader->setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+
+		// RenderObject::renderScene(delta, shader, isShadowRender);
 	}
 };

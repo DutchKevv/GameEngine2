@@ -25,6 +25,7 @@ vector<glm::vec4> treePositions;
 const unsigned int space = 330;
 const unsigned int trees = 300;
 const unsigned int trees2 = 399;
+const unsigned int trees3 = 399;
 const unsigned int rocks = 75;
 
 void WorldScene::init()
@@ -63,7 +64,7 @@ void WorldScene::init()
 	// shader configuration
 	// --------------------
 	shader->use();
-	shader->setInt("diffuseTexture", 0);
+	shader->setInt("diffuseTexture", 1);
 	shader->setInt("shadowMap", 1);
 
 	std::cout << "init world \n";
@@ -82,10 +83,11 @@ void WorldScene::init()
 	// -----------
 	// test = new Model("game/models/trees/cartoon/CartoonTree.fbx");
 	// treeModel2 = new Model("game/models/cube/cube.obj", 1);
-	// treeModel = new Model("game/models/tree-low-poly/polytree1.obj");
-	// treeModel2 = new Model("game/models/tree-low-poly/polytree3.obj", 10000);
+	treeModel = new Model("game/models/tree-low-poly/polytree1.obj", 10000);
+	treeModel3 = new Model("game/models/tree-low-poly/polytree4.obj", 10000);
 	// treeModel2 = new Model("game/models/tree-low-poly/pinetree2withrocks.obj", 10000);
-	treeModel2 = new Model("game/models/tree-low-poly/pinetree2.obj", 10000);
+	treeModel2 = new Model("game/models/tree-low-poly/pinetree2.obj", 10009);
+	sun = new Model("game/models/sphere/sphere.obj", 1);
 	// treeModel2 = new Model("game/models/tree-low-poly/polytree1.obj", 10000);
 	// treeModel2 = new Model("game/models/plane/FREOBJ.obj", 2);
 	// rockModel = new Model("game/models/stone/stone.obj");
@@ -94,21 +96,26 @@ void WorldScene::init()
 
 	camera = new Camera(glm::vec3(0.0f, 14.0f, 120.0f), glm::vec3(0.0f, 1.0f, 0.0f), -75.5f);
 
-	cube1->position = glm::vec3(10.0f, 1.5f, 0.0);
-	cube2->position = glm::vec3(2.0f, 0.0f, -15.0f);
-	cube3->position = glm::vec3(-1.5f, 0.0f, -2.5f);
+	cube1->position = glm::vec3(10.0f, 21.5f, 40.0);
+	cube2->position = glm::vec3(2.0f, 20.0f, -15.0f);
+	cube3->position = glm::vec3(-1.5f, 20.0f, -2.5f);
 	// cube4->position = glm::vec3(-3.8f, 0.0f, -12.3f);
 	// cube5->position = glm::vec3(0.0f, 0.0f, 0.0f);
 	// test->position = glm::vec3(1.0f, 2.0f, 0.0f);
 
 	addChild(skybox, this);
 	addChild(spotlight, this);
-	addChild(treeModel2, this);
-	// addChild(floor, this);
-	addChild(cube1, this);
-	addChild(cube2, this);
-	addChild(cube3, this);
+	// addChild(sun, this);
 	addChild(floor, this);
+	// addChild(floor, this);
+	addChild(treeModel2, this);
+
+	addChild(treeModel, this);
+
+
+	// addChild(cube1, this);
+	// addChild(cube2, this);
+	// addChild(cube3, this);
 	// addChild(test, this);
 	// addChild(cube4, this);
 	// addChild(cube5, this);
@@ -173,7 +180,7 @@ void WorldScene::draw(float delta)
 	BaseObject *spotlight = this->getChildByClass<Spotlight>();
 	// glm::vec3 lightPos(-0.0f, 40.0f, -100.0f);
 	// lightProjection = glm::perspective(glm::radians(45.0f), (GLfloat)SHADOW_WIDTH / (GLfloat)SHADOW_HEIGHT, near_plane, far_plane); // note that if you use a perspective projection matrix you'll have to change the light position as the current light position isn't enough to reflect the whole scene
-	lightProjection = glm::ortho(-380.0f, 380.0f, -380.0f, 380.0f, near_plane, far_plane);
+	lightProjection = glm::ortho(-280.0f, 280.0f, -80.0f, 80.0f, near_plane, far_plane);
 	// lightView = glm::lookAt(glm::vec3(-0.0f, 40.0f, -30.0f), glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
 	lightView = glm::lookAt(spotlight->position, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
 	lightSpaceMatrix = lightProjection * lightView;
@@ -202,7 +209,7 @@ void WorldScene::draw(float delta)
 	// draw distance
 	// TODO - does not set float correct in display class
 	float ratio = (float)context->display->windowW / (float)context->display->windowH;
-	glm::mat4 projection = glm::perspective(glm::radians(camera->Zoom), ratio, 1.1f, 1000.0f);
+	glm::mat4 projection = glm::perspective(glm::radians(camera->Zoom), ratio, 1.1f, 10000.0f);
 
 	glm::mat4 view = camera->GetViewMatrix();
 
@@ -211,7 +218,6 @@ void WorldScene::draw(float delta)
 
 	// set light uniforms
 	shader->setVec3("viewPos", camera->Position);
-	// shader->setVec3("lightPos", lightPos);
 	shader->setVec3("light.position", spotlight->position);
 	shader->setMat4("lightSpaceMatrix", lightSpaceMatrix);
 
@@ -228,6 +234,8 @@ void WorldScene::renderScene(float delta, Shader *shader, bool isShadowRender)
 {
 	// std::cout << "render world scene \n";
 	glEnable(GL_DEPTH_TEST);
+	// sun->position = glm::vec3(0.0f, 5.0f, 0.0f);
+	// sun->position = glm::vec3(spotlight->position.x, spotlight->position.y - 2.0f, spotlight->position.z - 10.0f);
 	shader->use();
 	Scene::renderScene(delta, shader, isShadowRender);
 
@@ -243,7 +251,7 @@ void WorldScene::renderScene(float delta, Shader *shader, bool isShadowRender)
 	// 	// treeModel->position = glm::vec3(random);
 	// 	shader->setMat4("model", model);
 	// 	// // textureGrass.Bind();
-	// 	treeModel->renderScene(delta, shader, isShadowRender);
+	// 	treeModel2->renderScene(delta, shader, isShadowRender);
 	// }
 
 	// for (unsigned int i = 0; i < trees2; i++)
@@ -258,10 +266,10 @@ void WorldScene::renderScene(float delta, Shader *shader, bool isShadowRender)
 	// 	// treeModel->position = glm::vec3(random);
 	// 	shader->setMat4("model", model);
 	// 	// // textureGrass.Bind();
-	// 	treeModel2->renderScene(delta, shader, isShadowRender);
+	// 	treeModel->renderScene(delta, shader, isShadowRender);
 	// }
 
-	// for (unsigned int i = 0; i < trees; i++)
+	// for (unsigned int i = 0; i < trees3; i++)
 	// {
 	// 	glm::mat4 model = glm::mat4(1.0f);
 	// 	glm::vec4 random = treePositions[i];
@@ -271,7 +279,7 @@ void WorldScene::renderScene(float delta, Shader *shader, bool isShadowRender)
 	// 	// treeModel->position = glm::vec3(random);
 	// 	shader->setMat4("model", model);
 	// 	// // textureGrass.Bind();
-	// 	treeModel->renderScene(delta, shader, isShadowRender);
+	// 	treeModel3->renderScene(delta, shader, isShadowRender);
 	// }
 
 	// for (unsigned int i = 0; i < rocks; i++)

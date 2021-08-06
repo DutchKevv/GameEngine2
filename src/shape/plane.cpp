@@ -27,7 +27,7 @@ float planeVertices[] = {
   {
     if (loadTexture)
     {
-      texture = context->resourceManager->loadTexture("pbr/grass/albedo.png", true, "grass", 0, 0);
+      texture = context->resourceManager->loadTexture("grass.jpg", true, "grass2", 0, 0);
       // textureN = context->resourceManager->loadTexture("pbr/grass/ao.png", true, "grass2N", 0, 0);
     }
 
@@ -64,21 +64,21 @@ float planeVertices[] = {
 
     // glUniform1i(glGetUniformLocation(shader->ID, "texture1"), 0);
     shader->use();
-    // shader->setBool("useInstances", false);
+    shader->setBool("useInstances", false);
     shader->setBool("useTexture", true);
-    // shader->setBool("useNormal", true);
-    // shader->setInt("normalMap", 1);
+    shader->setBool("useNormal", false);
+    shader->setInt("normalMap", 0);
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, texture->ID);
+    texture->Bind();
+    // glBindTexture(GL_TEXTURE_2D, texture->ID);
     // glActiveTexture(GL_TEXTURE2);
     // glBindTexture(GL_TEXTURE_2D, textureN->ID);
     // textureN->Bind();
 
-    // shaderProgram->setVec3("objectColor", 1.0f, 0.5f, 0.31f);
-    shader->setVec3("material.ambient", 1.0f, 0.5f, 0.31f);
-    shader->setVec3("material.diffuse", 1.0f, 0.5f, 0.31f);
-    shader->setVec3("material.specular", 1.0f, 1.0f, 1.0f);
-    shader->setFloat("material.shininess", 1.0f);
+    shader->setVec3("material.ambient", 0.3f,0.3f, 0.3f);
+    shader->setInt("material.diffuse", 0);
+    shader->setVec3("material.specular",1.0f, 1.0f, 1.0f);
+    shader->setFloat("material.shininess", 8.0f);
 
     // world transformation
     glm::mat4 model = glm::mat4(1.0f);
@@ -90,5 +90,5 @@ float planeVertices[] = {
     glBindVertexArray(planeVAO);
     glDrawArrays(GL_TRIANGLES, 0, 6);
 
-    // glActiveTexture(GL_TEXTURE0);
+    glActiveTexture(GL_TEXTURE0);
   }

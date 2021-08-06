@@ -5,6 +5,7 @@
         "xstring": "cpp",
         "iostream": "cpp",
         "sstream": "cpp",
-        "cmath": "cpp"
+        "cmath": "cpp",
+        "*.ipp": "cpp"
     }
 }

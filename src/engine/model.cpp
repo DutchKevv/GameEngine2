@@ -27,10 +27,9 @@ using namespace std;
 
 unsigned int TextureFromFile(const char *path, const string &directory, bool gamma = false);
 
-
 void Model::init()
 {
-	srand((int)glfwGetTime()); // initialize random seed
+	// srand((int)glfwGetTime()); // initialize random seed
 	modelMatrices = new glm::mat4[amount];
 
 	// std::cout << "init model2 \n";
@@ -40,7 +39,7 @@ void Model::init()
 		glm::vec4 random = glm::vec4((rand() % space) - halfSpace, 0.0f, (rand() % space) - halfSpace, rand() % 100);
 		glm::mat4 model = glm::mat4(1.0f);
 
-		// model = glm::scale(model, glm::vec3(3.0f));
+		// model = glm::scale(model, glm::vec3(0.1f));
 		model = glm::translate(model, glm::vec3(random.x, 0.0f, random.z));
 		// model = glm::rotate(model, random.w, glm::vec3(0.0f, 1.0f, 0.0f));
 		// model = glm::rotate(model, random.w / 200, glm::vec3(1.0f, 0.0f, 0.0f));
@@ -51,7 +50,6 @@ void Model::init()
 
 	// configure instanced array
 	// -------------------------
-	unsigned int buffer;
 	glGenBuffers(1, &buffer);
 	glBindBuffer(GL_ARRAY_BUFFER, buffer);
 	glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatrices[0], GL_STATIC_DRAW);
@@ -88,6 +86,7 @@ void Model::init()
 void Model::renderScene(float delta, Shader *shader, bool isShadowRender)
 {
 	shader->use();
+
 	// shader->setBool("useTexture", false);
 	if (amount > 1)
 	{
@@ -95,7 +94,13 @@ void Model::renderScene(float delta, Shader *shader, bool isShadowRender)
 	}
 	else
 	{
-		shader->setBool("useInstances", false);
+		glm::mat4 model = glm::translate(glm::mat4(1.0f), this->position);
+
+		// 4. now add to list of matrices
+		// modelMatrices[0] = model;
+		// shader->setBool("useInstances", true);
+		// glBindBuffer(GL_ARRAY_BUFFER, buffer);
+		// glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatrices[0], GL_STATIC_DRAW);
 	}
 
 	for (unsigned int i = 0; i < meshes.size(); i++)
