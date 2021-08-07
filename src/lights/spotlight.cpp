@@ -80,7 +80,7 @@ public:
 		shader->use();
 		shader->setBool("useInstances", false);
 		shader->setBool("useNormal", false);
-		shader->setBool("useTexture", false);
+		shader->setBool("useTexture", true);
 		// shader->setVec3("light.color", lightColor);
 		// shader->setVec3("light.position", lightPos);
 		shader->setVec3("light.position", translation);

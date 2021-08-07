@@ -93,7 +93,7 @@ void WorldScene::init()
 	animator->PlayAnimation(danceAnimation);
 
 	// player = new Model("game/models/player/player.obj", 1);
-	player->position = glm::vec3(0.0f);
+	player->position = glm::vec3(1.0f, 20.0f, 10.0f);
 	player->scale = glm::vec3(0.01f);
 
 	// test = new Model("game/models/trees/cartoon/CartoonTree.fbx");
@@ -121,13 +121,13 @@ void WorldScene::init()
 	// cube5->position = glm::vec3(0.0f, 0.0f, 0.0f);
 	// test->position = glm::vec3(1.0f, 2.0f, 0.0f);
 
-	addChild(skybox, this);
 	addChild(spotlight, this);
+	addChild(skybox, this);
 	// addChild(sun, this);
 	addChild(floor, this);
 	// addChild(floor, this);
-	// addChild(treeModel2, this);
-	// addChild(treeModel, this);
+	addChild(treeModel2, this);
+	addChild(treeModel, this);
 	addChild(player, this);
 	addChild(castle, this);
 

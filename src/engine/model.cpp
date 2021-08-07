@@ -36,18 +36,34 @@ void Model::init()
 
 	// std::cout << "init model2 \n";
 	float halfSpace = space / 2;
-	for (unsigned int i = 0; i < amount; i++)
+	if (amount > 1)
 	{
-		glm::vec4 random = glm::vec4((rand() % space) - halfSpace, 0.0f, (rand() % space) - halfSpace, rand() % 100);
+		for (unsigned int i = 0; i < amount; i++)
+		{
+			glm::vec4 random = glm::vec4((rand() % space) - halfSpace, 0.0f, (rand() % space) - halfSpace, rand() % 100);
+			glm::mat4 model = glm::mat4(1.0f);
+
+			model = glm::translate(model, glm::vec3(random.x, 1.0f, random.z));
+			// model = glm::rotate(model, random.w, this->rotation);
+			// model = glm::rotate(model, random.w, glm::vec3(0.0f, 1.0f, 0.0f));
+			// model = glm::rotate(model, random.w / 200, glm::vec3(1.0f, 0.0f, 0.0f));
+
+			// 4. now add to list of matrices
+			modelMatrices[i] = model;
+		}
+	}
+	else
+	{
 		glm::mat4 model = glm::mat4(1.0f);
 
+		// model = glm::rotate(model, random.w, this->rotation);
+		model = glm::translate(model, this->position);
 		model = glm::scale(model, this->scale);
-		// model = glm::translate(model, glm::vec3(random.x, 0.0f, random.z));
 		// model = glm::rotate(model, random.w, glm::vec3(0.0f, 1.0f, 0.0f));
 		// model = glm::rotate(model, random.w / 200, glm::vec3(1.0f, 0.0f, 0.0f));
 
 		// 4. now add to list of matrices
-		modelMatrices[i] = model;
+		modelMatrices[0] = model;
 	}
 
 	// configure instanced array
@@ -99,19 +115,18 @@ void Model::renderScene(float delta, Shader *shader, bool isShadowRender)
 	}
 	else
 	{
-		glm::mat4 model = glm::translate(glm::mat4(1.0f), this->position);
-
+		glm::mat4 model = glm::mat4(1.0f);
+		model = glm::scale(model, this->scale);
+		model = glm::translate(model, this->position);
 		// 4. now add to list of matrices
 		shader->setBool("useInstances", true);
 		// glBindBuffer(GL_ARRAY_BUFFER, buffer);
 		// glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatrices[0], GL_STATIC_DRAW);
 	}
 
-
-		// auto transforms = animator.GetPoseTransforms();
-		// for (int i = 0; i < transforms.size(); ++i)
-		// 	ourShader.setMat4("finalBonesTransformations[" + std::to_string(i) + "]", transforms[i]);
-
+	// auto transforms = animator.GetPoseTransforms();
+	// for (int i = 0; i < transforms.size(); ++i)
+	// 	ourShader.setMat4("finalBonesTransformations[" + std::to_string(i) + "]", transforms[i]);
 
 	for (unsigned int i = 0; i < meshes.size(); i++)
 	{
@@ -140,8 +155,6 @@ void Model::loadModel(string const &path)
 
 	// process ASSIMP's root node recursively
 	processNode(scene->mRootNode, scene);
-
-
 }
 
 // processes a node in a recursive fashion. Processes each individual mesh located at the node and repeats this process on its children nodes (if any).

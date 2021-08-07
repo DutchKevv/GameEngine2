@@ -60,9 +60,9 @@ void main()
         localNormal = mat3(finalBonesMatrices[boneIds[i]]) * aNormal;
    }
 
-    gl_Position = projection * viewModel * totalPosition;
+    // gl_Position = projection * viewModel * totalPosition;
 
-    vs_out.FragPos = vec3(totalPosition.x, totalPosition.y,totalPosition.z);
+    // vs_out.FragPos = vec3(instanceMatrix * vec4(aPos, 1.0));
     vs_out.Normal = localNormal;
     vs_out.TexCoords = aTexCoords;
     vs_out.FragPosLightSpace = lightSpaceMatrix * vec4(vs_out.FragPos, 1.0);
