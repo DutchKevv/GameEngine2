@@ -120,8 +120,9 @@ void Model::renderScene(float delta, Shader *shader, bool isShadowRender)
 		model = glm::translate(model, this->position);
 		// 4. now add to list of matrices
 		shader->setBool("useInstances", true);
-		// glBindBuffer(GL_ARRAY_BUFFER, buffer);
-		// glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatrices[0], GL_STATIC_DRAW);
+		modelMatrices[0] = model;
+		glBindBuffer(GL_ARRAY_BUFFER, buffer);
+		glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatrices[0], GL_STATIC_DRAW);
 	}
 
 	// auto transforms = animator.GetPoseTransforms();

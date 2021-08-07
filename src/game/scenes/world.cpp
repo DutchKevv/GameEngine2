@@ -123,7 +123,7 @@ void WorldScene::init()
 
 	addChild(spotlight, this);
 	addChild(skybox, this);
-	// addChild(sun, this);
+	addChild(sun, this);
 	addChild(floor, this);
 	// addChild(floor, this);
 	addChild(treeModel2, this);
@@ -253,7 +253,7 @@ void WorldScene::renderScene(float delta, Shader *shader, bool isShadowRender)
 	glEnable(GL_DEPTH_TEST);
 	// camera->followObject(player);
 	// sun->position = glm::vec3(0.0f, 5.0f, 0.0f);
-	// sun->position = glm::vec3(spotlight->position.x, spotlight->position.y - 2.0f, spotlight->position.z - 10.0f);
+	sun->position = glm::vec3(spotlight->position.x, spotlight->position.y - 2.0f, spotlight->position.z - 10.0f);
 	shader->use();
 	Scene::renderScene(delta, shader, isShadowRender);
 

@@ -63,7 +63,7 @@ void main()
     // gl_Position = projection * viewModel * totalPosition;
 
     // vs_out.FragPos = vec3(instanceMatrix * vec4(aPos, 1.0));
-    vs_out.Normal = localNormal;
+    vs_out.Normal = aNormal;
     vs_out.TexCoords = aTexCoords;
     vs_out.FragPosLightSpace = lightSpaceMatrix * vec4(vs_out.FragPos, 1.0);
 }

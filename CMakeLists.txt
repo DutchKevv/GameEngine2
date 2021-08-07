@@ -126,7 +126,6 @@ include_directories(
 # find_package(assimp REQUIRED)
 # set_target_properties(assimp::assimp PROPERTIES MAP_IMPORTED_CONFIG_DEBUG Debug)
 
-
 set(ASSIMP_ENABLE_BOOST_WORKAROUND ON)
 set(BUILD_STATIC_LIB ON)
 set(BUILD_ASSIMP_TOOLS OFF)

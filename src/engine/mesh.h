@@ -122,7 +122,7 @@ public:
 			texture->Bind();
 			glActiveTexture(GL_TEXTURE0);
 			shader->setVec3("_color", glm::vec3(color.r, color.g, color.b));
-			// shader->setVec3("material.diffuse", glm::vec3(color.r, color.g, color.b));
+			shader->setVec3("material.diffuse", glm::vec3(color.r, color.g, color.b));
 			shader->setBool("useTexture", false);
 		}
 
