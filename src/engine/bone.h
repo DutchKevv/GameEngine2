@@ -8,7 +8,7 @@
 #include <glm/glm.hpp>
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/quaternion.hpp>
-#include "assimp/assimp_glm_helpers.h"
+#include "./assimp/assimp_glm_helpers.h"
 
 struct KeyPosition
 {
@@ -84,6 +84,7 @@ public:
 	int GetBoneID() { return m_ID; }
 	
 
+
 	int GetPositionIndex(float animationTime)
 	{
 		for (int index = 0; index < m_NumPositions - 1; ++index)
@@ -92,6 +93,8 @@ public:
 				return index;
 		}
 		assert(0);
+
+		return -1;
 	}
 
 	int GetRotationIndex(float animationTime)
@@ -114,7 +117,10 @@ public:
 			if (animationTime < m_Scales[index + 1].timeStamp)
 				return index;
 		}
+
 		assert(0);
+
+		return -1;
 	}
 
 

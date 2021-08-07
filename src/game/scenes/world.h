@@ -1,22 +1,12 @@
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
+#pragma once
 
-#include <iostream>
 #include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include "../../engine/baseObject.h"
 #include "../../engine/scene.h"
-#include "../../engine/camera.h"
-#include "../../engine/engine.h"
-#include "../../engine/context.h"
 #include "../../engine/skybox.h"
 #include "../../engine/texture.h"
 #include "../../engine/model.h"
 #include "../../engine/shader.cpp"
 #include "../../engine/animator.h"
-#include "../../engine/animdata.h"
-// #include "../../engine/heightmap2.cpp"
 #include "../../shape/cube.h"
 #include "../../shape/plane.h"
 #include "../../lights/spotlight.cpp"
@@ -54,8 +44,6 @@ public:
 	vector<glm::vec4> treePositions;
 	vector<glm::vec4> treePositions2;
 	vector<glm::vec4> rockPositions;
-
-	Texture2D *texture;
 
 	void init();
 

@@ -19,8 +19,6 @@
 #include "./shader.cpp"
 #include "./renderObject.h"
 #include "assimp/assimp_glm_helpers.h"
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
 // #include "./animator.h"
 #include "animdata.h"
 
@@ -53,7 +51,7 @@ public:
 		loadModel(path);
 	}
 
-	void init();
+	void init2();
 
 	// draws the model, and thus all its meshes
 	void renderScene(float delta, Shader *shader, bool isShadowRender);
@@ -69,7 +67,53 @@ private:
 	// processes a node in a recursive fashion. Processes each individual mesh located at the node and repeats this process on its children nodes (if any).
 	void processNode(aiNode *node, const aiScene *scene);
 
-	Mesh processMesh(aiMesh *mesh, const aiScene *scene);
+	Mesh processMesh(aiMesh* mesh, const aiScene* scene)
+	{
+		vector<Vertex> vertices;
+		vector<unsigned int> indices;
+		vector<Texture> textures;
+
+		for (unsigned int i = 0; i < mesh->mNumVertices; i++)
+		{
+			Vertex vertex;
+			SetVertexBoneDataToDefault(vertex);
+			vertex.Position = AssimpGLMHelpers::GetGLMVec(mesh->mVertices[i]);
+			vertex.Normal = AssimpGLMHelpers::GetGLMVec(mesh->mNormals[i]);
+			
+			if (mesh->mTextureCoords[0])
+			{
+				glm::vec2 vec;
+				vec.x = mesh->mTextureCoords[0][i].x;
+				vec.y = mesh->mTextureCoords[0][i].y;
+				vertex.TexCoords = vec;
+			}
+			else
+				vertex.TexCoords = glm::vec2(0.0f, 0.0f);
+
+			vertices.push_back(vertex);
+		}
+		for (unsigned int i = 0; i < mesh->mNumFaces; i++)
+		{
+			aiFace face = mesh->mFaces[i];
+			for (unsigned int j = 0; j < face.mNumIndices; j++)
+				indices.push_back(face.mIndices[j]);
+		}
+		aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+
+		vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
+		textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
+		vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
+		textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+		std::vector<Texture> normalMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
+		textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
+		std::vector<Texture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
+		textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
+
+		ExtractBoneWeightForVertices(vertices,mesh,scene);
+
+		return Mesh(vertices, indices, textures);
+	}
+
 	// checks all material textures of a given type and loads the textures if they're not loaded yet.
 	// the required info is returned as a Texture struct.
 	vector<Texture> loadMaterialTextures(aiMaterial *mat, aiTextureType type, string typeName);

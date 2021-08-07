@@ -2,6 +2,15 @@ cmake_minimum_required(VERSION 3.0.0)
 project(game2 VERSION 0.1.0)
 
 set(CMAKE_TOOLCHAIN_FILE "C:/vcpkg/scripts/buildsystems/vcpkg.cmake")
+set(CPACK_PROJECT_NAME ${PROJECT_NAME})
+set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
+
+include(CPack)
+
+message(STATUS ${CMAKE_BUILD_TYPE})
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+	message(STATUS  "DEBUG!!!!!!!")
+endif()
 
 # Add .lib files
 link_directories(${CMAKE_SOURCE_DIR}/lib)
@@ -49,29 +58,13 @@ set(SOURCES "${SRC_DIR}/main.cpp"
 	"${SRC_DIR}/engine/editor/panels/gui_panel_world.h" 
 	"${SRC_DIR}/engine/editor/panels/gui_panel_world.cpp"
 )
-set(CPACK_PROJECT_NAME ${PROJECT_NAME})
-set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
-
-
-message(STATUS ${CMAKE_BUILD_TYPE})
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-	message(STATUS  "DEBUG!!!!!!!")
-endif()
-
-# include(CPack)
-# include(CTest)
-# enable_testing()
 
 include_directories ("${SRC_DIR}/engine")
-
 
 # Executable definition and properties
 add_executable(${PROJECT_NAME} ${SOURCES})
 target_include_directories(${PROJECT_NAME} PUBLIC "${SRC_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}/src/engine")
 target_compile_features(game2 PRIVATE cxx_std_17)
-
-# We need a CMAKE_DIR with some code to find external dependencies
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 
 # GLFW
 set(GLFW_DIR "${LIB_DIR}/glfw-3.3.3")
@@ -112,20 +105,13 @@ add_library("ImGui" STATIC ${IMGUI_SOURCES})
 target_include_directories("ImGui" PUBLIC ${IMGUI_PATH})
 target_link_libraries(${PROJECT_NAME} ImGui)
 
-
 # src
 target_include_directories(game2 PRIVATE src)
 
 include_directories(
 	"${CMAKE_SOURCE_DIR}/src"
 	"${CMAKE_SOURCE_DIR}/src/engine"
-	# "${CMAKE_SOURCE_DIR}/lib/assimp-5.0.1/include/
 )
-
-# set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ${CMAKE_SOURCE_DIR}/lib/assimp-5.0.1)
-
-# find_package(assimp REQUIRED)
-# set_target_properties(assimp::assimp PROPERTIES MAP_IMPORTED_CONFIG_DEBUG Debug)
 
 set(ASSIMP_ENABLE_BOOST_WORKAROUND ON)
 set(BUILD_STATIC_LIB ON)
@@ -154,6 +140,7 @@ if (assimp_FOUND)
     add_library(${ASSIMP_LIBRARY} SHARED IMPORTED)
     set_target_properties(${ASSIMP_LIBRARY} PROPERTIES IMPORTED_LOCATION "${ASSIMP_LIBRARY_DIRS}/libassimp.so")
 endif(assimp_FOUND)
+
 
 target_link_libraries(${PROJECT_NAME} ${ASSIMP_LIBRARIES})
 
