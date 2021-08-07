@@ -194,10 +194,10 @@ void WorldScene::draw(float delta)
 
 	glm::mat4 lightProjection, lightView;
 	glm::mat4 lightSpaceMatrix;
-	float near_plane = 1.0f, far_plane = 750.5f;
+	float near_plane = 1.0f, far_plane = 1750.5f;
 	// glm::vec3 lightPos(-0.0f, 40.0f, -100.0f);
 	// lightProjection = glm::perspective(glm::radians(45.0f), (GLfloat)SHADOW_WIDTH / (GLfloat)SHADOW_HEIGHT, near_plane, far_plane); // note that if you use a perspective projection matrix you'll have to change the light position as the current light position isn't enough to reflect the whole scene
-	lightProjection = glm::ortho(-280.0f, 280.0f, -280.0f, 280.0f, near_plane, far_plane);
+	lightProjection = glm::ortho(-680.0f, 680.0f, -680.0f, 680.0f, near_plane, far_plane);
 	// lightView = glm::lookAt(glm::vec3(-0.0f, 40.0f, -30.0f), glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
 	lightView = glm::lookAt(spotlight->position, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
 	lightSpaceMatrix = lightProjection * lightView;

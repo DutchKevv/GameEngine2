@@ -77,7 +77,7 @@ float planeVertices[] = {
 
     shader->setVec3("material.ambient", 0.3f,0.3f, 0.3f);
     shader->setInt("material.diffuse", 0);
-    shader->setVec3("material.specular",1.0f, 1.0f, 1.0f);
+    shader->setVec3("material.specular",0.0f, 0.0f, 0.0f);
     shader->setFloat("material.shininess", 8.0f);
 
     // world transformation
