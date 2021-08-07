@@ -62,6 +62,8 @@ void WorldScene::init()
 	floor = new ShapePlane();
 	// heightMap = new HeightMap();
 
+	camera = new Camera(glm::vec3(0.0f, 4.0f, 20.0f), glm::vec3(0.0f, 1.0f, 0.0f), -75.5f);
+
 	// load models
 	// -----------
 
@@ -69,8 +71,6 @@ void WorldScene::init()
 	player = new Model("game/models/player/vampire/vampire.dae", 1);
 	danceAnimation = new Animation("game/models/player/vampire/vampire.dae", player);
 	animator = new Animator(danceAnimation);
-
-	std::cout << "Bone Count:  " << player->GetBoneCount();
 	animator->PlayAnimation(danceAnimation);
 
 	// player = new Model("game/models/player/player.obj", 1);
@@ -93,8 +93,6 @@ void WorldScene::init()
 	// treeModel = new Model("game/models/tree-low-poly/lowpolytree.obj");
 	// treeModel = new Model("game/models/tree-low-poly/polytree1.obj");
 
-	camera = new Camera(glm::vec3(0.0f, 4.0f, 120.0f), glm::vec3(0.0f, 1.0f, 0.0f), -75.5f);
-
 	cube1->position = glm::vec3(10.0f, 21.5f, 40.0);
 	cube2->position = glm::vec3(2.0f, 20.0f, -15.0f);
 	cube3->position = glm::vec3(-1.5f, 20.0f, -2.5f);
@@ -103,16 +101,16 @@ void WorldScene::init()
 	// test->position = glm::vec3(1.0f, 2.0f, 0.0f);
 
 	addChild(spotlight, this);
-	addChild(skybox, this);
-	addChild(sun, this);
+	// addChild(skybox, this);
+	// addChild(sun, this);
 	addChild(floor, this);
 	// addChild(floor, this);
 	// addChild(treeModel2, this);
 	// addChild(treeModel, this);
 	addChild(player, this);
-	addChild(castle, this);
+	// addChild(castle, this);
 
-	addChild(cube1, this);
+	// addChild(cube1, this);
 	// addChild(cube2, this);
 	// addChild(cube3, this);
 	// addChild(test, this);

@@ -1,17 +1,10 @@
-#pragma once
-#include <GLFW/glfw3.h>
-#include <glad/glad.h>
 #include <iostream>
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
-#include "plane.h"
-#include "../engine/logger.h"
-#include "../engine/logger.h"
-#include "../engine/renderObject.h"
+#include "./plane.h"
 #include "../engine/context.h"
-#include "../engine/texture.h"
-#include "../engine/resourceManager.h"
-#include "../engine/shader.cpp"
 
 float planeVertices[] = {
     // positions          // normals           // texture coords
@@ -62,7 +55,6 @@ float planeVertices[] = {
   {
     // std::cout << "render floor \n";
 
-    // glUniform1i(glGetUniformLocation(shader->ID, "texture1"), 0);
     shader->use();
     shader->setBool("useInstances", false);
     shader->setBool("useTexture", true);
@@ -82,16 +74,17 @@ float planeVertices[] = {
 
     // world transformation
     glm::mat4 model = glm::mat4(1.0f);
-    // model = glm::translate(model, glm::vec3(0.0f, -1.0f, 0.0f));
+    model = glm::translate(model, glm::vec3(0.0f, -1.0f, 0.0f));
     // model = glm::scale(model, glm::vec3(10.0f, 1.0f, 10.0f));
     shader->setMat4("model", model);
     // glEnable(GL_CULL_FACE);
     // glCullFace(GL_FRONT);    
+    
     // render the cube
     glBindVertexArray(planeVAO);
     glDrawArrays(GL_TRIANGLES, 0, 6);
 
-        // glCullFace(GL_BACK);  
+    // glCullFace(GL_BACK);  
 
     glActiveTexture(GL_TEXTURE0);
   }
