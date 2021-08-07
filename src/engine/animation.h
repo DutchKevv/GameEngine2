@@ -28,6 +28,7 @@ public:
 		const aiScene* scene = importer.ReadFile(animationPath, aiProcess_Triangulate);
 		assert(scene && scene->mRootNode);
 		auto animation = scene->mAnimations[0];
+		// m_Duration = 10000;
 		m_Duration = animation->mDuration;
 		m_TicksPerSecond = animation->mTicksPerSecond;
 		aiMatrix4x4 globalTransformation = scene->mRootNode->mTransformation;

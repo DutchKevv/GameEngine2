@@ -148,7 +148,6 @@ set(BUILD_SHARED_LIBS OFF)
 
 # target_link_libraries(${PROJECT_NAME} assimp)
 
-
 find_package(assimp REQUIRED)
 if (assimp_FOUND)
     set(ASSIMP_LIBRARY "assimp")
@@ -161,7 +160,6 @@ target_link_libraries(${PROJECT_NAME} ${ASSIMP_LIBRARIES})
 # add_custom_target(TARGET1 ${PROJECT_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/shaders $<TARGET_FILE_DIR:${PROJECT_NAME}>/shaders)
 # add_custom_target(TARGET2 ${PROJECT_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/textures $<TARGET_FILE_DIR:${PROJECT_NAME}>/textures)
 # add_custom_target(TARGET3 ${PROJECT_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/game/models $<TARGET_FILE_DIR:${PROJECT_NAME}>/game/models)
-
 
 file(COPY src/shaders DESTINATION .)
 file(COPY src/textures DESTINATION .)

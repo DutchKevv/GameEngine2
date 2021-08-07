@@ -119,10 +119,10 @@ void Model::renderScene(float delta, Shader *shader, bool isShadowRender)
 		model = glm::scale(model, this->scale);
 		model = glm::translate(model, this->position);
 		// 4. now add to list of matrices
-		shader->setBool("useInstances", true);
-		modelMatrices[0] = model;
-		glBindBuffer(GL_ARRAY_BUFFER, buffer);
-		glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatrices[0], GL_STATIC_DRAW);
+		shader->setBool("useInstances", false);
+		// modelMatrices[0] = model;
+		// glBindBuffer(GL_ARRAY_BUFFER, buffer);
+		// glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatrices[0], GL_STATIC_DRAW);
 	}
 
 	// auto transforms = animator.GetPoseTransforms();
@@ -187,6 +187,10 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
 	for (unsigned int i = 0; i < mesh->mNumVertices; i++)
 	{
 		Vertex vertex;
+		SetVertexBoneDataToDefault(vertex);
+		vertex.Position = AssimpGLMHelpers::GetGLMVec(mesh->mVertices[i]);
+		vertex.Normal = AssimpGLMHelpers::GetGLMVec(mesh->mNormals[i]);
+
 		glm::vec3 vector; // we declare a placeholder vector since assimp uses its own vector class that doesn't directly convert to glm's vec3 class so we transfer the data to this placeholder glm::vec3 first.
 		// positions
 		vector.x = mesh->mVertices[i].x;
@@ -258,6 +262,8 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
 	// 4. height maps
 	std::vector<Texture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
 	textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
+
+	ExtractBoneWeightForVertices(vertices,mesh,scene);
 
 	// return a mesh object created from the extracted mesh data
 	return Mesh(vertices, indices, textures, color);

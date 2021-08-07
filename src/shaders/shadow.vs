@@ -2,10 +2,10 @@
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aNormal;
 layout (location = 2) in vec2 aTexCoords;
-layout (location = 3) in mat4 instanceMatrix;
-layout (location = 4) in ivec4 boneIds;
-layout (location = 5) in vec4 weights;
 
+layout (location = 3) in ivec4 boneIds;
+layout (location = 4) in vec4 weights;
+layout (location = 5) in mat4 instanceMatrix;
 
 out vec2 TexCoords;
 
@@ -45,7 +45,6 @@ void main()
     }
 
     vec4 totalPosition = vec4(0.0f);
-    vec3 localNormal = aNormal;
     for(int i = 0 ; i < MAX_BONE_INFLUENCE ; i++)
     {
         if(boneIds[i] == -1) 
@@ -57,10 +56,10 @@ void main()
         }
         vec4 localPosition = finalBonesMatrices[boneIds[i]] * vec4(aPos,1.0f);
         totalPosition += localPosition * weights[i];
-        localNormal = mat3(finalBonesMatrices[boneIds[i]]) * aNormal;
+        vec3 localNormal = mat3(finalBonesMatrices[boneIds[i]]) * aNormal;
    }
 
-    // gl_Position = projection * viewModel * totalPosition;
+    gl_Position = projection * viewModel * totalPosition;
 
     // vs_out.FragPos = vec3(instanceMatrix * vec4(aPos, 1.0));
     vs_out.Normal = aNormal;

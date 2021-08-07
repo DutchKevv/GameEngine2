@@ -37,7 +37,7 @@ public:
 	unsigned int amount;
 	glm::mat4 *modelMatrices;
 	unsigned int buffer;
-	
+
 	const unsigned int space = 1730;
 
 	// Animation *danceAnimation;
@@ -57,8 +57,8 @@ public:
 
 	// draws the model, and thus all its meshes
 	void renderScene(float delta, Shader *shader, bool isShadowRender);
-	auto& GetOffsetMatMap() { return m_OffsetMatMap; }
-	int& GetBoneCount() { return m_BoneCount; }
+	auto &GetOffsetMatMap() { return m_OffsetMatMap; }
+	int &GetBoneCount() { return m_BoneCount; }
 
 private:
 	std::map<string, BoneInfo> m_OffsetMatMap;
@@ -74,9 +74,18 @@ private:
 	// the required info is returned as a Texture struct.
 	vector<Texture> loadMaterialTextures(aiMaterial *mat, aiTextureType type, string typeName);
 
-	void SetVertexBoneData(Vertex& vertex, int boneID, float weight)
+	void SetVertexBoneDataToDefault(Vertex &vertex)
 	{
-		for (int i = 0; i < AI_MAX_BONE_WEIGHTS; ++i)
+		for (int i = 0; i < MAX_BONE_INFLUENCE; i++)
+		{
+			vertex.m_BoneIDs[i] = -1;
+			vertex.m_Weights[i] = 0.0f;
+		}
+	}
+
+	void SetVertexBoneData(Vertex &vertex, int boneID, float weight)
+	{
+		for (int i = 0; i < MAX_BONE_INFLUENCE; ++i)
 		{
 			if (vertex.m_BoneIDs[i] < 0)
 			{
@@ -87,11 +96,10 @@ private:
 		}
 	}
 
-
-	void ExtractBoneWeightForVertices(std::vector<Vertex>& vertices, aiMesh* mesh, const aiScene* scene)
+	void ExtractBoneWeightForVertices(std::vector<Vertex> &vertices, aiMesh *mesh, const aiScene *scene)
 	{
-		auto& boneInfoMap = m_OffsetMatMap;
-		int& boneCount = m_BoneCount;
+		auto &boneInfoMap = m_OffsetMatMap;
+		int &boneCount = m_BoneCount;
 
 		for (int boneIndex = 0; boneIndex < mesh->mNumBones; ++boneIndex)
 		{

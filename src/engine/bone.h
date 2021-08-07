@@ -84,7 +84,6 @@ public:
 	int GetBoneID() { return m_ID; }
 	
 
-
 	int GetPositionIndex(float animationTime)
 	{
 		for (int index = 0; index < m_NumPositions - 1; ++index)
@@ -102,7 +101,10 @@ public:
 			if (animationTime < m_Rotations[index + 1].timeStamp)
 				return index;
 		}
+
 		assert(0);
+
+		return -1;
 	}
 
 	int GetScaleIndex(float animationTime)

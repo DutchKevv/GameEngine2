@@ -5,6 +5,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/string_cast.hpp>
 #include "world.h"
 #include "../../engine/baseObject.h"
 #include "../../engine/scene.h"
@@ -126,8 +127,8 @@ void WorldScene::init()
 	addChild(sun, this);
 	addChild(floor, this);
 	// addChild(floor, this);
-	addChild(treeModel2, this);
-	addChild(treeModel, this);
+	// addChild(treeModel2, this);
+	// addChild(treeModel, this);
 	addChild(player, this);
 	addChild(castle, this);
 
@@ -255,13 +256,17 @@ void WorldScene::renderScene(float delta, Shader *shader, bool isShadowRender)
 	// sun->position = glm::vec3(0.0f, 5.0f, 0.0f);
 	sun->position = glm::vec3(spotlight->position.x, spotlight->position.y - 2.0f, spotlight->position.z - 10.0f);
 	shader->use();
-	Scene::renderScene(delta, shader, isShadowRender);
 
+
+	// std::cout << glm::to_string(transforms[0]) << std::endl;
 	auto transforms = animator->GetPoseTransforms();
-	for (int i = 0; i < transforms.size(); ++i)
+	for (int i = 0; i < transforms.size(); ++i) {
 		shader->setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
+		// std::cout << glm::to_string(transforms[i]) << std::endl;
+	}
 
 
+	Scene::renderScene(delta, shader, isShadowRender);
 
 	// for (unsigned int i = 0; i < trees; i++)
 	// {
