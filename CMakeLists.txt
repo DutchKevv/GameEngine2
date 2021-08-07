@@ -23,7 +23,9 @@ set(SOURCES "${SRC_DIR}/main.cpp"
 	"${SRC_DIR}/shape/plane.h" 
 	"${SRC_DIR}/shape/plane.cpp" 
 	"${SRC_DIR}/engine/resourceManager.cpp" 
-	"${SRC_DIR}/engine/resourceManager.h" 
+	"${SRC_DIR}/engine/resourceManager.h"
+	"${SRC_DIR}/engine/animation.h" 
+	"${SRC_DIR}/engine/animator.h" 
 	"${SRC_DIR}/engine/model.cpp" 
 	"${SRC_DIR}/engine/model.h" 
 	"${SRC_DIR}/engine/scene.cpp" 
@@ -50,7 +52,6 @@ set(SOURCES "${SRC_DIR}/main.cpp"
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 
-
 message(STATUS ${CMAKE_BUILD_TYPE})
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
 	message(STATUS  "DEBUG!!!!!!!")
@@ -61,6 +62,7 @@ endif()
 # enable_testing()
 
 include_directories ("${SRC_DIR}/engine")
+
 
 # Executable definition and properties
 add_executable(${PROJECT_NAME} ${SOURCES})
@@ -116,13 +118,14 @@ target_include_directories(game2 PRIVATE src)
 include_directories(
 	"${CMAKE_SOURCE_DIR}/src"
 	"${CMAKE_SOURCE_DIR}/src/engine"
-	# "${CMAKE_SOURCE_DIR}/lib/assimp-5.0.1/include/"
+	# "${CMAKE_SOURCE_DIR}/lib/assimp-5.0.1/include/
 )
 
 # set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ${CMAKE_SOURCE_DIR}/lib/assimp-5.0.1)
 
 # find_package(assimp REQUIRED)
 # set_target_properties(assimp::assimp PROPERTIES MAP_IMPORTED_CONFIG_DEBUG Debug)
+
 
 set(ASSIMP_ENABLE_BOOST_WORKAROUND ON)
 set(BUILD_STATIC_LIB ON)

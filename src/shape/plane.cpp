@@ -27,7 +27,7 @@ float planeVertices[] = {
   {
     if (loadTexture)
     {
-      texture = context->resourceManager->loadTexture("grass.jpg", true, "grass2", 0, 0);
+      texture = context->resourceManager->loadTexture("sand.jpg", true, "grass2", 0, 0);
       // textureN = context->resourceManager->loadTexture("pbr/grass/ao.png", true, "grass2N", 0, 0);
     }
 
@@ -85,10 +85,13 @@ float planeVertices[] = {
     // model = glm::translate(model, glm::vec3(0.0f, -1.0f, 0.0f));
     // model = glm::scale(model, glm::vec3(10.0f, 1.0f, 10.0f));
     shader->setMat4("model", model);
-
+    // glEnable(GL_CULL_FACE);
+    // glCullFace(GL_FRONT);    
     // render the cube
     glBindVertexArray(planeVAO);
     glDrawArrays(GL_TRIANGLES, 0, 6);
+
+        // glCullFace(GL_BACK);  
 
     glActiveTexture(GL_TEXTURE0);
   }

@@ -14,6 +14,8 @@
 #include "../../engine/texture.h"
 #include "../../engine/model.h"
 #include "../../engine/shader.cpp"
+#include "../../engine/animator.h"
+#include "../../engine/animdata.h"
 // #include "../../engine/heightmap2.cpp"
 #include "../../shape/cube.h"
 #include "../../shape/plane.h"
@@ -31,6 +33,7 @@ public:
 	ShapePlane *floor;
 	SkyBox *skybox;
 	Model *sun;
+	Model *castle;
 
 	unsigned int depthMapFBO;
 	unsigned int depthMap;
@@ -43,6 +46,9 @@ public:
 	Model *treeModel3;
 	Model *rockModel;
 	Model *test;
+	Model *player;
+	Animation *danceAnimation;
+	Animator *animator;
 	// HeightMap *heightMap;
 
 	vector<glm::vec4> treePositions;

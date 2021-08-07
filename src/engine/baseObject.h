@@ -12,7 +12,6 @@ class BaseObject
 public:
 	Scene *scene;
 	std::vector<BaseObject *> children;
-	glm::vec3 position = glm::vec3(1.0f);
 
 	bool isInitialized = false;
 	bool isEnabled = true;

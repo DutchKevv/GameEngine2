@@ -4,6 +4,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <vector>
+#include "./renderObject.h"
 
 // Defines several possible options for camera movement. Used as abstraction to stay away from window-system specific input methods
 enum Camera_Movement
@@ -65,6 +66,15 @@ public:
 		return glm::lookAt(Position, Position + Front, Up);
 	}
 
+	void followObject(RenderObject *renderObject) {
+		if (renderObject) {
+			Position = renderObject->position;
+		}
+
+		Position.z -= 3.0f; 
+		Position.y += 2.0f; 
+	}
+
 	// processes input received from any keyboard-like input system. Accepts input parameter in the form of camera defined ENUM (to abstract it from windowing systems)
 	void ProcessKeyboard(Camera_Movement direction, float deltaTime)
 	{
@@ -78,9 +88,9 @@ public:
 		if (direction == RIGHT)
 			Position += Right * velocity;
 
-		if (Position.y < 0.6f) {
-			Position.y = 0.6f;
-		}
+		// if (Position.y < 0.2f) {
+			// Position.y = 0.2f;
+		// }
 	}
 
 	// processes input received from a mouse input system. Expects the offset value in both the x and y direction.

@@ -11,6 +11,8 @@
 #include "./texture.h"
 #include "./context.h"
 
+#define MAX_BONE_INFLUENCE 4
+
 using namespace std;
 
 struct Vertex
@@ -27,6 +29,12 @@ struct Vertex
 	glm::vec3 Bitangent;
 	// bitangent
 	glm::vec3 Color;
+
+	//bone indexes which will influence this vertex
+    int m_BoneIDs[MAX_BONE_INFLUENCE];
+
+    //weights from each bone
+    float m_Weights[MAX_BONE_INFLUENCE];
 };
 
 struct Texture
@@ -71,7 +79,7 @@ public:
 		unsigned int normalNr = 1;
 		unsigned int heightNr = 1;
 
-		// shader->setVec3("material.ambient", 0.8f, 0.8f, 0.8);
+		shader->setVec3("material.ambient", 0.2f, 0.2f, 0.2);
 		// shader->setInt("material.diffuse", 0);
 		// shader->setVec3("material.specular", 1.0f, 1.0f, 1.0f);
 		// shader->setFloat("material.shininess", 10.0f);
@@ -171,6 +179,14 @@ private:
 		// vertex bitangent
 		glEnableVertexAttribArray(4);
 		glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, Bitangent));
+
+		// bone ids
+        glEnableVertexAttribArray(6);
+        glVertexAttribIPointer(3, 4, GL_INT, sizeof(Vertex), (void*)offsetof(Vertex, m_BoneIDs));
+
+        // weights
+        glEnableVertexAttribArray(7);
+        glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, m_Weights));
 
 		glBindVertexArray(0);
 	}

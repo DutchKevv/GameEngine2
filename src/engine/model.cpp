@@ -5,6 +5,7 @@
 #include <GLFW/glfw3.h>
 
 #include <string>
+#include <filesystem>
 #include <fstream>
 #include <sstream>
 #include <iostream>
@@ -22,6 +23,7 @@
 #include "./mesh.h"
 #include "./shader.cpp"
 #include "./renderObject.h"
+#include "./animator.h"
 
 using namespace std;
 
@@ -39,8 +41,8 @@ void Model::init()
 		glm::vec4 random = glm::vec4((rand() % space) - halfSpace, 0.0f, (rand() % space) - halfSpace, rand() % 100);
 		glm::mat4 model = glm::mat4(1.0f);
 
-		// model = glm::scale(model, glm::vec3(0.1f));
-		model = glm::translate(model, glm::vec3(random.x, 0.0f, random.z));
+		model = glm::scale(model, this->scale);
+		// model = glm::translate(model, glm::vec3(random.x, 0.0f, random.z));
 		// model = glm::rotate(model, random.w, glm::vec3(0.0f, 1.0f, 0.0f));
 		// model = glm::rotate(model, random.w / 200, glm::vec3(1.0f, 0.0f, 0.0f));
 
@@ -80,6 +82,9 @@ void Model::init()
 
 		glBindVertexArray(0);
 	}
+
+	// danceAnimation = new Animation("textyre/dancing_vampire.dae", this);
+	// animator = new Animator(danceAnimation);
 }
 
 // draws the model, and thus all its meshes
@@ -97,11 +102,16 @@ void Model::renderScene(float delta, Shader *shader, bool isShadowRender)
 		glm::mat4 model = glm::translate(glm::mat4(1.0f), this->position);
 
 		// 4. now add to list of matrices
-		// modelMatrices[0] = model;
-		// shader->setBool("useInstances", true);
+		shader->setBool("useInstances", true);
 		// glBindBuffer(GL_ARRAY_BUFFER, buffer);
 		// glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatrices[0], GL_STATIC_DRAW);
 	}
+
+
+		// auto transforms = animator.GetPoseTransforms();
+		// for (int i = 0; i < transforms.size(); ++i)
+		// 	ourShader.setMat4("finalBonesTransformations[" + std::to_string(i) + "]", transforms[i]);
+
 
 	for (unsigned int i = 0; i < meshes.size(); i++)
 	{
@@ -117,17 +127,21 @@ void Model::loadModel(string const &path)
 	// read file via ASSIMP
 	Assimp::Importer importer;
 	const aiScene *scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
+
 	// check for errors
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) // if is Not Zero
 	{
 		cout << "ERROR::ASSIMP:: " << importer.GetErrorString() << endl;
 		return;
 	}
+
 	// retrieve the directory path of the filepath
 	directory = path.substr(0, path.find_last_of('/'));
 
 	// process ASSIMP's root node recursively
 	processNode(scene->mRootNode, scene);
+
+
 }
 
 // processes a node in a recursive fashion. Processes each individual mesh located at the node and repeats this process on its children nodes (if any).

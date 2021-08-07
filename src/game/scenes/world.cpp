@@ -15,6 +15,8 @@
 #include "../../engine/texture.h"
 #include "../../engine/model.h"
 #include "../../engine/shader.cpp"
+// #include "../../engine/animator.h"
+// #include "../../engine/animdata.h"
 // #include "../../engine/heightmap2.cpp"
 #include "../../shape/cube.h"
 #include "../../shape/plane.h"
@@ -81,6 +83,19 @@ void WorldScene::init()
 
 	// load models
 	// -----------
+
+	// player
+	player = new Model("game/models/player/vampire/vampire.dae", 1);
+	danceAnimation = new Animation("game/models/player/vampire/vampire.dae", player);
+	animator = new Animator(danceAnimation);
+
+	std::cout << "Bone Count:  " << player->GetBoneCount();
+	animator->PlayAnimation(danceAnimation);
+
+	// player = new Model("game/models/player/player.obj", 1);
+	player->position = glm::vec3(0.0f);
+	player->scale = glm::vec3(0.01f);
+
 	// test = new Model("game/models/trees/cartoon/CartoonTree.fbx");
 	// treeModel2 = new Model("game/models/cube/cube.obj", 1);
 	treeModel = new Model("game/models/tree-low-poly/polytree1.obj", 10000);
@@ -88,13 +103,16 @@ void WorldScene::init()
 	// treeModel2 = new Model("game/models/tree-low-poly/pinetree2withrocks.obj", 10000);
 	treeModel2 = new Model("game/models/tree-low-poly/pinetree2.obj", 10009);
 	sun = new Model("game/models/sphere/sphere.obj", 1);
+	castle = new Model("game/models/castle/tower/medieval_tower_2.obj", 1);
+	castle->scale = glm::vec3(1.0f);
+
 	// treeModel2 = new Model("game/models/tree-low-poly/polytree1.obj", 10000);
 	// treeModel2 = new Model("game/models/plane/FREOBJ.obj", 2);
 	// rockModel = new Model("game/models/stone/stone.obj");
 	// treeModel = new Model("game/models/tree-low-poly/lowpolytree.obj");
 	// treeModel = new Model("game/models/tree-low-poly/polytree1.obj");
 
-	camera = new Camera(glm::vec3(0.0f, 14.0f, 120.0f), glm::vec3(0.0f, 1.0f, 0.0f), -75.5f);
+	camera = new Camera(glm::vec3(0.0f, 4.0f, 120.0f), glm::vec3(0.0f, 1.0f, 0.0f), -75.5f);
 
 	cube1->position = glm::vec3(10.0f, 21.5f, 40.0);
 	cube2->position = glm::vec3(2.0f, 20.0f, -15.0f);
@@ -108,12 +126,12 @@ void WorldScene::init()
 	// addChild(sun, this);
 	addChild(floor, this);
 	// addChild(floor, this);
-	addChild(treeModel2, this);
+	// addChild(treeModel2, this);
+	// addChild(treeModel, this);
+	addChild(player, this);
+	addChild(castle, this);
 
-	addChild(treeModel, this);
-
-
-	// addChild(cube1, this);
+	addChild(cube1, this);
 	// addChild(cube2, this);
 	// addChild(cube3, this);
 	// addChild(test, this);
@@ -168,7 +186,7 @@ void WorldScene::draw(float delta)
 	// 1. render depth of scene to texture (from light's perspective)
 	// --------------------------------------------------------------
 	// shader->setBool("useTexture", true);
-
+	animator->UpdateAnimation(delta);
 	// render
 	// ------
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
@@ -177,10 +195,9 @@ void WorldScene::draw(float delta)
 	glm::mat4 lightProjection, lightView;
 	glm::mat4 lightSpaceMatrix;
 	float near_plane = 1.0f, far_plane = 750.5f;
-	BaseObject *spotlight = this->getChildByClass<Spotlight>();
 	// glm::vec3 lightPos(-0.0f, 40.0f, -100.0f);
 	// lightProjection = glm::perspective(glm::radians(45.0f), (GLfloat)SHADOW_WIDTH / (GLfloat)SHADOW_HEIGHT, near_plane, far_plane); // note that if you use a perspective projection matrix you'll have to change the light position as the current light position isn't enough to reflect the whole scene
-	lightProjection = glm::ortho(-280.0f, 280.0f, -80.0f, 80.0f, near_plane, far_plane);
+	lightProjection = glm::ortho(-280.0f, 280.0f, -280.0f, 280.0f, near_plane, far_plane);
 	// lightView = glm::lookAt(glm::vec3(-0.0f, 40.0f, -30.0f), glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
 	lightView = glm::lookAt(spotlight->position, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
 	lightSpaceMatrix = lightProjection * lightView;
@@ -234,10 +251,17 @@ void WorldScene::renderScene(float delta, Shader *shader, bool isShadowRender)
 {
 	// std::cout << "render world scene \n";
 	glEnable(GL_DEPTH_TEST);
+	// camera->followObject(player);
 	// sun->position = glm::vec3(0.0f, 5.0f, 0.0f);
 	// sun->position = glm::vec3(spotlight->position.x, spotlight->position.y - 2.0f, spotlight->position.z - 10.0f);
 	shader->use();
 	Scene::renderScene(delta, shader, isShadowRender);
+
+	auto transforms = animator->GetPoseTransforms();
+	for (int i = 0; i < transforms.size(); ++i)
+		shader->setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
+
+
 
 	// for (unsigned int i = 0; i < trees; i++)
 	// {
