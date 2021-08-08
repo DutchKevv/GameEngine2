@@ -47,11 +47,11 @@ public:
 		float speed = 0.6f;
 		translationX = 0.0f;
 		// translationX = 120.0f * cos(0.0f + speed * (float)glfwGetTime());
-		// translationY = 220.0f;
-		translationY = 700.0f * sin(0.0f + speed * (float)glfwGetTime());
+		translationY = 22.0f;
+		// translationY = 700.0f * sin(0.0f + speed * (float)glfwGetTime());
 		// translationY = 2.0f * sin(0.0f + 1.0f * (float)glfwGetTime());
 		// translationZ = scene->camera->Position.z - 150.0f;
-		translationZ = -550.0f;
+		translationZ = -25.0f;
 		// translationZ = -100.0f * sin(0.0f + speed * (float)glfwGetTime());
 		// glm::vec3 translation = glm::vec3(2.0f);
 		glm::vec3 translation = glm::vec3(translationX, translationY, translationZ);

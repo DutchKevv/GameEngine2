@@ -1,5 +1,6 @@
 #pragma once
 
+#include <glm/glm.hpp>
 #include "../engine/renderObject.h"
 #include "../engine/texture.h"
 #include "../engine/shader.cpp"
@@ -8,6 +9,8 @@ class ShapePlane : public RenderObject
 {
 
 public:
+  glm::vec3 position = glm::vec3(0.0f);
+
   bool loadTexture = true;
 
   void init();

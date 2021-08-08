@@ -74,8 +74,8 @@ void WorldScene::init()
 	animator->PlayAnimation(danceAnimation);
 
 	// player = new Model("game/models/player/player.obj", 1);
-	player->position = glm::vec3(1.0f, 20.0f, 10.0f);
-	player->scale = glm::vec3(0.01f);
+	player->position = glm::vec3(0.0f, 0.0f, 0.0f);
+	// player->scale = glm::vec3(0.01f);
 
 	// test = new Model("game/models/trees/cartoon/CartoonTree.fbx");
 	// treeModel2 = new Model("game/models/cube/cube.obj", 1);
@@ -108,7 +108,7 @@ void WorldScene::init()
 	// addChild(treeModel2, this);
 	// addChild(treeModel, this);
 	addChild(player, this);
-	// addChild(castle, this);
+	addChild(castle, this);
 
 	// addChild(cube1, this);
 	// addChild(cube2, this);
@@ -173,12 +173,12 @@ void WorldScene::draw(float delta)
 
 	glm::mat4 lightProjection, lightView;
 	glm::mat4 lightSpaceMatrix;
-	float near_plane = 1.0f, far_plane = 1750.5f;
+	float near_plane = 0.0f, far_plane = 1750.5f;
 	// glm::vec3 lightPos(-0.0f, 40.0f, -100.0f);
 	// lightProjection = glm::perspective(glm::radians(45.0f), (GLfloat)SHADOW_WIDTH / (GLfloat)SHADOW_HEIGHT, near_plane, far_plane); // note that if you use a perspective projection matrix you'll have to change the light position as the current light position isn't enough to reflect the whole scene
 	lightProjection = glm::ortho(-680.0f, 680.0f, -680.0f, 680.0f, near_plane, far_plane);
 	// lightView = glm::lookAt(glm::vec3(-0.0f, 40.0f, -30.0f), glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
-	lightView = glm::lookAt(spotlight->position, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
+	lightView = glm::lookAt(spotlight->position, glm::vec3(0.0f, 0.0f, 100.0f), glm::vec3(0.0, 1.0, 0.0));
 	lightSpaceMatrix = lightProjection * lightView;
 	// render scene from light's point of view
 	depthShader->use();

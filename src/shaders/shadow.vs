@@ -34,12 +34,10 @@ void main()
     
     if (useInstances) {
         vs_out.FragPos = vec3(instanceMatrix * vec4(aPos, 1.0));
-        gl_Position = projection * view * instanceMatrix * vec4(aPos, 1.0);
         viewModel = view * instanceMatrix;
         // vs_out.Normal = transpose(inverse(mat3(instanceMatrix))) * aNormal;
     } else {
         vs_out.FragPos = vec3(model * vec4(aPos, 1.0));
-        gl_Position = projection * view * model * vec4(aPos, 1.0);
         viewModel = view * model;
         // vs_out.Normal = transpose(inverse(mat3(model))) * aNormal;
     }
@@ -61,7 +59,6 @@ void main()
 
     gl_Position = projection * viewModel * totalPosition;
 
-    // vs_out.FragPos = vec3(instanceMatrix * vec4(aPos, 1.0));
     vs_out.Normal = aNormal;
     vs_out.TexCoords = aTexCoords;
     vs_out.FragPosLightSpace = lightSpaceMatrix * vec4(vs_out.FragPos, 1.0);

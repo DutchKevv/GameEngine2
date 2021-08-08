@@ -59,6 +59,8 @@ set(SOURCES "${SRC_DIR}/main.cpp"
 	"${SRC_DIR}/engine/editor/panels/gui_panel_world.cpp"
 )
 
+
+
 include_directories ("${SRC_DIR}/engine")
 
 # Executable definition and properties
@@ -78,6 +80,8 @@ include_directories("${LIB_DIR}/glfw-3.3.3/include")
 target_link_libraries(${PROJECT_NAME} "glfw" "${GLFW_LIBRARIES}")
 target_include_directories(${PROJECT_NAME} PRIVATE "${GLFW_DIR}/include")
 target_compile_definitions(${PROJECT_NAME} PRIVATE "GLFW_INCLUDE_NONE")
+
+
 
 # glad
 set(GLAD_DIR "${LIB_DIR}/glad")
@@ -104,6 +108,7 @@ set(IMGUI_SOURCES ${IMGUI_SOURCES} "${LIB_DIR}/imgui/backends/imgui_impl_opengl3
 add_library("ImGui" STATIC ${IMGUI_SOURCES})
 target_include_directories("ImGui" PUBLIC ${IMGUI_PATH})
 target_link_libraries(${PROJECT_NAME} ImGui)
+
 
 # src
 target_include_directories(game2 PRIVATE src)
@@ -134,6 +139,7 @@ set(BUILD_SHARED_LIBS OFF)
 
 # target_link_libraries(${PROJECT_NAME} assimp)
 
+
 find_package(assimp REQUIRED)
 if (assimp_FOUND)
     set(ASSIMP_LIBRARY "assimp")
@@ -152,6 +158,9 @@ file(COPY src/shaders DESTINATION .)
 file(COPY src/textures DESTINATION .)
 file(COPY src/game/models DESTINATION ./game)
 
+
+
 # add_custom_target(copy-shaders ALL COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/shaders ${CMAKE_BINARY_DIR}/shaders DEPENDS ${MY_TARGET})
 # add_custom_target(copy-textures ALL COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/textures ${CMAKE_BINARY_DIR}/textures DEPENDS ${MY_TARGET})
 # add_custom_target(copy-models ALL COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/game/models ${CMAKE_BINARY_DIR}/game/models DEPENDS ${MY_TARGET})
+

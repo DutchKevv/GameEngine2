@@ -1,4 +1,3 @@
-
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 #include <glad/glad.h>
@@ -9,18 +8,8 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
-#include <map>
-#include <vector>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
 
 #include "./model.h"
-#include "./mesh.h"
-#include "./shader.cpp"
-#include "./renderObject.h"
 #include "./animator.h"
 
 using namespace std;
@@ -105,11 +94,12 @@ void Model::renderScene(float delta, Shader *shader, bool isShadowRender)
 	}
 	else
 	{
+		shader->setBool("useInstances", false);
 		glm::mat4 model = glm::mat4(1.0f);
-		model = glm::scale(model, this->scale);
+		// model = glm::scale(model, this->scale);
 		model = glm::translate(model, this->position);
 		// 4. now add to list of matrices
-		shader->setBool("useInstances", false);
+		shader->setMat4("model", model);
 		// modelMatrices[0] = model;
 		// glBindBuffer(GL_ARRAY_BUFFER, buffer);
 		// glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatrices[0], GL_STATIC_DRAW);
