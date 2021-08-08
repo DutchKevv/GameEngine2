@@ -68,7 +68,7 @@ void WorldScene::init()
 	// -----------
 
 	// player
-	player = new Model("game/models/player/vampire/vampire.dae", 1);
+	player = new Model("game/models/player/vampire/vampire.dae");
 	danceAnimation = new Animation("game/models/player/vampire/vampire.dae", player);
 	animator = new Animator(danceAnimation);
 	animator->PlayAnimation(danceAnimation);

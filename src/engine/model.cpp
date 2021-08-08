@@ -27,7 +27,7 @@ using namespace std;
 
 unsigned int TextureFromFile(const char *path, const string &directory, bool gamma = false);
 
-void Model::init2()
+void Model::init()
 {
 	// srand((int)glfwGetTime()); // initialize random seed
 	modelMatrices = new glm::mat4[amount];
@@ -49,56 +49,48 @@ void Model::init2()
 			// 4. now add to list of matrices
 			modelMatrices[i] = model;
 		}
+
+		// configure instanced array
+		// -------------------------
+		glGenBuffers(1, &instanceBuffer);
+		glBindBuffer(GL_ARRAY_BUFFER, instanceBuffer);
+		glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatrices[0], GL_STATIC_DRAW);
+
+		// set transformation matrices as an instance vertex attribute (with divisor 1)
+		// note: we're cheating a little by taking the, now publicly declared, VAO of the model's mesh(es) and adding new vertexAttribPointers
+		// normally you'd want to do this in a more organized fashion, but for learning purposes this will do.
+		// -----------------------------------------------------------------------------------------------------------------------------------
+		for (unsigned int i = 0; i < meshes.size(); i++)
+		{
+			unsigned int VAO = meshes[i].VAO;
+			glBindVertexArray(VAO);
+
+			// set attribute pointers for matrix (4 times vec4)
+			glEnableVertexAttribArray(3);
+			glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void *)0);
+			glEnableVertexAttribArray(4);
+			glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void *)(sizeof(glm::vec4)));
+			glEnableVertexAttribArray(5);
+			glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void *)(2 * sizeof(glm::vec4)));
+			glEnableVertexAttribArray(6);
+			glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void *)(3 * sizeof(glm::vec4)));
+
+			glVertexAttribDivisor(3, 1);
+			glVertexAttribDivisor(4, 1);
+			glVertexAttribDivisor(5, 1);
+			glVertexAttribDivisor(6, 1);
+
+			glBindVertexArray(0);
+		}
 	}
 	else
 	{
-		glm::mat4 model = glm::mat4(1.0f);
-
 		// model = glm::rotate(model, random.w, this->rotation);
 		model = glm::translate(model, this->position);
 		model = glm::scale(model, this->scale);
 		// model = glm::rotate(model, random.w, glm::vec3(0.0f, 1.0f, 0.0f));
 		// model = glm::rotate(model, random.w / 200, glm::vec3(1.0f, 0.0f, 0.0f));
-
-		// 4. now add to list of matrices
-		modelMatrices[0] = model;
 	}
-
-	// configure instanced array
-	// -------------------------
-	glGenBuffers(1, &buffer);
-	glBindBuffer(GL_ARRAY_BUFFER, buffer);
-	glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatrices[0], GL_STATIC_DRAW);
-
-	// set transformation matrices as an instance vertex attribute (with divisor 1)
-	// note: we're cheating a little by taking the, now publicly declared, VAO of the model's mesh(es) and adding new vertexAttribPointers
-	// normally you'd want to do this in a more organized fashion, but for learning purposes this will do.
-	// -----------------------------------------------------------------------------------------------------------------------------------
-	for (unsigned int i = 0; i < meshes.size(); i++)
-	{
-		unsigned int VAO = meshes[i].VAO;
-		glBindVertexArray(VAO);
-
-		// set attribute pointers for matrix (4 times vec4)
-		glEnableVertexAttribArray(3);
-		glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void *)0);
-		glEnableVertexAttribArray(4);
-		glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void *)(sizeof(glm::vec4)));
-		glEnableVertexAttribArray(5);
-		glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void *)(2 * sizeof(glm::vec4)));
-		glEnableVertexAttribArray(6);
-		glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void *)(3 * sizeof(glm::vec4)));
-
-		glVertexAttribDivisor(3, 1);
-		glVertexAttribDivisor(4, 1);
-		glVertexAttribDivisor(5, 1);
-		glVertexAttribDivisor(6, 1);
-
-		glBindVertexArray(0);
-	}
-
-	// danceAnimation = new Animation("textyre/dancing_vampire.dae", this);
-	// animator = new Animator(danceAnimation);
 }
 
 // draws the model, and thus all its meshes
@@ -123,14 +115,8 @@ void Model::renderScene(float delta, Shader *shader, bool isShadowRender)
 		// glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatrices[0], GL_STATIC_DRAW);
 	}
 
-	// auto transforms = animator.GetPoseTransforms();
-	// for (int i = 0; i < transforms.size(); ++i)
-	// 	ourShader.setMat4("finalBonesTransformations[" + std::to_string(i) + "]", transforms[i]);
-
 	for (unsigned int i = 0; i < meshes.size(); i++)
 	{
-		// std::cout << "draw model2 \n";
-
 		meshes[i].Draw(shader, amount);
 	}
 }

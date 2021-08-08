@@ -1,11 +1,5 @@
 #pragma once
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
 
-#include <string>
-#include <fstream>
-#include <sstream>
-#include <iostream>
 #include <map>
 #include <vector>
 
@@ -18,9 +12,8 @@
 #include "./mesh.h"
 #include "./shader.cpp"
 #include "./renderObject.h"
-#include "assimp/assimp_glm_helpers.h"
-// #include "./animator.h"
-#include "animdata.h"
+#include "./assimp/assimp_glm_helpers.h"
+#include "./animdata.h"
 
 using namespace std;
 
@@ -34,12 +27,9 @@ public:
 	bool gammaCorrection;
 	unsigned int amount;
 	glm::mat4 *modelMatrices;
-	unsigned int buffer;
+	unsigned int instanceBuffer;
 
 	const unsigned int space = 1730;
-
-	// Animation *danceAnimation;
-	// Animator *animator;
 
 	// constructor, expects a filepath to a 3D model.
 	Model(string const &path, unsigned int _amount = 1, bool gamma = false) : gammaCorrection(gamma)
@@ -51,7 +41,7 @@ public:
 		loadModel(path);
 	}
 
-	void init2();
+	void init();
 
 	// draws the model, and thus all its meshes
 	void renderScene(float delta, Shader *shader, bool isShadowRender);
