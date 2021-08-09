@@ -58,7 +58,7 @@ public:
 	Texture2D *texture;
 
 	// constructor
-	Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<Texture> textures, aiColor3D color = aiColor3D(1.0f, 0.4f, 0.3f))
+	Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<Texture> textures, aiColor3D color = aiColor3D(0.0f, 0.4f, 0.3f))
 	{
 		this->vertices = vertices;
 		this->indices = indices;
@@ -81,7 +81,7 @@ public:
 		unsigned int heightNr = 1;
 
 		shader->setVec3("material.ambient", 0.2f, 0.2f, 0.2);
-		// shader->setInt("material.diffuse", 0);
+		shader->setInt("material.diffuse", 0);
 		// shader->setVec3("material.specular", 1.0f, 1.0f, 1.0f);
 		// shader->setFloat("material.shininess", 10.0f);
 
@@ -100,7 +100,7 @@ public:
 				string name = textures[i].type;
 				if (name == "texture_diffuse") {
 					number = std::to_string(diffuseNr++);
-					// shader->setFloat(("material.diffuse"), i);
+					shader->setFloat(("material.diffuse"), i);
 				}
 				else if (name == "texture_specular")
 					number = std::to_string(specularNr++); // transfer unsigned int to stream
@@ -120,16 +120,11 @@ public:
 		}
 		else
 		{
-			texture->Bind();
 			glActiveTexture(GL_TEXTURE0);
+			texture->Bind();
 			shader->setVec3("_color", glm::vec3(color.r, color.g, color.b));
-			shader->setVec3("material.diffuse", glm::vec3(color.r, color.g, color.b));
-			shader->setBool("useTexture", false);
+			// shader->setVec3("material.diffuse", glm::vec3(color.r, color.g, color.b));
 		}
-
-		//   shader->setBool("useNormal", false);
-		//   shader->setInt("normalMap", 0);
-		// glBindTexture(GL_TEXTURE_2D, 0);
 
 		// draw mesh
 		glBindVertexArray(VAO);

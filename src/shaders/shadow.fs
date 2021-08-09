@@ -56,7 +56,7 @@ float ShadowCalculation(vec4 fragPosLightSpace)
     // calculate bias (based on depth map resolution and slope)
     // vec3 normal = normalize(fs_in.Normal);
     vec3 lightDir = normalize(light.position - fs_in.FragPos);
-    float bias = max(0.01 * (1.0 - dot(normal, lightDir)), 0.0005);
+    float bias = max(0.01 * (1.0 - dot(normal, lightDir)), 0.0001);
     // check whether current frag pos is in shadow
     // float shadow = currentDepth - bias > closestDepth  ? 1.0 : 0.0;
     // PCF
@@ -119,7 +119,7 @@ void main()
     vec3 halfwayDir = normalize(lightDir + viewDir);  
 
     // spec = pow(max(dot(normal, halfwayDir), 0.0), 64);
-    spec = pow(max(dot(normal, reflectDir), 0.0), material.shininess);
+    spec = pow(max(dot(normal, halfwayDir), 0.0), material.shininess);
         // vec3 specular = light.specular * (spec * vec3(texture(material.specular, fs_in.TexCoords)));
     vec3 specular = light.specular * (spec * material.specular);
     // calculate shadow

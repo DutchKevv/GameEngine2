@@ -11,6 +11,7 @@
 
 #include "./model.h"
 #include "./animator.h"
+#include "./assimp/assimp_glm_helpers.h"
 
 using namespace std;
 
@@ -148,98 +149,113 @@ void Model::processNode(aiNode *node, const aiScene *scene)
 	}
 }
 
-// Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
-// {
-// 	// data to fill
-// 	vector<Vertex> vertices;
-// 	vector<unsigned int> indices;
-// 	vector<Texture> textures;
+Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
+{
+	vector<Vertex> vertices;
+	vector<unsigned int> indices;
+	vector<Texture> textures;
 
-// 	// walk through each of the mesh's vertices
-// 	for (unsigned int i = 0; i < mesh->mNumVertices; i++)
-// 	{
-// 		Vertex vertex;
-// 		SetVertexBoneDataToDefault(vertex);
-// 		vertex.Position = AssimpGLMHelpers::GetGLMVec(mesh->mVertices[i]);
-// 		vertex.Normal = AssimpGLMHelpers::GetGLMVec(mesh->mNormals[i]);
+	for (unsigned int i = 0; i < mesh->mNumVertices; i++)
+	{
+		Vertex vertex;
+		SetVertexBoneDataToDefault(vertex);
+		vertex.Position = AssimpGLMHelpers::GetGLMVec(mesh->mVertices[i]);
+		vertex.Normal = AssimpGLMHelpers::GetGLMVec(mesh->mNormals[i]);
 
-// 		glm::vec3 vector; // we declare a placeholder vector since assimp uses its own vector class that doesn't directly convert to glm's vec3 class so we transfer the data to this placeholder glm::vec3 first.
-// 		// positions
-// 		vector.x = mesh->mVertices[i].x;
-// 		vector.y = mesh->mVertices[i].y;
-// 		vector.z = mesh->mVertices[i].z;
-// 		vertex.Position = vector;
-// 		// normals
-// 		if (mesh->HasNormals())
-// 		{
-// 			vector.x = mesh->mNormals[i].x;
-// 			vector.y = mesh->mNormals[i].y;
-// 			vector.z = mesh->mNormals[i].z;
-// 			vertex.Normal = vector;
-// 		}
-// 		// texture coordinates
-// 		if (mesh->mTextureCoords[0]) // does the mesh contain texture coordinates?
-// 		{
-// 			glm::vec2 vec;
-// 			// a vertex can contain up to 8 different texture coordinates. We thus make the assumption that we won't
-// 			// use models where a vertex can have multiple texture coordinates so we always take the first set (0).
-// 			vec.x = mesh->mTextureCoords[0][i].x;
-// 			vec.y = mesh->mTextureCoords[0][i].y;
-// 			vertex.TexCoords = vec;
-// 			// tangent
-// 			vector.x = mesh->mTangents[i].x;
-// 			vector.y = mesh->mTangents[i].y;
-// 			vector.z = mesh->mTangents[i].z;
-// 			vertex.Tangent = vector;
-// 			// bitangent
-// 			vector.x = mesh->mBitangents[i].x;
-// 			vector.y = mesh->mBitangents[i].y;
-// 			vector.z = mesh->mBitangents[i].z;
-// 			vertex.Bitangent = vector;
-// 		}
-// 		else
-// 			vertex.TexCoords = glm::vec2(0.0f, 0.0f);
+		if (mesh->mTextureCoords[0])
+		{
+			glm::vec2 vec;
+			vec.x = mesh->mTextureCoords[0][i].x;
+			vec.y = mesh->mTextureCoords[0][i].y;
+			vertex.TexCoords = vec;
+		}
+		else
+			vertex.TexCoords = glm::vec2(0.0f, 0.0f);
 
-// 		vertices.push_back(vertex);
-// 	}
-// 	// now wak through each of the mesh's faces (a face is a mesh its triangle) and retrieve the corresponding vertex indices.
-// 	for (unsigned int i = 0; i < mesh->mNumFaces; i++)
-// 	{
-// 		aiFace face = mesh->mFaces[i];
-// 		// retrieve all indices of the face and store them in the indices vector
-// 		for (unsigned int j = 0; j < face.mNumIndices; j++)
-// 			indices.push_back(face.mIndices[j]);
-// 	}
-// 	// process materials
-// 	aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
-// 	// we assume a convention for sampler names in the shaders. Each diffuse texture should be named
-// 	// as 'texture_diffuseN' where N is a sequential number ranging from 1 to MAX_SAMPLER_NUMBER.
-// 	// Same applies to other texture as the following list summarizes:
-// 	// diffuse: texture_diffuseN
-// 	// specular: texture_specularN
-// 	// normal: texture_normalN
+		vertices.push_back(vertex);
+	}
+	for (unsigned int i = 0; i < mesh->mNumFaces; i++)
+	{
+		aiFace face = mesh->mFaces[i];
+		for (unsigned int j = 0; j < face.mNumIndices; j++)
+			indices.push_back(face.mIndices[j]);
+	}
+	aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
 
-// 	aiColor3D color(1.f, 1.f, 1.f);
-// 	material->Get(AI_MATKEY_COLOR_DIFFUSE, color);
+	aiColor3D color(1.f, 1.f, 1.f);
+	material->Get(AI_MATKEY_COLOR_DIFFUSE, color);
 
-// 	// 1. diffuse maps
-// 	vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
-// 	textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
-// 	// 2. specular maps
-// 	vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
-// 	textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
-// 	// 3. normal maps
-// 	std::vector<Texture> normalMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
-// 	textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
-// 	// 4. height maps
-// 	std::vector<Texture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
-// 	textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
+	vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
+	textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
+	vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
+	textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+	std::vector<Texture> normalMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
+	textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
+	std::vector<Texture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
+	textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 
-// 	ExtractBoneWeightForVertices(vertices,mesh,scene);
+	ExtractBoneWeightForVertices(vertices, mesh, scene);
 
-// 	// return a mesh object created from the extracted mesh data
-// 	return Mesh(vertices, indices, textures, color);
-// }
+	return Mesh(vertices, indices, textures, color);
+}
+
+void Model::SetVertexBoneDataToDefault(Vertex &vertex)
+{
+	for (int i = 0; i < MAX_BONE_INFLUENCE; i++)
+	{
+		vertex.m_BoneIDs[i] = -1;
+		vertex.m_Weights[i] = 0.0f;
+	}
+}
+
+void Model::SetVertexBoneData(Vertex &vertex, int boneID, float weight)
+{
+	for (int i = 0; i < MAX_BONE_INFLUENCE; ++i)
+	{
+		if (vertex.m_BoneIDs[i] < 0)
+		{
+			vertex.m_Weights[i] = weight;
+			vertex.m_BoneIDs[i] = boneID;
+			break;
+		}
+	}
+}
+
+void Model::ExtractBoneWeightForVertices(std::vector<Vertex> &vertices, aiMesh *mesh, const aiScene *scene)
+{
+	auto &boneInfoMap = m_OffsetMatMap;
+	int &boneCount = m_BoneCount;
+
+	for (int boneIndex = 0; boneIndex < mesh->mNumBones; ++boneIndex)
+	{
+		int boneID = -1;
+		std::string boneName = mesh->mBones[boneIndex]->mName.C_Str();
+		if (boneInfoMap.find(boneName) == boneInfoMap.end())
+		{
+			BoneInfo newBoneInfo;
+			newBoneInfo.id = boneCount;
+			newBoneInfo.offset = AssimpGLMHelpers::ConvertMatrixToGLMFormat(mesh->mBones[boneIndex]->mOffsetMatrix);
+			boneInfoMap[boneName] = newBoneInfo;
+			boneID = boneCount;
+			boneCount++;
+		}
+		else
+		{
+			boneID = boneInfoMap[boneName].id;
+		}
+		assert(boneID != -1);
+		auto weights = mesh->mBones[boneIndex]->mWeights;
+		int numWeights = mesh->mBones[boneIndex]->mNumWeights;
+
+		for (int weightIndex = 0; weightIndex < numWeights; ++weightIndex)
+		{
+			int vertexId = weights[weightIndex].mVertexId;
+			float weight = weights[weightIndex].mWeight;
+			assert(vertexId <= vertices.size());
+			SetVertexBoneData(vertices[vertexId], boneID, weight);
+		}
+	}
+}
 
 // checks all material textures of a given type and loads the textures if they're not loaded yet.
 // the required info is returned as a Texture struct.

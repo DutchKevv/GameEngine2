@@ -100,14 +100,14 @@ void WorldScene::init()
 	// test->position = glm::vec3(1.0f, 2.0f, 0.0f);
 
 	addChild(spotlight, this);
-	addChild(skybox, this);
+	// addChild(skybox, this);
 	// addChild(sun, this);
 	addChild(floor, this);
 	addChild(treeModel2, this);
 	addChild(treeModel, this);
 
-	// addChild(castle, this); 
-	// addChild(player, this);
+	addChild(castle, this); 
+	addChild(player, this);
 	// addChild(cube1, this);
 	// addChild(cube2, this);
 	// addChild(cube3, this);
@@ -171,13 +171,17 @@ void WorldScene::draw(float delta)
 
 	glm::mat4 lightProjection, lightView;
 	glm::mat4 lightSpaceMatrix;
-	float near_plane = 0.0f, far_plane = 1750.5f;
-	// glm::vec3 lightPos(-0.0f, 40.0f, -100.0f);
+	float near_plane = 0.0f, far_plane = 75.5f;
+
 	// lightProjection = glm::perspective(glm::radians(45.0f), (GLfloat)SHADOW_WIDTH / (GLfloat)SHADOW_HEIGHT, near_plane, far_plane); // note that if you use a perspective projection matrix you'll have to change the light position as the current light position isn't enough to reflect the whole scene
-	lightProjection = glm::ortho(-680.0f, 680.0f, -680.0f, 680.0f, near_plane, far_plane);
+	lightProjection = glm::ortho(-80.0f, 80.0f, -80.0f, 80.0f, near_plane, far_plane);
+	// lightProjection = glm::ortho(-680.0f, 680.0f, -680.0f, 680.0f, near_plane, far_plane);
+	
 	// lightView = glm::lookAt(glm::vec3(-0.0f, 40.0f, -30.0f), glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
-	lightView = glm::lookAt(spotlight->position, glm::vec3(0.0f, 0.0f, 100.0f), glm::vec3(0.0, 1.0, 0.0));
+	lightView = glm::lookAt(spotlight->position, glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0, 1.0, 0.0));
+	
 	lightSpaceMatrix = lightProjection * lightView;
+	
 	// render scene from light's point of view
 	depthShader->use();
 	depthShader->setMat4("lightSpaceMatrix", lightSpaceMatrix);
@@ -185,9 +189,16 @@ void WorldScene::draw(float delta)
 	glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
 	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
 	glClear(GL_DEPTH_BUFFER_BIT);
-	// glActiveTexture(GL_TEXTURE0);
-	// glBindTexture(GL_TEXTURE_2D, texture.ID);
+
+	// render with GL_CULL_FACE to fix 'peter panning' in the shadow
+	// https://learnopengl.com/Advanced-Lighting/Shadows/Shadow-Mapping
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_FRONT);
 	renderScene(delta, depthShader, true);
+	// glCullFace(GL_BACK); // don't forget to reset original culling face
+	glDisable(GL_CULL_FACE);
+
+
 	glBindFramebuffer(GL_FRAMEBUFFER, context->engine->fbo);
 
 	// reset viewport
@@ -215,8 +226,6 @@ void WorldScene::draw(float delta)
 	shader->setVec3("light.position", spotlight->position);
 	shader->setMat4("lightSpaceMatrix", lightSpaceMatrix);
 
-	// glActiveTexture(GL_TEXTURE0);
-	// glBindTexture(GL_TEXTURE_2D, texture.ID);
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, depthMap);
 	renderScene(delta, shader, false);
@@ -229,7 +238,6 @@ void WorldScene::renderScene(float delta, Shader *shader, bool isShadowRender)
 	// std::cout << "render world scene \n";
 	glEnable(GL_DEPTH_TEST);
 	// camera->followObject(player);
-	// sun->position = glm::vec3(0.0f, 5.0f, 0.0f);
 	sun->position = glm::vec3(spotlight->position.x, spotlight->position.y - 2.0f, spotlight->position.z - 10.0f);
 	shader->use();
 
