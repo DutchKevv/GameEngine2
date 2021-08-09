@@ -17,6 +17,15 @@ using namespace std;
 
 unsigned int TextureFromFile(const char *path, const string &directory, bool gamma = false);
 
+Model::Model(string const &path, unsigned int _amount, bool gamma) : gammaCorrection(gamma)
+{
+	// std::cout << "init model1 \n";
+
+	amount = _amount;
+
+	loadModel(path);
+}
+
 void Model::init()
 {
 	// srand((int)glfwGetTime()); // initialize random seed

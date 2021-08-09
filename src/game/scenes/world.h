@@ -3,7 +3,6 @@
 #include <glm/glm.hpp>
 #include "../../engine/scene.h"
 #include "../../engine/skybox.h"
-#include "../../engine/texture.h"
 #include "../../engine/model.h"
 #include "../../engine/shader.cpp"
 #include "../../engine/animator.h"
@@ -14,29 +13,27 @@
 class WorldScene : public Scene
 {
 public:
-	ShapeCube *cube1;
-	ShapeCube *cube2;
-	ShapeCube *cube3;
-	ShapeCube *cube4;
-	ShapeCube *cube5;
-	Spotlight *spotlight;
-	ShapePlane *floor;
-	SkyBox *skybox;
-	Model *sun;
-	Model *castle;
-
 	unsigned int depthMapFBO;
 	unsigned int depthMap;
 	unsigned int depthCubemap;
 
 	Shader *shader;
 	Shader *depthShader;
+	ShapeCube *cube1;
+	ShapeCube *cube2;
+	ShapeCube *cube3;
+	Spotlight *spotlight;
+	ShapePlane *floor;
+	SkyBox *skybox;
+	Model *sun;
+	Model *castle;
 	Model *treeModel;
 	Model *treeModel2;
 	Model *treeModel3;
 	Model *rockModel;
 	Model *test;
 	Model *player;
+
 	Animation *danceAnimation;
 	Animator *animator;
 	// HeightMap *heightMap;
@@ -49,7 +46,5 @@ public:
 
 	void draw(float delta);
 
-	// renders the 3D scene
-	// --------------------
 	void renderScene(float delta, Shader *shader, bool isShadowRender);
 };

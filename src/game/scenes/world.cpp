@@ -1,6 +1,6 @@
 #include <iostream>
+
 #include <glad/glad.h>
-#include <GLFW/glfw3.h>
 
 #include "./world.h"
 #include "../../engine/camera.h"
@@ -57,8 +57,7 @@ void WorldScene::init()
 	cube1 = new ShapeCube();
 	cube2 = new ShapeCube();
 	cube3 = new ShapeCube();
-	// cube4 = new ShapeCube();
-	// cube5 = new ShapeCube();
+
 	floor = new ShapePlane();
 	// heightMap = new HeightMap();
 
@@ -95,8 +94,6 @@ void WorldScene::init()
 	cube1->position = glm::vec3(10.0f, 21.5f, 40.0);
 	cube2->position = glm::vec3(2.0f, 20.0f, -15.0f);
 	cube3->position = glm::vec3(-1.5f, 20.0f, -2.5f);
-	// cube4->position = glm::vec3(-3.8f, 0.0f, -12.3f);
-	// cube5->position = glm::vec3(0.0f, 0.0f, 0.0f);
 	// test->position = glm::vec3(1.0f, 2.0f, 0.0f);
 
 	addChild(spotlight, this);
@@ -112,8 +109,6 @@ void WorldScene::init()
 	// addChild(cube2, this);
 	// addChild(cube3, this);
 	// addChild(test, this);
-	// addChild(cube4, this);
-	// addChild(cube5, this);
 
 	// addChild(heightMap, this);
 

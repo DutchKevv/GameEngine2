@@ -16,31 +16,24 @@ using namespace std;
 class Model : public RenderObject
 {
 public:
-	// model data
 	vector<Texture> textures_loaded; // stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
 	vector<Mesh> meshes;
 	string directory;
 	bool gammaCorrection;
-	unsigned int amount;
 	glm::mat4 *modelMatrices;
+	unsigned int amount;
 	unsigned int instanceBuffer;
 
 	const unsigned int space = 1730;
 
 	// constructor, expects a filepath to a 3D model.
-	Model(string const &path, unsigned int _amount = 1, bool gamma = false) : gammaCorrection(gamma)
-	{
-		// std::cout << "init model1 \n";
-
-		amount = _amount;
-
-		loadModel(path);
-	}
+	Model(string const &path, unsigned int _amount = 1, bool gamma = false);
 
 	void init();
 
 	// draws the model, and thus all its meshes
 	void renderScene(float delta, Shader *shader, bool isShadowRender);
+
 	auto &GetOffsetMatMap() { return m_OffsetMatMap; }
 	int &GetBoneCount() { return m_BoneCount; }
 
