@@ -62,7 +62,6 @@ static float skyboxVertices[] = {
 
 void SkyBox::init()
 {
-
 	// shader
 	Shader *shader = context->resourceManager->loadShader("skybox");
 
