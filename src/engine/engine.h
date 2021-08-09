@@ -8,7 +8,6 @@
 #include "backends/imgui_impl_opengl3.h"
 
 #include "./scene.h"
-#include "./context.h"
 #include "./editor/editor.h"
 #include "./modules/module.cpp"
 #include "./modules/gui/gui.h"

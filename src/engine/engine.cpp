@@ -1,4 +1,6 @@
 #include "./engine.h"
+#include "./context.h"
+
 unsigned int worldChild = 1;
 
 void mouse_callback(GLFWwindow *window, double xpos, double ypos);
@@ -7,8 +9,6 @@ void Engine::init()
 {
   context->engine = this;
   context->display = new Display();
-
-  // context->resourceManager = new ResourceManager();
 
   context->display->init();
   context->display->createWindow();
