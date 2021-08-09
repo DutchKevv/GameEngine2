@@ -10,9 +10,9 @@
 #include "bone.h"
 
 class Animator
-{	
+{
 public:
-	Animator(Animation* current)
+	Animator(Animation *current)
 	{
 		m_CurrentAnimation = current;
 		m_CurrentTime = 0.0;
@@ -29,22 +29,27 @@ public:
 			m_CurrentTime += m_CurrentAnimation->GetTicksPerSecond() * dt;
 			m_CurrentTime = fmod(m_CurrentTime, m_CurrentAnimation->GetDuration());
 			CalculateBoneTransform(&m_CurrentAnimation->GetRootNode(), glm::mat4(1.0f));
-
 		}
 	}
 
-	void PlayAnimation(Animation* pAnimation)
+	void PlayAnimation(Animation *pAnimation)
 	{
 		m_CurrentAnimation = pAnimation;
 		m_CurrentTime = 0.0f;
 	}
 
-	void CalculateBoneTransform(const AssimpNodeData* node, glm::mat4 parentTransform)
+	void StopAnimation(Animation *pAnimation)
+	{
+		// m_CurrentAnimation = NULL;
+		m_CurrentTime = 0.0f;
+	}
+
+	void CalculateBoneTransform(const AssimpNodeData *node, glm::mat4 parentTransform)
 	{
 		std::string nodeName = node->name;
 		glm::mat4 nodeTransform = node->transformation;
 
-		Bone* Bone = m_CurrentAnimation->FindBone(nodeName);
+		Bone *Bone = m_CurrentAnimation->FindBone(nodeName);
 
 		if (Bone)
 		{
@@ -66,14 +71,14 @@ public:
 			CalculateBoneTransform(&node->children[i], globalTransformation);
 	}
 
-	std::vector<glm::mat4> GetPoseTransforms() 
-	{ 
-		return m_Transforms;  
+	std::vector<glm::mat4> GetPoseTransforms()
+	{
+		return m_Transforms;
 	}
-	
+
 private:
 	std::vector<glm::mat4> m_Transforms;
-	Animation* m_CurrentAnimation;
+	Animation *m_CurrentAnimation;
 	float m_CurrentTime;
 	float m_DeltaTime;
 };

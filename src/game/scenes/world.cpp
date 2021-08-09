@@ -227,7 +227,7 @@ void WorldScene::renderScene(float delta, Shader *shader, bool isShadowRender)
 {
 	// std::cout << "render world scene \n";
 	glEnable(GL_DEPTH_TEST);
-	// camera->followObject(player);
+	camera->followObject(player);
 	sun->position = glm::vec3(spotlight->position.x, spotlight->position.y, spotlight->position.z);
 	shader->use();
 

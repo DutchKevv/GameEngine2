@@ -1,9 +1,7 @@
 #include "./engine.h"
 #include "./context.h"
 
-unsigned int worldChild = 1;
-
-void mouse_callback(GLFWwindow *window, double xpos, double ypos);
+// void mouse_callback(GLFWwindow *window, double xpos, double ypos);
 
 void Engine::init()
 {
@@ -52,7 +50,7 @@ void Engine::init()
 
   glBindFramebuffer(GL_FRAMEBUFFER, 0); //return to rendering to the normal fbo
 
-  glfwSetCursorPosCallback(context->display->window, mouse_callback);
+  // glfwSetCursorPosCallback(context->display->window, mouse_callback);
   // glfwSetScrollCallback(context->display->window, scroll_callback);
 
   if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
@@ -186,39 +184,39 @@ void Engine::processInput(GLFWwindow *window)
   if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
     glfwSetWindowShouldClose(window, true);
 
-  if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-    children[worldChild]->camera->ProcessKeyboard(FORWARD, deltaTime);
-  if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-    children[worldChild]->camera->ProcessKeyboard(BACKWARD, deltaTime);
-  if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-    children[worldChild]->camera->ProcessKeyboard(LEFT, deltaTime);
-  if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-    children[worldChild]->camera->ProcessKeyboard(RIGHT, deltaTime);
+  // if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+  //   children[worldChild]->camera->ProcessKeyboard(FORWARD, deltaTime);
+  // if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+  //   children[worldChild]->camera->ProcessKeyboard(BACKWARD, deltaTime);
+  // if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+  //   children[worldChild]->camera->ProcessKeyboard(LEFT, deltaTime);
+  // if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+  //   children[worldChild]->camera->ProcessKeyboard(RIGHT, deltaTime);
 }
 
 // // glfw: whenever the mouse moves, this callback is called
 // // -------------------------------------------------------
 // // TODO
 // // get child dynamic (find the 'world' child)
-void mouse_callback(GLFWwindow *window, double xpos, double ypos)
-{
-  Engine *engine = context->engine;
+// void mouse_callback(GLFWwindow *window, double xpos, double ypos)
+// {
+//   Engine *engine = context->engine;
 
-  if (engine->firstMouse)
-  {
-    engine->lastMouseX = xpos;
-    engine->lastMouseY = ypos;
-    engine->firstMouse = false;
-  }
+//   if (engine->firstMouse)
+//   {
+//     engine->lastMouseX = xpos;
+//     engine->lastMouseY = ypos;
+//     engine->firstMouse = false;
+//   }
 
-  float xoffset = xpos - engine->lastMouseX;
-  float yoffset = engine->lastMouseY - ypos; // reversed since y-coordinates go from bottom to top
+//   float xoffset = xpos - engine->lastMouseX;
+//   float yoffset = engine->lastMouseY - ypos; // reversed since y-coordinates go from bottom to top
 
-  engine->lastMouseX = xpos;
-  engine->lastMouseY = ypos;
+//   engine->lastMouseX = xpos;
+//   engine->lastMouseY = ypos;
 
-  context->engine->children[worldChild]->camera->ProcessMouseMovement(xoffset, yoffset);
-}
+//   context->engine->children[worldChild]->camera->ProcessMouseMovement(xoffset, yoffset);
+// }
 
 // // glfw: whenever the mouse scroll wheel scrolls, this callback is called
 // // ----------------------------------------------------------------------

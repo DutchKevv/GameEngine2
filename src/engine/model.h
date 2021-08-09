@@ -37,6 +37,9 @@ public:
 	auto &GetOffsetMatMap() { return m_OffsetMatMap; }
 	int &GetBoneCount() { return m_BoneCount; }
 
+	
+	void SetVertexBoneDataToDefault(Vertex &vertex);
+
 private:
 	std::map<string, BoneInfo> m_OffsetMatMap;
 	int m_BoneCount = 0;
@@ -52,8 +55,6 @@ private:
 	// checks all material textures of a given type and loads the textures if they're not loaded yet.
 	// the required info is returned as a Texture struct.
 	vector<Texture> loadMaterialTextures(aiMaterial *mat, aiTextureType type, string typeName);
-
-	void SetVertexBoneDataToDefault(Vertex &vertex);
 
 	void SetVertexBoneData(Vertex &vertex, int boneID, float weight);
 

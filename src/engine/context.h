@@ -43,7 +43,7 @@ struct Context
 	ResourceManager *resourceManager;
 	Display *display;
 	// Renderer *renderer;
-	GLFWwindow *window;
+	// GLFWwindow *window;
 
 	unsigned int fbo;
 	GLuint frameTexture;
