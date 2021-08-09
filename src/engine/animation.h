@@ -36,10 +36,6 @@ public:
 		SetupBones(animation, *model);
 	}
 
-	~Animation()
-	{
-	}
-
 	Bone* FindBone(const std::string& name)
 	{
 		auto iter = std::find_if(m_Bones.begin(), m_Bones.end(),

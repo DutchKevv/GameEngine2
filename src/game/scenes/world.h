@@ -4,7 +4,7 @@
 #include "../../engine/scene.h"
 #include "../../engine/skybox.h"
 #include "../../engine/model.h"
-#include "../../engine/shader.cpp"
+#include "../../engine/shader.h"
 #include "../../engine/animator.h"
 #include "../../shape/cube.h"
 #include "../../shape/plane.h"

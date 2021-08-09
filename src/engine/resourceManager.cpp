@@ -3,8 +3,6 @@
 #include <iostream>
 #include <sstream>
 #include <map>
-#include "./texture.h"
-#include "./shader.cpp"
 #include "./logger.h"
 #include "./resourceManager.h"
 

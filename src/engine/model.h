@@ -7,7 +7,7 @@
 #include <assimp/postprocess.h>
 
 #include "./mesh.h"
-#include "./shader.cpp"
+#include "./shader.h"
 #include "./renderObject.h"
 #include "./animdata.h"
 

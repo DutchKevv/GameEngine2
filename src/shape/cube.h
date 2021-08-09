@@ -11,7 +11,7 @@
 #include "../engine/context.h"
 #include "../engine/texture.h"
 #include "../engine/resourceManager.h"
-#include "../engine/shader.cpp"
+#include "../engine/shader.h"
 
 class ShapeCube : public RenderObject
 {

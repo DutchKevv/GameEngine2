@@ -5,7 +5,7 @@
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
 #include "imgui.h"
-#include "../../shader.cpp"
+#include "../../shader.h"
 #include "../../scene.h"
 #include "../../renderObject.h"
 #include "../../engine.h"

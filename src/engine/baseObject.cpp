@@ -1,12 +1,53 @@
-#include <vector>
-#include <string>
 #include "./baseObject.h"
-#include "./shader.cpp"
-#include "./scene.h"
 
 static unsigned int IDCounter = 0;
 
-int BaseObject::addChild(BaseObject *child, Scene *scene, std::string name)
+void BaseObject::init() {}
+
+void BaseObject::update(float delta)
+{
+	for (BaseObject *child : children)
+	{
+		if (child->isEnabled)
+		{
+			child->update(delta);
+		}
+	}
+}
+
+void BaseObject::draw(float delta)
+{
+	for (BaseObject *child : children)
+	{
+		if (child->isEnabled)
+		{
+			std::cout << "child draw \n";
+			child->draw(delta);
+		}
+	}
+}
+
+void BaseObject::renderScene(float delta, Shader *shader, bool isShadowRender)
+{
+	if (shader)
+	{
+		shader->use();
+	}
+
+	for (BaseObject *child : children)
+	{
+		if (shader)
+		{
+			shader->setBool("useInstances", false);
+			shader->setBool("useTexture", true);
+			// glBindTexture(GL_TEXTURE_2D, 0);
+		}
+
+		child->renderScene(delta, shader, isShadowRender);
+	}
+}
+
+unsigned int BaseObject::addChild(BaseObject *child, Scene *scene, std::string name)
 {
 	child->id = IDCounter++;
 	child->name = name;

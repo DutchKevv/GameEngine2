@@ -8,7 +8,7 @@
 #include <string>
 #include <vector>
 #include <assimp/types.h>
-#include "./shader.cpp"
+#include "./shader.h"
 #include "./texture.h"
 #include "./context.h"
 

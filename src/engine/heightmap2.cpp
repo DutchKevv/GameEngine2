@@ -8,7 +8,7 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include "./shader.cpp"
+#include "./shader.h"
 
 /* Map height updates */
 #define MAX_CIRCLE_SIZE (5.0f)

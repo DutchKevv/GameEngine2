@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 #include "../scene.h"
-#include "../shader.cpp"
+#include "../shader.h"
 
 class Editor : public Scene
 {

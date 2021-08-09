@@ -3,7 +3,7 @@
 #include <glad/glad.h>
 #include "imgui.h"
 #include "gui_panel_world.h"
-#include "../../shader.cpp"
+#include "../../shader.h"
 // #include "../../renderObject.h"
 #include "../../context.h"
 

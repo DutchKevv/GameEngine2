@@ -2,7 +2,7 @@
 
 #include <glad/glad.h>
 #include <glm/glm.hpp>
-#include "./shader.cpp"
+#include "./shader.h"
 #include "./renderObject.h"
 
 class SkyBox : public RenderObject

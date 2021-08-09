@@ -2,7 +2,7 @@
 
 #include <string>
 #include "./texture.h"
-#include "./shader.cpp"
+#include "./shader.h"
 
 class ResourceManager
 {

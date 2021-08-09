@@ -1,7 +1,7 @@
 #pragma once
 
-#include "./renderobject.h"
 #include "./camera.h"
+#include "./renderobject.h"
 
 class Scene : public RenderObject
 {

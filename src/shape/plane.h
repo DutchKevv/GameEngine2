@@ -3,7 +3,7 @@
 #include <glm/glm.hpp>
 #include "../engine/renderObject.h"
 #include "../engine/texture.h"
-#include "../engine/shader.cpp"
+#include "../engine/shader.h"
 
 class ShapePlane : public RenderObject
 {

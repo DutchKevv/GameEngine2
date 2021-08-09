@@ -3,12 +3,8 @@
 #include <sstream>
 #include <iostream>
 #include <cmath>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
 #include "./context.h"
-#include "skybox.h"
-#include "shader.cpp"
+#include "./skybox.h"
 
 using namespace std;
 using namespace glm;

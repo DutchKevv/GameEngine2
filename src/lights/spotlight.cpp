@@ -8,7 +8,7 @@
 #include "../engine/logger.h"
 #include "../engine/context.h"
 #include "../engine/renderObject.h"
-#include "../engine/shader.cpp"
+#include "../engine/shader.h"
 #include "../shape/cube.h"
 
 class Spotlight : public RenderObject
