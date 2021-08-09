@@ -139,6 +139,7 @@ set(BUILD_SHARED_LIBS OFF)
 
 # target_link_libraries(${PROJECT_NAME} assimp)
 
+
 find_package(assimp REQUIRED)
 if (assimp_FOUND)
     set(ASSIMP_LIBRARY "assimp")

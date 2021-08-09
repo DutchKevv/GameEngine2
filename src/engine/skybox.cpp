@@ -1,4 +1,3 @@
-// #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 #include <fstream>
 #include <sstream>
@@ -8,10 +7,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "./context.h"
-// #include <STB/stb_image.h>
 #include "skybox.h"
 #include "shader.cpp"
-// #include "resourceManager.cpp"
 
 using namespace std;
 using namespace glm;

@@ -17,7 +17,7 @@ struct Light {
 
 struct Material {
     vec3 ambient;
-    sampler2D texture_diffuse;
+    sampler2D diffuse;
     vec3  specular;
     float shininess;
 }; 
@@ -56,7 +56,7 @@ float ShadowCalculation(vec4 fragPosLightSpace)
     // calculate bias (based on depth map resolution and slope)
     // vec3 normal = normalize(fs_in.Normal);
     vec3 lightDir = normalize(light.position - fs_in.FragPos);
-    float bias = max(0.01 * (1.0 - dot(normal, lightDir)), 0.005);
+    float bias = max(0.01 * (1.0 - dot(normal, lightDir)), 0.0005);
     // check whether current frag pos is in shadow
     // float shadow = currentDepth - bias > closestDepth  ? 1.0 : 0.0;
     // PCF
@@ -84,7 +84,7 @@ void main()
     vec3 color;
 
     if (useTexture) {
-        color = texture(material.texture_diffuse, fs_in.TexCoords).rgb;
+        color = texture(material.diffuse, fs_in.TexCoords).rgb;
     } else {
         color = _color;
     }
@@ -106,12 +106,12 @@ void main()
     // vec3 normal = normalize(fs_in.Normal);
     // vec3 lightColor = vec3(0.3);
     // ambient
-    vec3 ambient = light.ambient * vec3(texture(material.texture_diffuse, fs_in.TexCoords));
+    vec3 ambient = light.ambient * vec3(texture(material.diffuse, fs_in.TexCoords));
     // vec3 ambient = light.ambient * material.ambient * color;
     // diffuse
     vec3 lightDir = normalize(light.position - fs_in.FragPos);
     float diff = max(dot(lightDir, normal), 0.0);
-    vec3 diffuse = light.diffuse * diff * vec3(texture(material.texture_diffuse, fs_in.TexCoords));  
+    vec3 diffuse = light.diffuse * diff * vec3(texture(material.diffuse, fs_in.TexCoords));  
     // specular
     vec3 viewDir = normalize(viewPos - fs_in.FragPos);
     vec3 reflectDir = reflect(-lightDir, normal);

@@ -1,25 +1,19 @@
-
-
 #include "stb_image.h"
-#include <GLFW/glfw3.h>
-#include <glad/glad.h>
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <map>
-// #define STB_IMAGE_IMPLEMENTATION
-// #include "stb_image.h"
 #include "./texture.h"
 #include "./shader.cpp"
-#include "logger.h"
-#include "resourceManager.h"
+#include "./logger.h"
+#include "./resourceManager.h"
 
 using namespace std;
 
 const string prefixShader = "shaders/";
 const string prefixTextures = "textures/";
 
-map<std::string, Texture2D *> Textures2;
+map<std::string, Texture2D *> Textures;
 map<std::string, Shader *> Shaders;
 
 
@@ -65,13 +59,13 @@ map<std::string, Shader *> Shaders;
 	Texture2D *ResourceManager::loadTexture(std::string filePath, GLboolean alpha, std::string name, GLuint WRAP_S, GLuint WRAP_T)
 	{
 		filePath = prefixTextures + filePath;
-		Textures2[name] = loadTextureFromFile(filePath, alpha, WRAP_S, WRAP_T);
-		return Textures2[name];
+		Textures[name] = loadTextureFromFile(filePath, alpha, WRAP_S, WRAP_T);
+		return Textures[name];
 	}
 
 	Texture2D *ResourceManager::GetTexture(std::string name)
 	{
-		return Textures2[name];
+		return Textures[name];
 	}
 
 	void ResourceManager::Clear()

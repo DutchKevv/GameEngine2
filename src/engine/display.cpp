@@ -3,7 +3,7 @@
 #include <iostream>
 #include "imgui.h"
 #include "display.h"
-// #include "context.h"
+#include "context.h"
 
 void framebufferSizeCallback(GLFWwindow *window, int width, int height);
 void windowSizeCallback(GLFWwindow *window, int width, int height);

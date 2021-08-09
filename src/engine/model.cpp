@@ -43,11 +43,11 @@ void Model::init()
 	{
 		// model = glm::rotate(model, random.w, this->rotation);
 		glm::mat4 model(1.0f);
-		// model = glm::translate(model, this->position);
-		// model = glm::scale(model, this->scale);
-		modelMatrices[0] = model;
+		model = glm::translate(model, this->position);
 		// model = glm::rotate(model, random.w, glm::vec3(0.0f, 1.0f, 0.0f));
 		// model = glm::rotate(model, random.w / 200, glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::scale(model, this->scale);
+		modelMatrices[0] = model;
 	}
 
 	// configure instanced array
@@ -88,18 +88,14 @@ void Model::init()
 void Model::renderScene(float delta, Shader *shader, bool isShadowRender)
 {
 	shader->use();
+	shader->setBool("useInstances", amount != 1);
 
-	// shader->setBool("useTexture", false);
-	if (amount > 1)
+	shader->setBool("useTexture", false);
+	if (amount == 1)
 	{
-		shader->setBool("useInstances", true);
-	}
-	else
-	{
-		shader->setBool("useInstances", false);
 		glm::mat4 model = glm::mat4(1.0f);
-		// model = glm::scale(model, this->scale);
-		model = glm::translate(model, glm::vec3(1.0f));
+		model = glm::scale(model, this->scale);
+		model = glm::translate(model, this->position);
 		// 4. now add to list of matrices
 		shader->setMat4("model", model);
 		// modelMatrices[0] = model;

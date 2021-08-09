@@ -89,7 +89,7 @@ public:
 			Position += Right * velocity;
 
 		// if (Position.y < 0.2f) {
-			Position.y = 1.0f;
+			// Position.y = 1.0f;
 		// }
 	}
 

@@ -1,8 +1,9 @@
 #pragma once
+
+#include <glad/glad.h>
 #include <glm/glm.hpp>
-#include "shader.cpp"
-#include "camera.h"
-#include "renderObject.h"
+#include "./shader.cpp"
+#include "./renderObject.h"
 
 class SkyBox : public RenderObject
 {
@@ -14,17 +15,15 @@ public:
 
 	Shader *shader;
 
-	unsigned int VBO, VAO, texture;
-	unsigned int vertexColorLocation;
-	unsigned int vertexPosLocation;
-	unsigned int textureLocation;
-	unsigned int modelLoc;
-	unsigned int viewLoc;
-	unsigned int projLoc;
+	GLuint VBO, VAO, texture;
+	GLuint vertexColorLocation;
+	GLuint vertexPosLocation;
+	GLuint textureLocation;
+	GLuint modelLoc;
+	GLuint viewLoc;
+	GLuint projLoc;
 
-	unsigned int cubemapTexture;
-
-	// SkyBox();
+	GLuint cubemapTexture;
 
 	void init();
 	void draw(float delta);

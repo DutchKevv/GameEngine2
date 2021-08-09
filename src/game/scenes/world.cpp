@@ -85,7 +85,6 @@ void WorldScene::init()
 	treeModel2 = new Model("game/models/tree-low-poly/pinetree2.obj", 10009);
 	sun = new Model("game/models/sphere/sphere.obj", 1);
 	castle = new Model("game/models/castle/tower/medieval_tower_2.obj", 1);
-	castle->scale = glm::vec3(1.0f);
 
 	// treeModel2 = new Model("game/models/tree-low-poly/polytree1.obj", 10000);
 	// treeModel2 = new Model("game/models/plane/FREOBJ.obj", 2);
@@ -101,15 +100,14 @@ void WorldScene::init()
 	// test->position = glm::vec3(1.0f, 2.0f, 0.0f);
 
 	addChild(spotlight, this);
-	// addChild(skybox, this);
+	addChild(skybox, this);
 	// addChild(sun, this);
 	addChild(floor, this);
-	// addChild(floor, this);
-	// addChild(treeModel2, this);
-	// addChild(treeModel, this);
+	addChild(treeModel2, this);
+	addChild(treeModel, this);
 
-	addChild(castle, this); 
-	addChild(player, this);
+	// addChild(castle, this); 
+	// addChild(player, this);
 	// addChild(cube1, this);
 	// addChild(cube2, this);
 	// addChild(cube3, this);
