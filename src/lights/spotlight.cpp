@@ -47,8 +47,8 @@ public:
 		float speed = 0.6f;
 		translationX = 0.0f;
 		// translationX = 120.0f * cos(0.0f + speed * (float)glfwGetTime());
-		translationY = 50.0f;
-		// translationY = 700.0f * sin(0.0f + speed * (float)glfwGetTime());
+		// translationY = 50.0f;
+		translationY = 70.0f * sin(0.0f + speed * (float)glfwGetTime());
 		// translationY = 2.0f * sin(0.0f + 1.0f * (float)glfwGetTime());
 		// translationZ = scene->camera->Position.z - 150.0f;
 		translationZ = 50.0f;

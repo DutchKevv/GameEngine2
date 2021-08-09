@@ -100,8 +100,8 @@ void WorldScene::init()
 	// test->position = glm::vec3(1.0f, 2.0f, 0.0f);
 
 	addChild(spotlight, this);
-	// addChild(skybox, this);
-	// addChild(sun, this);
+	addChild(skybox, this);
+	addChild(sun, this);
 	addChild(floor, this);
 	addChild(treeModel2, this);
 	addChild(treeModel, this);
@@ -171,7 +171,7 @@ void WorldScene::draw(float delta)
 
 	glm::mat4 lightProjection, lightView;
 	glm::mat4 lightSpaceMatrix;
-	float near_plane = 0.0f, far_plane = 75.5f;
+	float near_plane = 0.0f, far_plane = 750.5f;
 
 	// lightProjection = glm::perspective(glm::radians(45.0f), (GLfloat)SHADOW_WIDTH / (GLfloat)SHADOW_HEIGHT, near_plane, far_plane); // note that if you use a perspective projection matrix you'll have to change the light position as the current light position isn't enough to reflect the whole scene
 	lightProjection = glm::ortho(-80.0f, 80.0f, -80.0f, 80.0f, near_plane, far_plane);
@@ -195,9 +195,8 @@ void WorldScene::draw(float delta)
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_FRONT);
 	renderScene(delta, depthShader, true);
-	// glCullFace(GL_BACK); // don't forget to reset original culling face
+	glCullFace(GL_BACK); // don't forget to reset original culling face
 	glDisable(GL_CULL_FACE);
-
 
 	glBindFramebuffer(GL_FRAMEBUFFER, context->engine->fbo);
 
@@ -238,7 +237,7 @@ void WorldScene::renderScene(float delta, Shader *shader, bool isShadowRender)
 	// std::cout << "render world scene \n";
 	glEnable(GL_DEPTH_TEST);
 	// camera->followObject(player);
-	sun->position = glm::vec3(spotlight->position.x, spotlight->position.y - 2.0f, spotlight->position.z - 10.0f);
+	sun->position = glm::vec3(spotlight->position.x, spotlight->position.y, spotlight->position.z);
 	shader->use();
 
 	auto transforms = animator->GetPoseTransforms();
