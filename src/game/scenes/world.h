@@ -6,6 +6,7 @@
 #include "../../engine/model.h"
 #include "../../engine/shader.h"
 #include "../../engine/animator.h"
+#include "../../engine/player.h"
 #include "../../shape/cube.h"
 #include "../../shape/plane.h"
 #include "../../lights/spotlight.cpp"
@@ -33,6 +34,7 @@ public:
 	Model *rockModel;
 	Model *test;
 	Model *player;
+	Player *player2;
 
 	Animation *danceAnimation;
 	Animator *animator;

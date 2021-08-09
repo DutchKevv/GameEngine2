@@ -54,11 +54,11 @@ void WorldScene::init()
 
 	skybox = new SkyBox();
 	spotlight = new Spotlight();
+	floor = new ShapePlane();
 	cube1 = new ShapeCube();
 	cube2 = new ShapeCube();
 	cube3 = new ShapeCube();
 
-	floor = new ShapePlane();
 	// heightMap = new HeightMap();
 
 	camera = new Camera(glm::vec3(0.0f, 4.0f, 20.0f), glm::vec3(0.0f, 1.0f, 0.0f), -75.5f);
@@ -67,13 +67,14 @@ void WorldScene::init()
 	// -----------
 
 	// player
-	player = new Model("game/models/player/vampire/vampire.dae");
-	danceAnimation = new Animation("game/models/player/vampire/vampire.dae", player);
+	player2 = new Player();
+	player2->init();
+	danceAnimation = new Animation("game/models/player/vampire/vampire.dae", player2->playerModel);
 	animator = new Animator(danceAnimation);
 	animator->PlayAnimation(danceAnimation);
 
 	// player = new Model("game/models/player/player.obj", 1);
-	player->position = glm::vec3(0.0f, 0.0f, 0.0f);
+	// player->position = glm::vec3(0.0f, 1.0f, 0.0f);
 	// player->scale = glm::vec3(0.01f);
 
 	// test = new Model("game/models/trees/cartoon/CartoonTree.fbx");
@@ -104,7 +105,8 @@ void WorldScene::init()
 	addChild(treeModel, this);
 
 	addChild(castle, this); 
-	addChild(player, this);
+	// addChild(player, this);
+	addChild(player2, this);
 	// addChild(cube1, this);
 	// addChild(cube2, this);
 	// addChild(cube3, this);

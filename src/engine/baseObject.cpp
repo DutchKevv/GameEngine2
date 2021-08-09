@@ -2,7 +2,9 @@
 
 static unsigned int IDCounter = 0;
 
-void BaseObject::init() {}
+void BaseObject::init() {
+	isInitialized = true;
+}
 
 void BaseObject::update(float delta)
 {
@@ -58,7 +60,6 @@ unsigned int BaseObject::addChild(BaseObject *child, Scene *scene, std::string n
 	if (child->isInitialized == false)
 	{
 		child->init();
-		child->isInitialized = true;
 	}
 
 	return child->id;
