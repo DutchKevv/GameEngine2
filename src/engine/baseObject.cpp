@@ -38,13 +38,6 @@ void BaseObject::renderScene(float delta, Shader *shader, bool isShadowRender)
 
 	for (BaseObject *child : children)
 	{
-		if (shader)
-		{
-			shader->setBool("useInstances", false);
-			shader->setBool("useTexture", true);
-			// glBindTexture(GL_TEXTURE_2D, 0);
-		}
-
 		child->renderScene(delta, shader, isShadowRender);
 	}
 }

@@ -92,25 +92,42 @@ void Model::init()
 
 		glBindVertexArray(0);
 	}
+
+	danceAnimation = new Animation("game/models/player/vampire/vampire.dae", this);
+	animator = new Animator(danceAnimation);
+	animator->PlayAnimation(danceAnimation);
+}
+
+void Model::update(float delta)
+{
+	finalBonesMatrices.clear();
+
+	auto transforms = animator->GetPoseTransforms();
+	for (int i = 0; i < transforms.size(); ++i)
+	{
+		finalBonesMatrices.push_back(transforms[i]);
+	}
+
+	RenderObject::update(delta);
 }
 
 // draws the model, and thus all its meshes
 void Model::renderScene(float delta, Shader *shader, bool isShadowRender)
 {
-	shader->use();
 	shader->setBool("useInstances", amount != 1);
-
 	shader->setBool("useTexture", false);
+
+	for (int i = 0; i < finalBonesMatrices.size(); ++i)
+	{
+		shader->setMat4("finalBonesMatrices[" + std::to_string(i) + "]", finalBonesMatrices[i]);
+	}
+
 	if (amount == 1)
 	{
 		glm::mat4 model = glm::mat4(1.0f);
 		model = glm::scale(model, this->scale);
 		model = glm::translate(model, this->position);
-		// 4. now add to list of matrices
 		shader->setMat4("model", model);
-		// modelMatrices[0] = model;
-		// glBindBuffer(GL_ARRAY_BUFFER, buffer);
-		// glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatrices[0], GL_STATIC_DRAW);
 	}
 
 	for (unsigned int i = 0; i < meshes.size(); i++)

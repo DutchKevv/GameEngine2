@@ -1,5 +1,6 @@
 #include "./player.h"
 #include "./context.h"
+#include "./animation.h"
 #include "./animator.h"
 
 void mouse_callback(GLFWwindow *window, double xpos, double ypos);
@@ -7,11 +8,8 @@ void mouse_callback(GLFWwindow *window, double xpos, double ypos);
 void Player::init()
 {
     playerModel = new Model("game/models/player/vampire/vampire.dae");
-    playerModel->position = glm::vec3(0.0f, 0.0f, 0.0f);
-
-    danceAnimation = new Animation("game/models/player/vampire/vampire.dae", playerModel);
-    animator = new Animator(danceAnimation);
-    animator->PlayAnimation(danceAnimation);
+    // playerModel->danceAnimation = new Animation("game/models/player/vampire/vampire.dae", this);
+    // playerModel->position = glm::vec3(0.0f, 0.0f, 0.0f);
 
     this->addChild(playerModel, this->scene);
 
@@ -24,7 +22,7 @@ void Player::update(float delta)
 {
     keyPressed = false;
 
-    animator->UpdateAnimation(delta);
+    playerModel->animator->UpdateAnimation(delta);
 
     if (glfwGetKey(context->display->window, GLFW_KEY_LEFT) == GLFW_PRESS)
         this->processKeyboard(LEFT, delta);
@@ -45,13 +43,9 @@ void Player::update(float delta)
 
     playerModel->position = this->position;
 
-    if (keyPressed)
+    if (!keyPressed)
     {
-        // animator->UpdateAnimation(delta);
-    }
-    else
-    {
-        animator->StopAnimation(danceAnimation);
+        playerModel->animator->StopAnimation(playerModel->danceAnimation);
 
         for (unsigned int i = 0; i < playerModel->meshes.size(); i++)
         {
@@ -64,13 +58,8 @@ void Player::update(float delta)
 
 void Player::renderScene(float delta, Shader *shader, bool isShadowRender)
 {
-    auto transforms = animator->GetPoseTransforms();
-    for (int i = 0; i < transforms.size(); ++i)
-    {
-        shader->setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
-    }
-
-    // std::cout << "render floor \n";
+    // std::cout << "render player \n";
+    
     playerModel->renderScene(delta, shader, isShadowRender);
 }
 
@@ -101,20 +90,20 @@ int Player::processKeyboard(Camera_Movement direction, float velocity)
 
 void mouse_callback(GLFWwindow *window, double xpos, double ypos)
 {
-  Engine *engine = context->engine;
+    Engine *engine = context->engine;
 
-  if (engine->firstMouse)
-  {
+    if (engine->firstMouse)
+    {
+        engine->lastMouseX = xpos;
+        engine->lastMouseY = ypos;
+        engine->firstMouse = false;
+    }
+
+    float xoffset = xpos - engine->lastMouseX;
+    float yoffset = engine->lastMouseY - ypos; // reversed since y-coordinates go from bottom to top
+
     engine->lastMouseX = xpos;
     engine->lastMouseY = ypos;
-    engine->firstMouse = false;
-  }
 
-  float xoffset = xpos - engine->lastMouseX;
-  float yoffset = engine->lastMouseY - ypos; // reversed since y-coordinates go from bottom to top
-
-  engine->lastMouseX = xpos;
-  engine->lastMouseY = ypos;
-
-  context->engine->children[context->engine->worldChild]->camera->ProcessMouseMovement(xoffset, yoffset);
+    context->engine->children[context->engine->worldChild]->camera->ProcessMouseMovement(xoffset, yoffset);
 }
