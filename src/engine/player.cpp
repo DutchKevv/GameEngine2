@@ -1,3 +1,4 @@
+#include "./model.h"
 #include "./player.h"
 #include "./context.h"
 #include "./animation.h"
@@ -5,24 +6,23 @@
 
 void mouse_callback(GLFWwindow *window, double xpos, double ypos);
 
+Player::Player(string const &path, unsigned int amount, bool gamma): Model(path, amount, gamma) {
+}
+
 void Player::init()
 {
-    playerModel = new Model("game/models/player/vampire/vampire.dae");
-    // playerModel->danceAnimation = new Animation("game/models/player/vampire/vampire.dae", this);
-    // playerModel->position = glm::vec3(0.0f, 0.0f, 0.0f);
-
-    this->addChild(playerModel, this->scene);
+    //  std::cout << "init player \n";
 
     glfwSetCursorPosCallback(context->display->window, mouse_callback);
 
-    RenderObject::init();
+    Model::init();
 }
 
 void Player::update(float delta)
 {
-    keyPressed = false;
+    //  std::cout << "render player \n";
 
-    playerModel->animator->UpdateAnimation(delta);
+    keyPressed = false;
 
     if (glfwGetKey(context->display->window, GLFW_KEY_LEFT) == GLFW_PRESS)
         this->processKeyboard(LEFT, delta);
@@ -41,26 +41,24 @@ void Player::update(float delta)
     if (glfwGetKey(context->display->window, GLFW_KEY_D) == GLFW_PRESS)
         this->processKeyboard(D, delta);
 
-    playerModel->position = this->position;
-
     if (!keyPressed)
     {
-        playerModel->animator->StopAnimation(playerModel->danceAnimation);
+        animator->StopAnimation(animation);
 
-        for (unsigned int i = 0; i < playerModel->meshes.size(); i++)
+        for (unsigned int i = 0; i < meshes.size(); i++)
         {
-            playerModel->SetVertexBoneDataToDefault(playerModel->meshes[i].vertices[0]);
+            SetVertexBoneDataToDefault(meshes[i].vertices[0]);
         }
     }
 
-    RenderObject::update(delta);
+    Model::update(delta);
 }
 
 void Player::renderScene(float delta, Shader *shader, bool isShadowRender)
 {
     // std::cout << "render player \n";
-    
-    playerModel->renderScene(delta, shader, isShadowRender);
+
+    Model::renderScene(delta, shader, isShadowRender);
 }
 
 int Player::processKeyboard(Camera_Movement direction, float velocity)

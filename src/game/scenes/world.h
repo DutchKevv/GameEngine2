@@ -5,7 +5,6 @@
 #include "../../engine/skybox.h"
 #include "../../engine/model.h"
 #include "../../engine/shader.h"
-#include "../../engine/animator.h"
 #include "../../engine/player.h"
 #include "../../shape/cube.h"
 #include "../../shape/plane.h"
@@ -35,8 +34,6 @@ public:
 	Model *test;
 	Player *player;
 
-	Animation *danceAnimation;
-	Animator *animator;
 	// HeightMap *heightMap;
 
 	vector<glm::vec4> treePositions;

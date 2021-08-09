@@ -67,8 +67,10 @@ void WorldScene::init()
 	// -----------
 
 	// player
-	player = new Player();
+	player = new Player("game/models/player/vampire/vampire.dae");
+	player->setAnimation("game/models/player/vampire/vampire.dae");
 	player->init();
+
 	// player->position = glm::vec3(0.0f, 1.0f, 0.0f);
 	// player->scale = glm::vec3(0.01f);
 
@@ -99,7 +101,7 @@ void WorldScene::init()
 	addChild(treeModel2, this);
 	addChild(treeModel, this);
 
-	addChild(castle, this); 
+	addChild(castle, this);
 	addChild(player, this);
 	// addChild(cube1, this);
 	// addChild(cube2, this);
@@ -126,27 +128,6 @@ void WorldScene::init()
 		rockPositions.push_back(
 			glm::vec4((rand() % space) - halfSpace, 0.0f, (rand() % space) - halfSpace, rand() % 100));
 	}
-
-	// // load random positions for models
-	// for (int i = 0; i < trees; i++)
-	// {
-	// 	// Model *model = new Model("game/models/tree-low-poly/lowpolytree.obj");
-	// 	glm::vec4 random = glm::vec4((rand() % space) - halfSpace, 1.8f, (rand() % space) - halfSpace, rand() % 100);
-	// 	tree->scale = glm::vec3(random.w);
-	// 	tree->position = random;
-
-	// 	addChild(tree, this);
-	// }
-
-	// for (int i = 0; i < rocks; i++)
-	// {
-	// 	Model *model = new Model("game/models/stone/stone.obj");
-	// 	glm::vec4 random = glm::vec4((rand() % space) - halfSpace, -1.0f, (rand() % space) - halfSpace, rand() % 100);
-	// 	model->scale = glm::vec3(random.w / 10);
-	// 	model->position = random;
-
-	// 	addChild(model, this);
-	// }
 }
 
 void WorldScene::draw(float delta)
@@ -167,12 +148,12 @@ void WorldScene::draw(float delta)
 	// lightProjection = glm::perspective(glm::radians(45.0f), (GLfloat)SHADOW_WIDTH / (GLfloat)SHADOW_HEIGHT, near_plane, far_plane); // note that if you use a perspective projection matrix you'll have to change the light position as the current light position isn't enough to reflect the whole scene
 	lightProjection = glm::ortho(-80.0f, 80.0f, -80.0f, 80.0f, near_plane, far_plane);
 	// lightProjection = glm::ortho(-680.0f, 680.0f, -680.0f, 680.0f, near_plane, far_plane);
-	
+
 	// lightView = glm::lookAt(glm::vec3(-0.0f, 40.0f, -30.0f), glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
 	lightView = glm::lookAt(spotlight->position, glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0, 1.0, 0.0));
-	
+
 	lightSpaceMatrix = lightProjection * lightView;
-	
+
 	// render scene from light's point of view
 	depthShader->use();
 	depthShader->setMat4("lightSpaceMatrix", lightSpaceMatrix);
@@ -246,61 +227,6 @@ void WorldScene::renderScene(float delta, Shader *shader, bool isShadowRender)
 	// 	shader->setMat4("model", model);
 	// 	// // textureGrass.Bind();
 	// 	treeModel2->renderScene(delta, shader, isShadowRender);
-	// }
-
-	// for (unsigned int i = 0; i < trees2; i++)
-	// {
-	// 	glm::mat4 model = glm::mat4(1.0f);
-	// 	glm::vec4 random = treePositions2[i];
-
-	// 	model = glm::scale(model, glm::vec3(3.0f));
-	// 	model = glm::translate(model, glm::vec3(random.x, 0.0f, random.z));
-	// 	model = glm::rotate(model, random.w, glm::vec3(0.0f, 1.0f, 0.0f)); // where x, y, z is axis of rotation (e.g. 0 1 0)
-	// 	model = glm::rotate(model, random.w / 200, glm::vec3(1.0f, 0.0f, 0.0f)); // where x, y, z is axis of rotation (e.g. 0 1 0)
-	// 	// treeModel->position = glm::vec3(random);
-	// 	shader->setMat4("model", model);
-	// 	// // textureGrass.Bind();
-	// 	treeModel->renderScene(delta, shader, isShadowRender);
-	// }
-
-	// for (unsigned int i = 0; i < trees3; i++)
-	// {
-	// 	glm::mat4 model = glm::mat4(1.0f);
-	// 	glm::vec4 random = treePositions[i];
-
-	// 	model = glm::scale(model, glm::vec3(3.0f));
-	// 	model = glm::translate(model, glm::vec3(random.x, 1.9f, random.z));
-	// 	// treeModel->position = glm::vec3(random);
-	// 	shader->setMat4("model", model);
-	// 	// // textureGrass.Bind();
-	// 	treeModel3->renderScene(delta, shader, isShadowRender);
-	// }
-
-	// for (unsigned int i = 0; i < rocks; i++)
-	// {
-	// 	glm::mat4 model = glm::mat4(1.0f);
-	// 	glm::vec4 random = rockPositions[i];
-
-	// 	model = glm::scale(model, glm::vec3(1.0f));
-	// 	model = glm::translate(model, glm::vec3(random.x, 0.0f, random.z));
-	// 	// treeModel->position = glm::vec3(random);
-	// 	shader->setMat4("model", model);
-	// 	// // textureGrass.Bind();
-	// 	rockModel->renderScene(delta, shader, isShadowRender);
-	// }
-
-	// for (unsigned int i = 0; i < rockPositions.size(); i++)
-	// {
-	// 	glm::mat4 model = glm::mat4(1.0f);
-	// 	glm::vec4 random = rockPositions[i];
-
-	// 	model = glm::translate(model, glm::vec3(random.x, 0.0f, random.z));
-	// 	model = glm::scale(model, glm::vec3(random.w / 25));
-	// 	// // model = glm::scale(model, glm::vec3(random.w / 100));
-	// 	// treeModel->position = glm::vec3(random);
-	// 	shader->setMat4("model", model);
-	// 	// // textureGrass.Bind();
-	// 	rockModel->renderScene(delta, shader, isShadowRender);
 	// }
 
 	glDisable(GL_DEPTH_TEST);

@@ -29,8 +29,8 @@ public:
 	unsigned int amount;
 	unsigned int instanceBuffer;
 
-	Animation *danceAnimation;
-    Animator *animator;
+	Animation *animation;
+    Animator *animator = NULL;
 	vector<glm::mat4> finalBonesMatrices;
 
 	const unsigned int space = 1730;
@@ -44,6 +44,8 @@ public:
 
 	// draws the model, and thus all its meshes
 	void renderScene(float delta, Shader *shader, bool isShadowRender);
+
+	void setAnimation(string const &path);
 
 	auto &GetOffsetMatMap() { return m_OffsetMatMap; }
 	int &GetBoneCount() { return m_BoneCount; }

@@ -92,20 +92,21 @@ void Model::init()
 
 		glBindVertexArray(0);
 	}
-
-	danceAnimation = new Animation("game/models/player/vampire/vampire.dae", this);
-	animator = new Animator(danceAnimation);
-	animator->PlayAnimation(danceAnimation);
 }
 
 void Model::update(float delta)
 {
 	finalBonesMatrices.clear();
 
-	auto transforms = animator->GetPoseTransforms();
-	for (int i = 0; i < transforms.size(); ++i)
+	if (animator != NULL)
 	{
-		finalBonesMatrices.push_back(transforms[i]);
+		auto transforms = animator->GetPoseTransforms();
+		for (int i = 0; i < transforms.size(); ++i)
+		{
+			finalBonesMatrices.push_back(transforms[i]);
+		}
+
+		animator->UpdateAnimation(delta);
 	}
 
 	RenderObject::update(delta);
@@ -134,6 +135,13 @@ void Model::renderScene(float delta, Shader *shader, bool isShadowRender)
 	{
 		meshes[i].Draw(shader, amount);
 	}
+}
+
+void Model::setAnimation(string const &path)
+{
+	animation = new Animation(path, this);
+	animator = new Animator(animation);
+	animator->PlayAnimation(animation);
 }
 
 // loads a model with supported ASSIMP extensions from file and stores the resulting meshes in the meshes vector.
