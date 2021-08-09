@@ -1,6 +1,6 @@
 #include "./baseObject.h"
 
-static unsigned int IDCounter = 0;
+unsigned int IDCounter = 0;
 
 void BaseObject::init() {
 	isInitialized = true;
@@ -23,7 +23,6 @@ void BaseObject::draw(float delta)
 	{
 		if (child->isEnabled)
 		{
-			std::cout << "child draw \n";
 			child->draw(delta);
 		}
 	}

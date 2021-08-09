@@ -69,8 +69,7 @@ void WorldScene::init()
 	// player
 	player = new Player("game/models/player/vampire/vampire.dae");
 	player->setAnimation("game/models/player/vampire/vampire.dae");
-	player->init();
-
+	
 	// player->position = glm::vec3(0.0f, 1.0f, 0.0f);
 	// player->scale = glm::vec3(0.01f);
 
