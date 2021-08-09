@@ -123,6 +123,11 @@ void Engine::tick()
 
   // ImGui::SetNextWindowSize(ImVec2(context->display->width / 2, context->display->height / 2));
 
+  for (Scene *child : children)
+  {
+    child->update(deltaTime);
+  }
+
   for (Module *module : modules)
   {
     module->beforeDraw();

@@ -67,13 +67,8 @@ void WorldScene::init()
 	// -----------
 
 	// player
-	player2 = new Player();
-	player2->init();
-	danceAnimation = new Animation("game/models/player/vampire/vampire.dae", player2->playerModel);
-	animator = new Animator(danceAnimation);
-	animator->PlayAnimation(danceAnimation);
-
-	// player = new Model("game/models/player/player.obj", 1);
+	player = new Player();
+	player->init();
 	// player->position = glm::vec3(0.0f, 1.0f, 0.0f);
 	// player->scale = glm::vec3(0.01f);
 
@@ -105,8 +100,7 @@ void WorldScene::init()
 	addChild(treeModel, this);
 
 	addChild(castle, this); 
-	// addChild(player, this);
-	addChild(player2, this);
+	addChild(player, this);
 	// addChild(cube1, this);
 	// addChild(cube2, this);
 	// addChild(cube3, this);
@@ -160,7 +154,7 @@ void WorldScene::draw(float delta)
 	// 1. render depth of scene to texture (from light's perspective)
 	// --------------------------------------------------------------
 	// shader->setBool("useTexture", true);
-	animator->UpdateAnimation(delta);
+	// animator->UpdateAnimation(delta);
 	// render
 	// ------
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
@@ -236,11 +230,6 @@ void WorldScene::renderScene(float delta, Shader *shader, bool isShadowRender)
 	// camera->followObject(player);
 	sun->position = glm::vec3(spotlight->position.x, spotlight->position.y, spotlight->position.z);
 	shader->use();
-
-	auto transforms = animator->GetPoseTransforms();
-	for (int i = 0; i < transforms.size(); ++i) {
-		shader->setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
-	}
 
 	Scene::renderScene(delta, shader, isShadowRender);
 

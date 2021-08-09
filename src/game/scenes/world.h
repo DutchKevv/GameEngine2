@@ -33,8 +33,7 @@ public:
 	Model *treeModel3;
 	Model *rockModel;
 	Model *test;
-	Model *player;
-	Player *player2;
+	Player *player;
 
 	Animation *danceAnimation;
 	Animator *animator;
