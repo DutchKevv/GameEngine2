@@ -29,7 +29,7 @@ public:
 	glm::mat4 *modelMatrices;
 	unsigned int instanceBuffer;
 
-	const unsigned int space = 1730;
+	const unsigned int space = 730;
 
 	// constructor, expects a filepath to a 3D model.
 	Model(string const &path, unsigned int _amount = 1, bool gamma = false) : gammaCorrection(gamma)

@@ -6,7 +6,6 @@ layout (location = 3) in mat4 instanceMatrix;
 layout (location = 7) in ivec4 boneIds;
 layout (location = 8) in vec4 weights;
 
-
 out vec2 TexCoords;
 
 out VS_OUT {
@@ -21,32 +20,24 @@ uniform mat4 view;
 uniform mat4 model;
 uniform mat4 lightSpaceMatrix;
 
-// temp
-uniform bool useInstances;
-
 const int MAX_BONES = 100;
 const int MAX_BONE_INFLUENCE = 4;
 uniform mat4 finalBonesMatrices[MAX_BONES];
 
-void main()
-{
-    mat4 viewModel;
-    
-    if (useInstances) {
-        vs_out.FragPos = vec3(instanceMatrix * vec4(aPos, 1.0));
-        viewModel = view * instanceMatrix;
-        // vs_out.Normal = transpose(inverse(mat3(instanceMatrix))) * aNormal;
-    } else {
-        vs_out.FragPos = vec3(model * vec4(aPos, 1.0));
-        viewModel = view * model;
-        // vs_out.Normal = transpose(inverse(mat3(model))) * aNormal;
-    }
+// temp
+uniform bool useInstances;
 
+vec4 BonesCalculation()
+{
     vec4 totalPosition = vec4(0.0f);
     for(int i = 0 ; i < MAX_BONE_INFLUENCE ; i++)
     {
-        if(boneIds[i] == -1) 
+        if(boneIds[i] == -1) {
+            if (i == 0) {
+                totalPosition = vec4(aPos,1.0f);
+            }
             continue;
+        }
         if(boneIds[i] >= MAX_BONES) 
         {
             totalPosition = vec4(aPos,1.0f);
@@ -55,11 +46,20 @@ void main()
         vec4 localPosition = finalBonesMatrices[boneIds[i]] * vec4(aPos,1.0f);
         totalPosition += localPosition * weights[i];
         vec3 localNormal = mat3(finalBonesMatrices[boneIds[i]]) * aNormal;
-   }
+    }
 
-    gl_Position = projection * viewModel * totalPosition;
+    return totalPosition;
+}
 
+void main()
+{
+    mat4 localModel = useInstances ? instanceMatrix : model;
+
+    gl_Position = projection * view * localModel * BonesCalculation();
+
+    // vs_out.Normal = transpose(inverse(mat3(localModel))) * aNormal;
     vs_out.Normal = aNormal;
     vs_out.TexCoords = aTexCoords;
+    vs_out.FragPos = vec3(localModel * vec4(aPos, 1.0));
     vs_out.FragPosLightSpace = lightSpaceMatrix * vec4(vs_out.FragPos, 1.0);
 }

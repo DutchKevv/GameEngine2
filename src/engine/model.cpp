@@ -38,47 +38,49 @@ void Model::init()
 			// 4. now add to list of matrices
 			modelMatrices[i] = model;
 		}
-
-		// configure instanced array
-		// -------------------------
-		glGenBuffers(1, &instanceBuffer);
-		glBindBuffer(GL_ARRAY_BUFFER, instanceBuffer);
-		glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatrices[0], GL_STATIC_DRAW);
-
-		// set transformation matrices as an instance vertex attribute (with divisor 1)
-		// note: we're cheating a little by taking the, now publicly declared, VAO of the model's mesh(es) and adding new vertexAttribPointers
-		// normally you'd want to do this in a more organized fashion, but for learning purposes this will do.
-		// -----------------------------------------------------------------------------------------------------------------------------------
-		for (unsigned int i = 0; i < meshes.size(); i++)
-		{
-			unsigned int VAO = meshes[i].VAO;
-			glBindVertexArray(VAO);
-
-			// set attribute pointers for matrix (4 times vec4)
-			glEnableVertexAttribArray(3);
-			glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void *)0);
-			glEnableVertexAttribArray(4);
-			glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void *)(sizeof(glm::vec4)));
-			glEnableVertexAttribArray(5);
-			glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void *)(2 * sizeof(glm::vec4)));
-			glEnableVertexAttribArray(6);
-			glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void *)(3 * sizeof(glm::vec4)));
-
-			glVertexAttribDivisor(3, 1);
-			glVertexAttribDivisor(4, 1);
-			glVertexAttribDivisor(5, 1);
-			glVertexAttribDivisor(6, 1);
-
-			glBindVertexArray(0);
-		}
 	}
 	else
 	{
 		// model = glm::rotate(model, random.w, this->rotation);
-		model = glm::translate(model, this->position);
-		model = glm::scale(model, this->scale);
+		glm::mat4 model(1.0f);
+		// model = glm::translate(model, this->position);
+		// model = glm::scale(model, this->scale);
+		modelMatrices[0] = model;
 		// model = glm::rotate(model, random.w, glm::vec3(0.0f, 1.0f, 0.0f));
 		// model = glm::rotate(model, random.w / 200, glm::vec3(1.0f, 0.0f, 0.0f));
+	}
+
+	// configure instanced array
+	// -------------------------
+	glGenBuffers(1, &instanceBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, instanceBuffer);
+	glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatrices[0], GL_STATIC_DRAW);
+
+	// set transformation matrices as an instance vertex attribute (with divisor 1)
+	// note: we're cheating a little by taking the, now publicly declared, VAO of the model's mesh(es) and adding new vertexAttribPointers
+	// normally you'd want to do this in a more organized fashion, but for learning purposes this will do.
+	// -----------------------------------------------------------------------------------------------------------------------------------
+	for (unsigned int i = 0; i < meshes.size(); i++)
+	{
+		unsigned int VAO = meshes[i].VAO;
+		glBindVertexArray(VAO);
+
+		// set attribute pointers for matrix (4 times vec4)
+		glEnableVertexAttribArray(3);
+		glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void *)0);
+		glEnableVertexAttribArray(4);
+		glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void *)(sizeof(glm::vec4)));
+		glEnableVertexAttribArray(5);
+		glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void *)(2 * sizeof(glm::vec4)));
+		glEnableVertexAttribArray(6);
+		glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void *)(3 * sizeof(glm::vec4)));
+
+		glVertexAttribDivisor(3, 1);
+		glVertexAttribDivisor(4, 1);
+		glVertexAttribDivisor(5, 1);
+		glVertexAttribDivisor(6, 1);
+
+		glBindVertexArray(0);
 	}
 }
 
@@ -97,7 +99,7 @@ void Model::renderScene(float delta, Shader *shader, bool isShadowRender)
 		shader->setBool("useInstances", false);
 		glm::mat4 model = glm::mat4(1.0f);
 		// model = glm::scale(model, this->scale);
-		model = glm::translate(model, this->position);
+		model = glm::translate(model, glm::vec3(1.0f));
 		// 4. now add to list of matrices
 		shader->setMat4("model", model);
 		// modelMatrices[0] = model;

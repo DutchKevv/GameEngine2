@@ -10,25 +10,22 @@ uniform mat4 model;
 
 const int MAX_BONES = 100;
 const int MAX_BONE_INFLUENCE = 4;
+uniform mat4 finalBonesMatrices[MAX_BONES];
 
 // temp
 uniform bool useInstances;
-uniform mat4 finalBonesMatrices[MAX_BONES];
 
-void main()
+vec4 BonesCalculation()
 {
-    mat4 viewModel;
-    if (useInstances) {
-        viewModel = lightSpaceMatrix * instanceMatrix;
-    } else {
-        viewModel = lightSpaceMatrix * model;
-    }
-
     vec4 totalPosition = vec4(0.0f);
     for(int i = 0 ; i < MAX_BONE_INFLUENCE ; i++)
     {
-        if(boneIds[i] == -1) 
+        if(boneIds[i] == -1) {
+            if (i == 0) {
+                totalPosition = vec4(aPos,1.0f);
+            }
             continue;
+        }
         if(boneIds[i] >= MAX_BONES) 
         {
             totalPosition = vec4(aPos,1.0f);
@@ -39,5 +36,12 @@ void main()
         vec3 localNormal = mat3(finalBonesMatrices[boneIds[i]]) * aNormal;
     }
 
-    gl_Position = viewModel * totalPosition;
+    return totalPosition;
+}
+
+void main()
+{
+    mat4 localModel = useInstances ? instanceMatrix : model;
+
+    gl_Position = lightSpaceMatrix * localModel * BonesCalculation();
 }

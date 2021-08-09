@@ -139,14 +139,12 @@ set(BUILD_SHARED_LIBS OFF)
 
 # target_link_libraries(${PROJECT_NAME} assimp)
 
-
 find_package(assimp REQUIRED)
 if (assimp_FOUND)
     set(ASSIMP_LIBRARY "assimp")
     add_library(${ASSIMP_LIBRARY} SHARED IMPORTED)
     set_target_properties(${ASSIMP_LIBRARY} PROPERTIES IMPORTED_LOCATION "${ASSIMP_LIBRARY_DIRS}/libassimp.so")
 endif(assimp_FOUND)
-
 
 target_link_libraries(${PROJECT_NAME} ${ASSIMP_LIBRARIES})
 

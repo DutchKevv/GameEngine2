@@ -47,7 +47,7 @@ void WorldScene::init()
 	// shader configuration
 	// --------------------
 	shader->use();
-	shader->setInt("diffuseTexture", 1);
+	shader->setInt("diffuseTexture", 0);
 	shader->setInt("shadowMap", 1);
 
 	std::cout << "init world \n";
@@ -107,9 +107,9 @@ void WorldScene::init()
 	// addChild(floor, this);
 	// addChild(treeModel2, this);
 	// addChild(treeModel, this);
-	addChild(player, this);
-	addChild(castle, this);
 
+	addChild(castle, this); 
+	addChild(player, this);
 	// addChild(cube1, this);
 	// addChild(cube2, this);
 	// addChild(cube3, this);
