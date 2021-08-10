@@ -24,7 +24,7 @@ enum Camera_Movement
 };
 
 // Default camera values
-const float YAW = 90.0f;
+const float YAW = 0.0f;
 const float PITCH = 0.0f;
 const float SPEED = 46.5f;
 const float SENSITIVITY = 0.1f;
@@ -73,13 +73,16 @@ public:
 	// returns the view matrix calculated using Euler Angles and the LookAt Matrix
 	glm::mat4 GetViewMatrix()
 	{
-		Position.x = follow->position.x - (sin(glfwGetTime()) * radius);
-		Position.z = follow->position.z + (cos(glfwGetTime()) * radius);
+		// Position.x = follow->position.x - (sin(glfwGetTime()) * radius);
+		// Position.z = follow->position.z + (cos(glfwGetTime()) * radius);
+
+		Position.x = follow->position.x - (sin(Yaw) * radius);
+		Position.z = follow->position.z + (cos(Yaw) * radius) ;
 		
 
 		// Position = glm::vec3(follow->position.x, follow->position.y + 2.0f, follow->position.z - 5.0f);
 		glm::vec3 center = glm::vec3(follow->position.x, follow->position.y + 2.0f, follow->position.z);
-		return glm::lookAt(glm::vec3(Position.x, 2.0f, Position.z), center + Front, glm::vec3(0.0f, 1.0f, 0.0f));
+		return glm::lookAt(glm::vec3(Position.x, 2.0f, Position.z), center, glm::vec3(0.0f, 1.0f, 0.0f));
 		// return glm::lookAt(Position, Position + Front, Up);
 	}
 
@@ -114,8 +117,8 @@ public:
 		xoffset *= MouseSensitivity;
 		yoffset *= MouseSensitivity;
 
-		Yaw += xoffset;
-		Pitch += yoffset;
+		Yaw += xoffset / 4;
+		Pitch += yoffset / 4;
 
 		// make sure that when pitch is out of bounds, screen doesn't get flipped
 		if (constrainPitch)
