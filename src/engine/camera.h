@@ -1,7 +1,9 @@
 #pragma once
 
+#include <iostream>
 #include <vector>
 #include <glad/glad.h>
+#include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include "./renderObject.h"
@@ -40,20 +42,22 @@ public:
 	glm::vec3 WorldUp;
 	// euler Angles
 	float Yaw;
-	float Pitch;
+	float Pitch = 1.0f;
 	// camera options
 	float MovementSpeed;
 	float MouseSensitivity;
 	float Zoom = 1.0f;
+	float radius = 10.0f;
+
+	RenderObject *follow;
 
 	// constructor with vectors
-	Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH, glm::vec3 front = glm::vec3(40.0f, 40.0f, -41.0f)) : MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
+	Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH) : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
 	{
 		Position = position;
 		WorldUp = up;
 		Yaw = yaw;
 		Pitch = pitch;
-		Front = front;
 		updateCameraVectors();
 	}
 	// constructor with scalar values
@@ -69,24 +73,21 @@ public:
 	// returns the view matrix calculated using Euler Angles and the LookAt Matrix
 	glm::mat4 GetViewMatrix()
 	{
-		return glm::lookAt(Position, Position + Front, Up);
+		Position.x = follow->position.x - (sin(glfwGetTime()) * radius);
+		Position.z = follow->position.z + (cos(glfwGetTime()) * radius);
+		
+
+		// Position = glm::vec3(follow->position.x, follow->position.y + 2.0f, follow->position.z - 5.0f);
+		glm::vec3 center = glm::vec3(follow->position.x, follow->position.y + 2.0f, follow->position.z);
+		return glm::lookAt(glm::vec3(Position.x, 2.0f, Position.z), center + Front, glm::vec3(0.0f, 1.0f, 0.0f));
+		// return glm::lookAt(Position, Position + Front, Up);
 	}
 
 	void followObject(RenderObject *instance)
 	{
-		Position.x = instance->position.x;
-		Position.y = instance->position.y + 1.3f;
-		Position.z = instance->position.z - 4.0f;
+		this->follow = instance;
 
-		// this->Yaw = instance->yaw;
-		// updateCameraVectors();
-		//    consoleLog(this->Yaw);
-
-		glm::vec3 front;
-		front.x = cos(glm::radians(Yaw)) * cos(glm::radians(Pitch));
-		front.y = sin(glm::radians(Pitch));
-		front.z = sin(glm::radians(Yaw)) * cos(glm::radians(Pitch));
-		Front = glm::normalize(front);
+		updateCameraVectors();
 	}
 
 	// processes input received from any keyboard-like input system. Accepts input parameter in the form of camera defined ENUM (to abstract it from windowing systems)

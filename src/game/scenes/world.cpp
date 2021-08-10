@@ -61,16 +61,15 @@ void WorldScene::init()
 
 	// heightMap = new HeightMap();
 
-	camera = new Camera(glm::vec3(0.0f, 4.0f, 20.0f), glm::vec3(0.0f, 1.0f, 0.0f), -75.5f);
-
 	// load models
 	// -----------
 
 	// player
 	player = new Player("game/models/player/vampire/vampire.dae");
 	player->setAnimation("game/models/player/vampire/vampire.dae");
-	
-	// player->position = glm::vec3(0.0f, 1.0f, 0.0f);
+	camera = new Camera(glm::vec3(0.0f, 2.0f, 20.0f));
+	camera->followObject(player);
+	player->position = glm::vec3(0.0f, 1.0f, 0.0f);
 	// player->scale = glm::vec3(0.01f);
 
 	// test = new Model("game/models/trees/cartoon/CartoonTree.fbx");
@@ -207,7 +206,6 @@ void WorldScene::renderScene(float delta, Shader *shader, bool isShadowRender)
 {
 	// std::cout << "render world scene \n";
 	glEnable(GL_DEPTH_TEST);
-	camera->followObject(player);
 	sun->position = glm::vec3(spotlight->position.x, spotlight->position.y, spotlight->position.z);
 	shader->use();
 
