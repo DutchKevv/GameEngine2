@@ -63,8 +63,10 @@ void ShapeCube::init()
     texture = context->resourceManager->loadTexture("container2.jpg", true, "wall", 0, 0);
   }
 
-  // shaderProgram = context->resourceManager->loadShader("shadow");
-  // shaderProgram->use();
+  Shader *shader = context->resourceManager->loadShader("shadow");
+  shader->use();
+
+  return;
 
   // first, configure the cube's VAO (and VBO)
   glGenVertexArrays(1, &cubeVAO);
@@ -86,11 +88,15 @@ void ShapeCube::init()
   // texture coord attribute
   glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)(6 * sizeof(float)));
   glEnableVertexAttribArray(2);
+
+  // glBindVertexArray(0);
+  // glDisableVertexAttribArray(cubeVAO);
 }
 
 void ShapeCube::renderScene(float delta, Shader *shader, bool isShadowRender)
 {
   // std::cout << "render cube \n";
+
   shader->use();
 
   shader->setBool("useTexture", loadTexture);
@@ -118,9 +124,15 @@ void ShapeCube::renderScene(float delta, Shader *shader, bool isShadowRender)
   glm::mat4 model = glm::mat4(1.0f);
   shader->setMat4("model", glm::translate(model, position));
 
+  return;
+  
   // render the cube
   glBindVertexArray(cubeVAO);
+
   glDrawArrays(GL_TRIANGLES, 0, 36);
+
+  glDisableVertexAttribArray(cubeVAO);
+  // glBindVertexArray(0);
 
   // glActiveTexture(GL_TEXTURE0);
 }

@@ -116,7 +116,9 @@ void WorldScene::init()
 
 	// addChild(spotlight, this);
 		// addChild(sun, this);
+
 	addChild(heightMap, this);
+		addChild(cube1, this);
 	// addChild(skybox, this);
 
 	// addChild(floor, this);
@@ -138,7 +140,7 @@ void WorldScene::init()
 
 	// addChild(terrain2, this);
 	// addChild(npc, this);
-	// addChild(cube1, this);
+
 	// addChild(cube2, this);
 	// addChild(cube3, this);
 	// addChild(test, this);

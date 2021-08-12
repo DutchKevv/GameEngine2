@@ -51,19 +51,14 @@ class HeightMap : public RenderObject
     Shader *shader;
     GLint uloc_modelview;
     GLint uloc_project;
+    GLuint mesh;
+    GLuint mesh_vbo[4];
+    GLuint VAO;
     int iter = 0;
     double dt;
     double last_update_time = glfwGetTime();
     int frame = 0;
     float f;
-
-    /* Store uniform location for the shaders
- * Those values are setup as part of the process of creating
- * the shader program. They should not be used before creating
- * the program.
- */
-    GLuint mesh;
-    GLuint mesh_vbo[4];
 
     void init()
     {
@@ -155,6 +150,9 @@ class HeightMap : public RenderObject
     {
         GLuint attrloc;
 
+        glGenVertexArrays(1, &VAO);
+        glBindVertexArray(VAO);
+
         glGenVertexArrays(1, &mesh);
         glGenBuffers(4, mesh_vbo);
         glBindVertexArray(mesh);
@@ -185,6 +183,8 @@ class HeightMap : public RenderObject
         glEnableVertexAttribArray(attrloc);
         glVertexAttribPointer(attrloc, 1, GL_FLOAT, GL_FALSE, 0, 0);
         std::cout << attrloc << "\n";
+
+        // glDisableVertexAttribArray(attrloc);
     }
 
     void updateMesh()
@@ -207,6 +207,8 @@ class HeightMap : public RenderObject
         glm::mat4 projection = glm::perspective(glm::radians(scene->camera->Zoom), ratio, 1.1f, 10000.0f);
 
         glm::mat4 view = scene->camera->GetViewMatrix();
+
+        // glBindVertexArray(VAO);
 
         shader->setMat4("project", projection);
         // shader->setMat4("view", view);
