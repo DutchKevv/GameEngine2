@@ -17,19 +17,16 @@ class ShapeCube : public RenderObject
 {
 
 public:
-  glm::vec3 color = glm::vec3(1.0f);
   bool loadTexture = true;
+
+  void init();
+
+  void renderScene(float delta, Shader *shader, bool isShadowRender);
+
+private:
+  Texture2D *texture;
 
   unsigned int VBO;
   unsigned int cubeVAO;
   unsigned int EBO;
-
-  glm::mat4 view;
-  // Shader *shaderProgram;
-  Texture2D *texture;
-
-  void init();
-  void draw(float delta);
-
-  void renderScene(float delta, Shader *shader, bool isShadowRender);
 };

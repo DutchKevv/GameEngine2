@@ -57,7 +57,7 @@ void WorldScene::init()
 	skybox = new SkyBox();
 	spotlight = new Spotlight();
 	// floor = new ShapePlane();
-	// cube1 = new ShapeCube();
+	cube1 = new ShapeCube();
 	// cube2 = new ShapeCube();
 	// cube3 = new ShapeCube();
 
@@ -93,7 +93,7 @@ void WorldScene::init()
 	// house = new Model("game/models/house/polyhouse1.1.obj", 50);
 	// // treeModel2 = new Model("game/models/tree-low-poly/pinetree2withrocks.obj", 10000);
 	// treeModel2 = new Model("game/models/tree-low-poly/pinetree2.obj", 1000);
-	// sun = new Model("game/models/sphere/sphere.obj", 1);
+	sun = new Model("game/models/sphere/sphere.obj", 1);
 	// terrain2 = new Terrain2();
 	// castle = new Model("game/models/castle/tower/medieval_tower_2.obj", 1);
 	// castle->position = glm::vec3(130.0f, 1.0f, 0.0f);
@@ -115,9 +115,10 @@ void WorldScene::init()
 
 
 	// addChild(spotlight, this);
+		// addChild(sun, this);
 	addChild(heightMap, this);
-	addChild(skybox, this);
-	// addChild(sun, this);
+	// addChild(skybox, this);
+
 	// addChild(floor, this);
 	// addChild(treeModel2, this);
 	// addChild(treeModel, this);
@@ -168,7 +169,7 @@ void WorldScene::init()
 			glm::vec4((rand() % space) - halfSpace, 0.0f, (rand() % space) - halfSpace, rand() % 100));
 	}
 
-	// Scene::init();
+	Scene::init();
 }
 
 void WorldScene::draw(float delta)
@@ -241,6 +242,8 @@ void WorldScene::draw(float delta)
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, depthMap);
 	renderScene(delta, shader, false);
+
+	Scene::draw(delta);
 }
 
 // renders the 3D scene

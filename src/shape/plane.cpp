@@ -46,11 +46,6 @@ float planeVertices[] = {
     glBindVertexArray(0);
   }
 
-  void ShapePlane::draw(float delta)
-  {
-    std::cout << "draw floor \n";
-  }
-
   void ShapePlane::renderScene(float delta, Shader *shader, bool isShadowRender)
   {
     // std::cout << "render floor \n";
@@ -60,6 +55,7 @@ float planeVertices[] = {
     shader->setBool("useTexture", true);
     shader->setBool("useNormal", false);
     shader->setInt("normalMap", 0);
+    
     glActiveTexture(GL_TEXTURE0);
     texture->Bind();
     // glBindTexture(GL_TEXTURE_2D, texture->ID);

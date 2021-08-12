@@ -88,11 +88,6 @@ void ShapeCube::init()
   glEnableVertexAttribArray(2);
 }
 
-void ShapeCube::draw(float delta)
-{
-  std::cout << "draw Cube \n";
-}
-
 void ShapeCube::renderScene(float delta, Shader *shader, bool isShadowRender)
 {
   // std::cout << "render cube \n";

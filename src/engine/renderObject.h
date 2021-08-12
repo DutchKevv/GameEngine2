@@ -7,7 +7,6 @@
 class RenderObject : public BaseObject
 {
 public:
-	// Scene *scene;
 	std::vector<RenderObject *> children;
 
 	unsigned int width;
@@ -24,4 +23,6 @@ public:
 	glm::vec3 rotation = glm::vec3(1.0f);
 	glm::vec3 scale = glm::vec3(1.0f);
 	glm::vec3 position = glm::vec3(1.0f);
+	
+ 	glm::vec3 color = glm::vec3(1.0f);
 };

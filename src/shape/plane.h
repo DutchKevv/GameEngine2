@@ -9,13 +9,9 @@ class ShapePlane : public RenderObject
 {
 
 public:
-  glm::vec3 position = glm::vec3(1.0f);
-
   bool loadTexture = true;
 
   void init();
-
-  void draw(float delta);
 
   void renderScene(float delta, Shader *shader, bool isShadowRender);
 
