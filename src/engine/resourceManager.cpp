@@ -17,12 +17,11 @@ map<std::string, Shader *> Shaders;
 
 	inline bool ResourceManager::fileExists(std::string name)
 	{
-		std::cout << ("checking : '" + name) << std::endl;
 		ifstream ifile;
 		ifile.open(name);
 		if (!ifile)
 		{
-			cout << ("cannot find : '" + name + "'\n");
+			cout << ("cannot find shader : '" + name + "'\n");
 			return false;
 		}
 
@@ -45,10 +44,14 @@ map<std::string, Shader *> Shaders;
 	{
 		if (Shaders.count(name) == 0)
 		{
+			std::cout << ("shader loading : '" + name) << std::endl;
+
 			string vertexSrc = loadFileToString(name + ".vs");
 			string fragmentSrc = loadFileToString(name + ".fs");
 
 			Shaders[name] = new Shader(vertexSrc.c_str(), fragmentSrc.c_str());
+		} else {
+			std::cout << ("shader reusing : '" + name) << std::endl;
 		}
 
 		return Shaders[name];

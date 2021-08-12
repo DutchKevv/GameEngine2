@@ -15,6 +15,7 @@ out VS_OUT {
     vec4 FragPosLightSpace;
 } vs_out;
 
+// uniform sampler2D Heightmap;
 uniform mat4 projection;
 uniform mat4 view;
 uniform mat4 model;
@@ -26,6 +27,7 @@ uniform mat4 finalBonesMatrices[MAX_BONES];
 
 // temp
 uniform bool useInstances;
+in vec2 vert;
 
 vec4 BonesCalculation()
 {
@@ -54,6 +56,7 @@ vec4 BonesCalculation()
 void main()
 {
     mat4 localModel = useInstances ? instanceMatrix : model;
+    // vec4 vertex = vec4(vert - 0.5, texture(Heightmap, vert).r * 0.2, 1.0);
 
     gl_Position = projection * view * localModel * BonesCalculation();
 

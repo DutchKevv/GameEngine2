@@ -47,9 +47,9 @@ public:
 	float MovementSpeed;
 	float MouseSensitivity;
 	float Zoom = 1.0f;
-	float radius = 10.0f;
+	float radius = 5.0f;
 
-	RenderObject *follow;
+	RenderObject *follow = NULL;
 
 	// constructor with vectors
 	Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH) : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
@@ -73,17 +73,21 @@ public:
 	// returns the view matrix calculated using Euler Angles and the LookAt Matrix
 	glm::mat4 GetViewMatrix()
 	{
-		// Position.x = follow->position.x - (sin(glfwGetTime()) * radius);
-		// Position.z = follow->position.z + (cos(glfwGetTime()) * radius);
+		// Position.x = sin(glfwGetTime()) * radius;
+		// Position.z = cos(glfwGetTime()) * radius;
 
-		Position.x = follow->position.x - (sin(Yaw) * radius);
-		Position.z = follow->position.z + (cos(Yaw) * radius) ;
+		if (this->follow != NULL)
+		{
+			Position.x = follow->position.x - (sin(Yaw) * radius);
+			Position.z = follow->position.z + (cos(Yaw) * radius);
+
+			// Position = glm::vec3(follow->position.x, follow->position.y + 2.0f, follow->position.z - 5.0f);
+			glm::vec3 center = glm::vec3(follow->position.x, follow->position.y + 2.0f, follow->position.z);
+			// glm::vec3 center = glm::vec3(follow->position.x, follow->position.y + 2.0f, follow->position.z);
+			return glm::lookAt(glm::vec3(Position.x, 4.0f, Position.z), center, Up);
+		}
 		
-
-		// Position = glm::vec3(follow->position.x, follow->position.y + 2.0f, follow->position.z - 5.0f);
-		glm::vec3 center = glm::vec3(follow->position.x, follow->position.y + 2.0f, follow->position.z);
-		return glm::lookAt(glm::vec3(Position.x, 2.0f, Position.z), center, glm::vec3(0.0f, 1.0f, 0.0f));
-		// return glm::lookAt(Position, Position + Front, Up);
+		return glm::lookAt(Position, Position + Front, Up);
 	}
 
 	void followObject(RenderObject *instance)
@@ -96,19 +100,20 @@ public:
 	// processes input received from any keyboard-like input system. Accepts input parameter in the form of camera defined ENUM (to abstract it from windowing systems)
 	void ProcessKeyboard(Camera_Movement direction, float deltaTime)
 	{
-		// float velocity = MovementSpeed * deltaTime;
-		// if (direction == FORWARD)
-		// 	Position += Front * velocity;
-		// if (direction == BACKWARD)
-		// 	Position -= Front * velocity;
-		// if (direction == LEFT)
-		// 	Position -= Right * velocity;
-		// if (direction == RIGHT)
-		// 	Position += Right * velocity;
+		float velocity = MovementSpeed * deltaTime;
+		if (direction == FORWARD)
+			Position += Front * velocity;
+		if (direction == BACKWARD)
+			Position -= Front * velocity;
+		if (direction == LEFT)
+			Position -= Right * velocity;
+		if (direction == RIGHT)
+			Position += Right * velocity;
 
-		// if (Position.y < 0.2f) {
-		// Position.y = 1.0f;
-		// }
+		if (Position.y < 2.0f)
+		{
+			// Position.y = 2.0f;
+		}
 	}
 
 	// processes input received from a mouse input system. Expects the offset value in both the x and y direction.
@@ -117,8 +122,8 @@ public:
 		xoffset *= MouseSensitivity;
 		yoffset *= MouseSensitivity;
 
-		Yaw += xoffset / 4;
-		Pitch += yoffset / 4;
+		Yaw += xoffset;
+		Pitch += yoffset;
 
 		// make sure that when pitch is out of bounds, screen doesn't get flipped
 		if (constrainPitch)

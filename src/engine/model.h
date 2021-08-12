@@ -10,8 +10,6 @@
 #include "./shader.h"
 #include "./renderObject.h"
 #include "./animdata.h"
-// #include "./animation.h"
-// #include "./animator.h"
 
 class Animation;
 class Animator;
@@ -33,7 +31,7 @@ public:
     Animator *animator = NULL;
 	vector<glm::mat4> finalBonesMatrices;
 
-	const unsigned int space = 1730;
+	const unsigned int space = 730;
 
 	// constructor, expects a filepath to a 3D model.
 	Model(string const &path, unsigned int _amount = 1, bool gamma = false);

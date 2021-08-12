@@ -77,15 +77,14 @@ float planeVertices[] = {
     model = glm::translate(model, this->position);
     shader->setMat4("model", model);
 
-
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_FRONT);    
+    // glEnable(GL_CULL_FACE);
+    // glCullFace(GL_FRONT);    
 
     // render the cube
     glBindVertexArray(planeVAO);
     glDrawArrays(GL_TRIANGLES, 0, 6);
 
-    glCullFace(GL_BACK);  
+    // glCullFace(GL_BACK);  
 
     glActiveTexture(GL_TEXTURE0);
   }

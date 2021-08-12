@@ -6,9 +6,13 @@
 #include "../../engine/model.h"
 #include "../../engine/shader.h"
 #include "../../engine/player.h"
+#include "../../engine/terrain2.h"
+#include "../../engine/heightmap2.cpp"
+#include "../../engine/npc.h"
 #include "../../shape/cube.h"
 #include "../../shape/plane.h"
 #include "../../lights/spotlight.cpp"
+#include "../town.h"
 
 class WorldScene : public Scene
 {
@@ -26,19 +30,31 @@ public:
 	ShapePlane *floor;
 	SkyBox *skybox;
 	Model *sun;
+	Town *town1;
+	Town *town2;
+	Town *town3;
 	Model *castle;
+	Model *castle1;
+	Model *castle2;
+	Model *castle3;
+	Model *castle4;
 	Model *treeModel;
 	Model *treeModel2;
 	Model *treeModel3;
 	Model *rockModel;
+	Model *tree;
+	Model *bush;
+	Model *house;
 	Model *test;
 	Player *player;
+	Terrain2 *terrain2;
 
-	// HeightMap *heightMap;
+	HeightMap *heightMap;
 
 	vector<glm::vec4> treePositions;
 	vector<glm::vec4> treePositions2;
 	vector<glm::vec4> rockPositions;
+	vector<Npc *> npcs;
 
 	void init();
 

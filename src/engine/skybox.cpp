@@ -58,12 +58,18 @@ static float skyboxVertices[] = {
 
 void SkyBox::init()
 {
+
 	// shader
-	Shader *shader = context->resourceManager->loadShader("skybox");
+	shader = context->resourceManager->loadShader("skybox");
+	shader->use();
 
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
+		return;
 	glBindVertexArray(VAO);
+
+
+
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), &skyboxVertices, GL_STATIC_DRAW);
 	glEnableVertexAttribArray(0);
@@ -106,23 +112,27 @@ void SkyBox::init()
 		"textures/skybox/jajlands1/jajlands1_ft.jpg"};
 
 	cubemapTexture = loadCubemap(faces);
+
+	RenderObject::init();
 };
 
 void SkyBox::draw(float delta){
 
 };
 
-void SkyBox::renderScene(float delta, Shader *shader, bool isShadowRender)
+void SkyBox::renderScene(float delta, Shader *_shader, bool isShadowRender)
 {
+	if (isShadowRender) {
+		return;
+	}
+	return;
 	// std::cout << "Render skybox: " << std::endl;
 
-	Shader *skyBoxShader = context->resourceManager->loadShader("skybox");
-	skyBoxShader->use();
-
+	shader->use();
 	//    glm::mat4 model;
 	//    glm::mat4 view = context->camera->GetViewMatrix();
-	glm::mat4 projection = glm::perspective(scene->camera->Zoom, (float)context->windowW / (float)context->windowH, 0.1f, 1.0f);
-	////    shader->setMat4("model", model);
+	glm::mat4 projection = glm::perspective(scene->camera->Zoom, (float)context->windowW / (float)context->windowH, 0.1f, 1000.0f);
+	//    shader->setMat4("model", model);
 	//    shader->setMat4("view", view);
 	//    shader->setMat4("projection", projection);
 	//    shader->setVec3("cameraPos", context->camera->Position);
@@ -132,13 +142,15 @@ void SkyBox::renderScene(float delta, Shader *shader, bool isShadowRender)
 	// glDepthMask(GL_FALSE);
 
 	glm::mat4 view = glm::mat4(glm::mat3(scene->camera->GetViewMatrix())); // remove translation from the view matrix
-	skyBoxShader->setMat4("view", view);
-	skyBoxShader->setMat4("projection", projection);
+	shader->setMat4("view", view);
+	shader->setMat4("projection", projection);
+
 
 	// skybox cube
 	glBindVertexArray(VAO);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
+
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 	glBindVertexArray(0);
 	glDepthFunc(GL_LESS); // set depth function back to default

@@ -4,7 +4,11 @@
 unsigned int IDCounter = 0;
 
 void BaseObject::init() {
-	isInitialized = true;
+/* 	isInitialized = true;
+	IDCounter += 1;
+	this->id = IDCounter; */
+
+	// std::cout << this->id << "\n";
 }
 
 void BaseObject::update(float delta)
@@ -44,7 +48,8 @@ void BaseObject::renderScene(float delta, Shader *shader, bool isShadowRender)
 
 unsigned int BaseObject::addChild(BaseObject *child, Scene *scene, std::string name)
 {
-	child->id = IDCounter++;
+	IDCounter += 1;
+	child->id = IDCounter;
 	child->name = name;
 	child->scene = scene;
 
@@ -53,6 +58,7 @@ unsigned int BaseObject::addChild(BaseObject *child, Scene *scene, std::string n
 	if (child->isInitialized == false)
 	{
 		child->init();
+		child->isInitialized = true;
 	}
 
 	return child->id;

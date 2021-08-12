@@ -184,14 +184,14 @@ void Engine::processInput(GLFWwindow *window)
   if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
     glfwSetWindowShouldClose(window, true);
 
-  // if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-  //   children[worldChild]->camera->ProcessKeyboard(FORWARD, deltaTime);
-  // if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-  //   children[worldChild]->camera->ProcessKeyboard(BACKWARD, deltaTime);
-  // if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-  //   children[worldChild]->camera->ProcessKeyboard(LEFT, deltaTime);
-  // if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-  //   children[worldChild]->camera->ProcessKeyboard(RIGHT, deltaTime);
+  if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+    children[worldChild]->camera->ProcessKeyboard(FORWARD, deltaTime);
+  if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+    children[worldChild]->camera->ProcessKeyboard(BACKWARD, deltaTime);
+  if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+    children[worldChild]->camera->ProcessKeyboard(LEFT, deltaTime);
+  if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+    children[worldChild]->camera->ProcessKeyboard(RIGHT, deltaTime);
 }
 
 // // glfw: whenever the mouse moves, this callback is called

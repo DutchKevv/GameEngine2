@@ -42,7 +42,7 @@ public:
 	{
 		// std::cout << "Render light" << std::endl;
 
-		// glm::vec3 lightPos(-0.0f, 40.0f, -30.0f);
+		glm::vec3 lightPos(-0.0f, 40.0f, -30.0f);
 
 		float speed = 0.6f;
 		translationX = 0.0f;
@@ -51,7 +51,7 @@ public:
 		translationY = 70.0f * sin(0.0f + speed * (float)glfwGetTime());
 		// translationY = 2.0f * sin(0.0f + 1.0f * (float)glfwGetTime());
 		// translationZ = scene->camera->Position.z - 150.0f;
-		translationZ = 50.0f;
+		translationZ = 150.0f;
 		// translationZ = -100.0f * sin(0.0f + speed * (float)glfwGetTime());
 		// glm::vec3 translation = glm::vec3(2.0f);
 		glm::vec3 translation = glm::vec3(translationX, translationY, translationZ);
@@ -59,8 +59,8 @@ public:
 		// if (translation.y < 2.0f) {
 		// 	translation.y = 2.0f;
 		// }
-		position = translation;
-		// position = lightPos;
+		// position = translation;
+		position = lightPos;
 
 		// lightColor.x = sin(glfwGetTime() * 1.0f);
 		// lightColor.y = sin(glfwGetTime() * 0.7f);
@@ -82,8 +82,8 @@ public:
 		shader->setBool("useNormal", false);
 		shader->setBool("useTexture", true);
 		// shader->setVec3("light.color", lightColor);
-		// shader->setVec3("light.position", lightPos);
-		shader->setVec3("light.position", translation);
+		shader->setVec3("light.position", lightPos);
+		// shader->setVec3("light.position", translation);
 		// shader->setVec3("light.ambient", ambientColor);
 		shader->setVec3("light.ambient", ambientColor);
 		// shader->setVec3("light.diffuse", lightColor); // darken diffuse light a bit

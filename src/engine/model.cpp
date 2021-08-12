@@ -24,6 +24,8 @@ Model::Model(string const &path, unsigned int _amount, bool gamma) : gammaCorrec
 	amount = _amount;
 
 	loadModel(path);
+
+	// RenderObject();
 }
 
 void Model::init()
@@ -92,6 +94,8 @@ void Model::init()
 
 		glBindVertexArray(0);
 	}
+
+	// RenderObject::init();
 }
 
 void Model::update(float delta)
@@ -115,6 +119,9 @@ void Model::update(float delta)
 // draws the model, and thus all its meshes
 void Model::renderScene(float delta, Shader *shader, bool isShadowRender)
 {
+	// shader->use();
+	// Shader *shader = context->resourceManager->loadShader("heightmap");
+
 	shader->setBool("useInstances", amount != 1);
 	shader->setBool("useTexture", false);
 
@@ -130,11 +137,33 @@ void Model::renderScene(float delta, Shader *shader, bool isShadowRender)
 		model = glm::translate(model, this->position);
 		shader->setMat4("model", model);
 	}
+	// else
+	// {
+	// 	// std::cout << "init model2 \n";
+		
+	// 	for (int i = 0; i < amount; ++i)
+	// 	{
+	// 		glm::mat4 _model = modelMatrices[i];
+	// 		glm::mat4 model = glm::mat4(1.0f);
+	// 		// model = glm::scale(model, this->scale);
+	// 		// model = glm::scale(model, this->scale);
+	// 		model = glm::translate(model, glm::vec3(_model[3][0] + 0.1f , 1.0f, _model[3][2] + 0.1f));
+	// 		// model = glm::translate(model, glm::vec3(_model[1][1], 1.0f, _model[2][1]));
+	// 		// model = glm::translate(model, glm::vec3(glfwGetTime() / 100000000000, 1.0f, 1.0f));
+	// 		modelMatrices[i] = model;
+	// 	}
+
+	// 	// glGenBuffers(1, &instanceBuffer);
+	// 	glBindBuffer(GL_ARRAY_BUFFER, instanceBuffer);
+	// 	glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatrices[0], GL_STATIC_DRAW);
+	// }
 
 	for (unsigned int i = 0; i < meshes.size(); i++)
 	{
 		meshes[i].Draw(shader, amount);
 	}
+
+	// RenderObject::renderScene(delta, shader, isShadowRender);
 }
 
 void Model::setAnimation(string const &path)

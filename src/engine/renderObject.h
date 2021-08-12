@@ -10,11 +10,10 @@ public:
 	// Scene *scene;
 	std::vector<RenderObject *> children;
 
-	unsigned int id;
 	unsigned int width;
 	unsigned int height;
 
-	float speed;
+	float speed = 0.001f;
 	float xRadius = 0.0f;
 	float yRadius = 0.0f;
 	float yaw = 90;
