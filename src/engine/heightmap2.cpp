@@ -32,13 +32,7 @@ static GLfloat modelview_matrix[16] = {
     1.0f, 0.0f, 0.0f, 0.0f,
     0.0f, 1.0f, 0.0f, 0.0f,
     0.0f, 0.0f, 1.0f, 0.0f,
-    0.0f, 0.0f, 0.0f, 1.0f};
-
-static GLfloat projection_matrix[16] = {
-    1.0f, 0.0f, 0.0f, 0.0f,
-    0.0f, 1.0f, 0.0f, 0.0f,
-    0.0f, 0.0f, 1.0f, 0.0f,
-    0.0f, 0.0f, 0.0f, 1.0f};
+    -5.0f, -5.0f, -20.0f, 1.0f};
 
 /* Frustum configuration */
 static GLfloat view_angle = 45.0f;
@@ -52,7 +46,7 @@ class HeightMap : public RenderObject
     GLint uloc_modelview;
     GLint uloc_project;
     GLuint mesh;
-    GLuint mesh_vbo[4];
+    GLuint VBO[4];
     GLuint VAO;
     int iter = 0;
     double dt;
@@ -76,19 +70,10 @@ class HeightMap : public RenderObject
         std::cout << "project loc: " << uloc_project << "\n";
         std::cout << "modelview loc: " << uloc_modelview << "\n";
 
-        /* Compute the projection matrix */
-        f = 1.0f / tanf(view_angle / 2.0f);
-        projection_matrix[0] = f / aspect_ratio;
-        projection_matrix[5] = f;
-        projection_matrix[10] = (z_far + z_near) / (z_near - z_far);
-        projection_matrix[11] = -1.0f;
-        projection_matrix[14] = 2.0f * (z_far * z_near) / (z_near - z_far);
-        glUniformMatrix4fv(uloc_project, 1, GL_FALSE, projection_matrix);
-
         /* Set the camera position */
-        modelview_matrix[12] = -5.0f;
-        modelview_matrix[13] = -5.0f;
-        modelview_matrix[14] = -20.0f;
+        // modelview_matrix[12] = -5.0f;
+        // modelview_matrix[13] = -5.0f;
+        // modelview_matrix[14] = -20.0f;
         glUniformMatrix4fv(uloc_modelview, 1, GL_FALSE, modelview_matrix);
 
         /* Create mesh data */
@@ -151,38 +136,40 @@ class HeightMap : public RenderObject
         GLuint attrloc;
 
         glGenVertexArrays(1, &VAO);
-        glBindVertexArray(VAO);
+        // glGenBuffers(1, &VBO);
 
         glGenVertexArrays(1, &mesh);
-        glGenBuffers(4, mesh_vbo);
+        glGenBuffers(4, VBO);
         glBindVertexArray(mesh);
 
         /* Prepare the data for drawing through a buffer inidices */
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_vbo[3]);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VBO[3]);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * MAP_NUM_LINES * 2, map_line_indices, GL_STATIC_DRAW);
 
         /* Prepare the attributes for rendering */
         attrloc = glGetAttribLocation(shader->ID, "x");
         std::cout << attrloc << "\n";
 
-        glBindBuffer(GL_ARRAY_BUFFER, mesh_vbo[0]);
+        glBindBuffer(GL_ARRAY_BUFFER, VBO[0]);
         glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * MAP_NUM_TOTAL_VERTICES, &map_vertices[0][0], GL_STATIC_DRAW);
         glEnableVertexAttribArray(attrloc);
         glVertexAttribPointer(attrloc, 1, GL_FLOAT, GL_FALSE, 0, 0);
 
         attrloc = glGetAttribLocation(shader->ID, "z");
-        glBindBuffer(GL_ARRAY_BUFFER, mesh_vbo[2]);
+        glBindBuffer(GL_ARRAY_BUFFER, VBO[2]);
         glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * MAP_NUM_TOTAL_VERTICES, &map_vertices[2][0], GL_STATIC_DRAW);
         glEnableVertexAttribArray(attrloc);
         glVertexAttribPointer(attrloc, 1, GL_FLOAT, GL_FALSE, 0, 0);
         std::cout << attrloc << "\n";
 
         attrloc = glGetAttribLocation(shader->ID, "y");
-        glBindBuffer(GL_ARRAY_BUFFER, mesh_vbo[1]);
+        glBindBuffer(GL_ARRAY_BUFFER, VBO[1]);
         glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * MAP_NUM_TOTAL_VERTICES, &map_vertices[1][0], GL_DYNAMIC_DRAW);
         glEnableVertexAttribArray(attrloc);
         glVertexAttribPointer(attrloc, 1, GL_FLOAT, GL_FALSE, 0, 0);
         std::cout << attrloc << "\n";
+
+        // glBindVertexArray(VAO);
 
         // glDisableVertexAttribArray(attrloc);
     }
@@ -205,35 +192,18 @@ class HeightMap : public RenderObject
 
         float ratio = (float)context->display->windowW / (float)context->display->windowH;
         glm::mat4 projection = glm::perspective(glm::radians(scene->camera->Zoom), ratio, 1.1f, 10000.0f);
-
         glm::mat4 view = scene->camera->GetViewMatrix();
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(-5.0f, -5.0f, -20.0f));
+        // model = glm::translate(model, glm::vec3(-5.0f, -5.0f, -20.0f));
 
         // glBindVertexArray(VAO);
 
         shader->setMat4("project", projection);
-        // shader->setMat4("view", view);
-        // shader->setMat4("model", glm::mat4(1.0f));
+        shader->setMat4("view", view);
+        shader->setMat4("model", model);
 
-        /* Compute the projection matrix */
-        f = 1.0f / tanf(view_angle / 2.0f);
-        projection_matrix[0] = f / aspect_ratio;
-        projection_matrix[5] = f;
-        projection_matrix[10] = (z_far + z_near) / (z_near - z_far);
-        projection_matrix[11] = -1.0f;
-        projection_matrix[14] = 2.0f * (z_far * z_near) / (z_near - z_far);
-         glUniformMatrix4fv(uloc_project, 1, GL_FALSE, projection_matrix);
-
-        // shader->setMat4("project", projection_matrix);
-
-        /* Set the camera position */
-        modelview_matrix[12] = -5.0f;
-        modelview_matrix[13] = -5.0f;
-        modelview_matrix[14] = -20.0f;
-        glUniformMatrix4fv(uloc_modelview, 1, GL_FALSE, modelview_matrix);
-        // shader->setMat4("modelview", modelview_matrix);
-        //  glUniformMatrix4fv(uloc_modelview, 1, GL_FALSE, modelview_matrix);
-
-
+        // glDrawArrays(GL_TRIANGLES, 0, 36);
         glDrawElements(GL_LINES, 2 * MAP_NUM_LINES, GL_UNSIGNED_INT, 0);
 
         dt = glfwGetTime();

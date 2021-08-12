@@ -27,6 +27,6 @@ private:
   Texture2D *texture;
 
   unsigned int VBO;
-  unsigned int cubeVAO;
+  unsigned int VAO;
   unsigned int EBO;
 };
