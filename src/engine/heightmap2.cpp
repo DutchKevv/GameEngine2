@@ -45,7 +45,6 @@ class HeightMap : public RenderObject
     Shader *shader;
     GLint uloc_modelview;
     GLint uloc_project;
-    GLuint mesh;
     GLuint VBO[4];
     GLuint VAO;
     int iter = 0;
@@ -54,6 +53,8 @@ class HeightMap : public RenderObject
     int frame = 0;
     float f;
 
+    Texture2D *texture;
+
     void init()
     {
         std::cout << "init floor \n";
@@ -61,6 +62,8 @@ class HeightMap : public RenderObject
         // shader
         shader = context->resourceManager->loadShader("heightmap");
         shader->use();
+
+        texture = context->resourceManager->loadTexture("sand.jpg", true, "grass2", 0, 0);
 
         std::cout << shader->ID << "\n";
 
@@ -136,24 +139,20 @@ class HeightMap : public RenderObject
         GLuint attrloc;
 
         glGenVertexArrays(1, &VAO);
-        // glGenBuffers(1, &VBO);
-
-        glGenVertexArrays(1, &mesh);
         glGenBuffers(4, VBO);
-        glBindVertexArray(mesh);
+        glBindVertexArray(VAO);
 
         /* Prepare the data for drawing through a buffer inidices */
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VBO[3]);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * MAP_NUM_LINES * 2, map_line_indices, GL_STATIC_DRAW);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * MAP_NUM_TOTAL_VERTICES * 4, map_line_indices, GL_STATIC_DRAW);
 
         /* Prepare the attributes for rendering */
         attrloc = glGetAttribLocation(shader->ID, "x");
-        std::cout << attrloc << "\n";
-
         glBindBuffer(GL_ARRAY_BUFFER, VBO[0]);
         glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * MAP_NUM_TOTAL_VERTICES, &map_vertices[0][0], GL_STATIC_DRAW);
         glEnableVertexAttribArray(attrloc);
         glVertexAttribPointer(attrloc, 1, GL_FLOAT, GL_FALSE, 0, 0);
+        std::cout << attrloc << "\n";
 
         attrloc = glGetAttribLocation(shader->ID, "z");
         glBindBuffer(GL_ARRAY_BUFFER, VBO[2]);
@@ -168,10 +167,6 @@ class HeightMap : public RenderObject
         glEnableVertexAttribArray(attrloc);
         glVertexAttribPointer(attrloc, 1, GL_FLOAT, GL_FALSE, 0, 0);
         std::cout << attrloc << "\n";
-
-        // glBindVertexArray(VAO);
-
-        // glDisableVertexAttribArray(attrloc);
     }
 
     void updateMesh()
@@ -190,6 +185,9 @@ class HeightMap : public RenderObject
 
         shader->use();
 
+        glActiveTexture(GL_TEXTURE0);
+        texture->Bind();
+
         float ratio = (float)context->display->windowW / (float)context->display->windowH;
         glm::mat4 projection = glm::perspective(glm::radians(scene->camera->Zoom), ratio, 1.1f, 10000.0f);
         glm::mat4 view = scene->camera->GetViewMatrix();
@@ -197,14 +195,14 @@ class HeightMap : public RenderObject
         model = glm::translate(model, glm::vec3(-5.0f, -5.0f, -20.0f));
         // model = glm::translate(model, glm::vec3(-5.0f, -5.0f, -20.0f));
 
-        // glBindVertexArray(VAO);
+        glBindVertexArray(VAO);
 
         shader->setMat4("project", projection);
         shader->setMat4("view", view);
         shader->setMat4("model", model);
 
-        // glDrawArrays(GL_TRIANGLES, 0, 36);
-        glDrawElements(GL_LINES, 2 * MAP_NUM_LINES, GL_UNSIGNED_INT, 0);
+        // glDrawArrays(GL_TRIANGLES, 0, MAP_NUM_TOTAL_VERTICES);
+        glDrawElements(GL_TRIANGLES, 4 * MAP_NUM_TOTAL_VERTICES, GL_UNSIGNED_INT, 0);
 
         dt = glfwGetTime();
         if ((dt - last_update_time) > 0.2)
@@ -249,21 +247,6 @@ private:
             x += step;
             z = 0.0f;
         }
-#if DEBUG_ENABLED
-        for (i = 0; i < MAP_NUM_TOTAL_VERTICES; ++i)
-        {
-            printf("Vertice %d (%f, %f, %f)\n",
-                   i, map_vertices[0][i], map_vertices[1][i], map_vertices[2][i]);
-        }
-#endif
-        /* create indices */
-        /* line fan based on i
-     * i+1
-     * |  / i + n + 1
-     * | /
-     * |/
-     * i --- i + n
-     */
 
         /* close the top of the square */
         k = 0;
@@ -294,18 +277,5 @@ private:
                 map_line_indices[k++] = ref + MAP_NUM_VERTICES + 1;
             }
         }
-
-#ifdef DEBUG_ENABLED
-        for (k = 0; k < 2 * MAP_NUM_LINES; k += 2)
-        {
-            int beg, end;
-            beg = map_line_indices[k];
-            end = map_line_indices[k + 1];
-            printf("Line %d: %d -> %d (%f, %f, %f) -> (%f, %f, %f)\n",
-                   k / 2, beg, end,
-                   map_vertices[0][beg], map_vertices[1][beg], map_vertices[2][beg],
-                   map_vertices[0][end], map_vertices[1][end], map_vertices[2][end]);
-        }
-#endif
     }
 };

@@ -1,16 +1,9 @@
-#include <GLFW/glfw3.h>
-#include <glad/glad.h>
 #include <iostream>
 #include <glm/glm.hpp>
 
-#include "cube.h"
-#include "../engine/logger.h"
-#include "../engine/logger.h"
-#include "../engine/renderObject.h"
+#include "./cube.h"
 #include "../engine/context.h"
-#include "../engine/texture.h"
-#include "../engine/resourceManager.h"
-#include "../engine/shader.h"
+
 
 float vertices[] = {
     // positions          // normals           // texture coords
@@ -66,14 +59,16 @@ void ShapeCube::init()
   Shader *shader = context->resourceManager->loadShader("shadow");
   shader->use();
 
-  return;
 
   // first, configure the cube's VAO (and VBO)
   glGenVertexArrays(1, &VAO);
   glGenBuffers(1, &VBO);
 
+      return;
   glBindBuffer(GL_ARRAY_BUFFER, VBO);
+
   glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
 
   glBindVertexArray(VAO);
 
@@ -89,8 +84,8 @@ void ShapeCube::init()
   glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)(6 * sizeof(float)));
   glEnableVertexAttribArray(2);
 
-  // glBindVertexArray(0);
-  // glDisableVertexAttribArray(cubeVAO);
+  glBindVertexArray(0);
+  glDisableVertexAttribArray(VAO);
 }
 
 void ShapeCube::renderScene(float delta, Shader *shader, bool isShadowRender)
@@ -123,16 +118,14 @@ void ShapeCube::renderScene(float delta, Shader *shader, bool isShadowRender)
   // world transformation
   glm::mat4 model = glm::mat4(1.0f);
   shader->setMat4("model", glm::translate(model, position));
-
-  return;
   
   // render the cube
   glBindVertexArray(VAO);
 
   glDrawArrays(GL_TRIANGLES, 0, 36);
 
-  // glDisableVertexAttribArray(cubeVAO);
-  // glBindVertexArray(0);
+  glDisableVertexAttribArray(VAO);
+  glBindVertexArray(0);
 
   // glActiveTexture(GL_TEXTURE0);
 }
